@@ -18,8 +18,10 @@ steps:
   - name: code-inspection
     image: maven:3.8.3
     environment:
-      SONAR_HOST_URL: https://codefirst.iut.uca.fr/sonar/
-    secrets: [ API_SPRINGBOOT_SECRET ]
+      sonar_host: https://codefirst.iut.uca.fr/sonar/
+      sonar_token:
+        from_secret: API_SPRINGBOOT_SECRET
+    project_key : ALICA_API_SPRINGBOOT
     commands:
       - mvn sonar:sonar -Dsonar.login=$${sonar_token}
 
