@@ -10,7 +10,6 @@ steps:
   - name: build
     image: maven:3.8.3
     commands:
-      - chmod +x mvnw
       - mvn clean install
 
   - name: tests
@@ -26,8 +25,7 @@ steps:
       SONAR_HOST_URL: https://codefirst.iut.uca.fr/sonar/
     secrets: [ API_SPRINGBOOT_SECRET ]
     commands:
-      - cd SportSpots2
-      - ./mvnw sonar:sonar -Dsonar.login=$${API_SPRINGBOOT_SECRET}
+      -  mvn sonar:sonar -Dsonar.login=$${API_SPRINGBOOT_SECRET}
 
     depends_on: [ tests ]
 
