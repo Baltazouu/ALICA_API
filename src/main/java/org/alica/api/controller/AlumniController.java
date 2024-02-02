@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/alumni")
@@ -31,6 +32,12 @@ public class AlumniController {
         return this.alumniService.findAll(page);
     }
 
+    @GetMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseAlumniDTO findAlumniByEmail(@PathVariable UUID id){
+        return this.alumniService.findAlumniById(id);
+    }
+
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
@@ -38,16 +45,10 @@ public class AlumniController {
         return this.alumniService.createAlumni(alumniDTO);
     }
 
-    @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseAlumniDTO updateAlumni(@Valid @RequestBody RequestAlumniDTO alumniDTO){
-        return this.alumniService.updateAlumni(alumniDTO);
-    }
-
-    @GetMapping(value = "/{email}",produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseAlumniDTO findAlumniByEmail(@PathVariable String email){
-        return this.alumniService.findAlumniByEmail(email);
+    public ResponseAlumniDTO updateAlumni(@Valid @RequestBody RequestAlumniDTO alumniDTO, @PathVariable UUID id){
+        return this.alumniService.updateAlumni(alumniDTO,id);
     }
 
 }

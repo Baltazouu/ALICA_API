@@ -1,9 +1,12 @@
 package org.alica.api.Dto.request;
-
 import jakarta.validation.constraints.NotNull;
-import org.aspectj.weaver.ast.Not;
+import org.springframework.validation.annotation.Validated;
+import java.util.UUID;
 
+@Validated
 public record RequestProfileDTO(
+
+        @NotNull UUID alumniId,
 
         @NotNull String email,
 

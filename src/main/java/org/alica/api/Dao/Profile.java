@@ -30,7 +30,7 @@ public class Profile {
     private String firstName;
 
     @Column(name = "surName")
-    private String surName;
+    private String lastName;
 
     @Column(name = "linkedinUrl")
     private String linkedinURL;
@@ -45,8 +45,8 @@ public class Profile {
     public void update(RequestProfileDTO dto){
         this.email = dto.email() != null ? dto.email() : this.email;
         this.firstName = dto.email() != null ? dto.email() : this.firstName;
-        this.surName = dto.surname() != null ? dto.surname() : this.surName;
-        this.linkedinURL = dto.linkedinURL() != null ? dto.linkedinURL() : this.surName;
+        this.lastName = dto.surname() != null ? dto.surname() : this.lastName;
+        this.linkedinURL = dto.linkedinURL() != null ? dto.linkedinURL() : this.lastName;
         this.githubURL = dto.githubURL() != null ? dto.githubURL() : this.githubURL;
         this.portfolioURL = dto.githubURL() != null ? dto.portfolioURL() : this.portfolioURL;
     }
