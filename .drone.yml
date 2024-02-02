@@ -25,7 +25,8 @@ steps:
       SONAR_HOST_URL: https://codefirst.iut.uca.fr/sonar/
     secrets: [ API_SPRINGBOOT_SECRET ]
     commands:
-      -  mvn sonar:sonar -Dsonar.login=$${API_SPRINGBOOT_SECRET}
+      - chmod +x mvnw
+      -  mvnw sonar:sonar -Dsonar.login=$${API_SPRINGBOOT_SECRET}
 
     depends_on: [ tests ]
 
