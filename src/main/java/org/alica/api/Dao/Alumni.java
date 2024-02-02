@@ -23,11 +23,14 @@ public class Alumni {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @OneToMany
-    private Set<Offer> offer;
+    @OneToMany(mappedBy = "alumni")
+    private Set<Offer> offers;
 
     @OneToOne
     private Profile profile;
+
+    @ManyToMany(mappedBy = "alumnis")
+    private Set<Event> events;
 
     @Column(name = "email")
     private String email;

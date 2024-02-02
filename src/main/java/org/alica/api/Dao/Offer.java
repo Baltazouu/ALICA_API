@@ -24,6 +24,7 @@ public class Offer {
     private UUID id;
 
     @ManyToOne
+    @JoinColumn(name = "alumni_id")
     private Alumni alumni;
 
     @Column(name = "name")

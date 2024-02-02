@@ -3,6 +3,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.alica.api.Dto.request.RequestProfileDTO;
 
+import java.util.Set;
 import java.util.UUID;
 
 @Setter
