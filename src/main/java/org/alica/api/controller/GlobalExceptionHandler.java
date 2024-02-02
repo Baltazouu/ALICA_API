@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class GlobalExceptionHandler {
 
 
-    @ExceptionHandler(PropertyNotFoundException.class)
-    public ResponseEntity<String> handlePropertyNotFoundException(PropertyNotFoundException ex) {
-        return new ResponseEntity<>("Invalid ID Given ! " + ex.getMessage() , HttpStatus.BAD_REQUEST);
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<String> HttpParseError(HttpMessageNotReadableException ex){
+        return new ResponseEntity<>(ex.getMessage(),HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<String> HttpParseErrorException(HttpMessageNotReadableException ex){
-        return new ResponseEntity<>(ex.getMessage(),HttpStatus.BAD_REQUEST);
+    @ExceptionHandler(PropertyNotFoundException.class)
+    public ResponseEntity<String> PropertyNotFound(PropertyNotFoundException ex){
+        return new ResponseEntity<>(ex.getMessage(),HttpStatus.NOT_FOUND);
     }
 
 }

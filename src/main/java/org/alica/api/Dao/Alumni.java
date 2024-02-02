@@ -38,4 +38,13 @@ public class Alumni {
         this.role = dto.role();
     }
 
+    @Override
+    public String toString() {
+        return "Alumni{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", role=" + role +
+                '}';
+    }
 }
