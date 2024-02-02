@@ -11,12 +11,12 @@ steps:
     image: maven:3.8.3
     commands:
       - chmod +x mvnw
-      - ./mvnw clean install
+      - mvn clean install
 
   - name: tests
     image: maven:3.8.3
     commands:
-      - ./mvnw test
+      - mvn test
 
     depends_on: [ build ]
 
