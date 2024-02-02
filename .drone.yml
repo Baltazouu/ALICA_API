@@ -19,6 +19,7 @@ steps:
     image: maven:3.8.3
     environment:
       sonar_host: https://codefirst.iut.uca.fr/sonar/
+      sonar_token:
         from_secret: API_SPRINGBOOT_SECRET
       project_key : ALICA_API_SPRINGBOOT
     commands:
