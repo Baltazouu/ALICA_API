@@ -1,0 +1,41 @@
+kind: pipeline
+type: docker
+name: CI_ALICA_API_SPRINGBOOT
+
+trigger:
+  event:
+    - push
+
+steps:
+  - name: build
+    image: maven:3.8.3
+    commands:
+      - cd SportSpots2
+      - ./mvnw clean install
+
+  - name: tests
+    image: maven:3.8.3
+    commands:
+      - ./mvnw test
+
+    depends_on: [ build ]
+
+  - name: code-inspection
+    image: sonarsource/sonar-scanner-cli:latest
+    environment:
+      SONAR_HOST_URL: https://codefirst.iut.uca.fr/sonar/
+    secrets: [ SECRET_SONAR_LOGIN ]
+    commands:
+      - cd SportSpots2
+      - ./mvnw sonar:sonar -Dsonar.login=$${SECRET_SONAR_LOGIN}
+
+    depends_on: [ tests ]
+
+  - name: generate-and-deploy-docs
+    image: hub.codefirst.iut.uca.fr/thomas.bellembois/codefirst-docdeployer
+    failure: ignore
+    volumes:
+      - name: docs
+        path: /docs
+    commands:
+      - /entrypoint.sh
