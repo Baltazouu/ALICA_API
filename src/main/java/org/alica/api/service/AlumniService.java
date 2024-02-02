@@ -61,4 +61,9 @@ public class AlumniService {
 
     }
 
+    public void deleteAlumni(UUID id){
+        Alumni alumni = alumniRepository.findById(id).orElseThrow(() -> new PropertyNotFoundException(String.format("Alumni %s Not found !",id)));
+        alumniRepository.deleteById(id);
+    }
+
 }

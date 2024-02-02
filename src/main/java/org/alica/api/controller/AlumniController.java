@@ -51,4 +51,10 @@ public class AlumniController {
         return this.alumniService.updateAlumni(alumniDTO,id);
     }
 
+    @DeleteMapping(value = "/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteAlumni(@PathVariable UUID id){
+        this.alumniService.deleteAlumni(id);
+    }
+
 }

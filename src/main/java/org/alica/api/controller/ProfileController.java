@@ -11,7 +11,8 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
-@RestController("/profile")
+@RestController
+@RequestMapping("/profile")
 public class ProfileController {
 
     private final ProfileService profileService;
@@ -42,6 +43,12 @@ public class ProfileController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseProfileDTO updateProfile(@PathVariable UUID id,@Valid @RequestBody RequestProfileDTO requestProfileDTO){
         return this.profileService.updateProfile(requestProfileDTO,id);
+    }
+
+    @DeleteMapping(value = "/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteProfile(@PathVariable UUID id){
+        this.profileService.deleteProfile(id);
     }
 
 }

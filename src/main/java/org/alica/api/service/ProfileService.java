@@ -75,4 +75,9 @@ public class ProfileService {
         return PROFILE_MAPPER.mapToResponseProfileDTO(profileRepository.save(profile));
 
     }
+
+    public void deleteProfile(UUID id){
+        Profile profile = profileRepository.findById(id).orElseThrow(() -> new PropertyNotFoundException(String.format("Profile %s Not found !",id)));
+        profileRepository.deleteById(id);
+    }
 }

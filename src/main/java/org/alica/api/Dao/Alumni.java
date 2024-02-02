@@ -6,6 +6,7 @@ import org.alica.api.Dto.request.RequestAlumniDTO;
 import org.alica.api.Enum.Role;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -21,6 +22,12 @@ public class Alumni {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
+
+    @OneToMany
+    private Set<Offer> offer;
+
+    @OneToOne
+    private Profile profile;
 
     @Column(name = "email")
     private String email;

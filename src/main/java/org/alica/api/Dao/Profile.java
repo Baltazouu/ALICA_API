@@ -18,9 +18,8 @@ public class Profile {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-
     @OneToOne
-    private  Alumni alumni;
+    private Alumni alumni;
 
 
     @Column(name = "email")
