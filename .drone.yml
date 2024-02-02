@@ -20,8 +20,8 @@ steps:
     environment:
       sonar_host: https://codefirst.iut.uca.fr/sonar/
       sonar_token:
-        from_secret: API_SPRINGBOOT_SECRET
-      project_key : ALICA_API_SPRINGBOOT
+        from_secret: ALICA_API_SPRINGBOOT
+      project_key : API_SPRINGBOOT_SECRET
     commands:
       - mvn sonar:sonar -Dsonar.login=$${sonar_token}
 
