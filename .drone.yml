@@ -21,7 +21,7 @@ steps:
       SONAR_HOST_URL: https://codefirst.iut.uca.fr/sonar/
     secrets: [ API_SPRINGBOOT_SECRET ]
     commands:
-      - mvn sonar:sonar -Dsonar.login=$${API_SPRINGBOOT_SECRET}
+      - mvn sonar:sonar -Dsonar.login=$${sonar_token}
 
   - name: generate-and-deploy-docs
     image: hub.codefirst.iut.uca.fr/thomas.bellembois/codefirst-docdeployer
