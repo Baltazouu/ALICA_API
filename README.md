@@ -1,5 +1,6 @@
 ## API SPRINGBOOT SAE ALICA
 
+[![Build Status](https://codefirst.iut.uca.fr/api/badges/SportsSpot/SportsSpot/status.svg)](https://codefirst.iut.uca.fr/SportsSpot/SportsSpot)
 
 ### Documentation : 
 swagger accessible à :
