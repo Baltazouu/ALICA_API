@@ -24,10 +24,10 @@ steps:
     image: sonarsource/sonar-scanner-cli:latest
     environment:
       SONAR_HOST_URL: https://codefirst.iut.uca.fr/sonar/
-    secrets: [ SECRET_SONAR_LOGIN ]
+    secrets: [ API_SPRINGBOOT_SECRET ]
     commands:
       - cd SportSpots2
-      - ./mvnw sonar:sonar -Dsonar.login=$${SECRET_SONAR_LOGIN}
+      - ./mvnw sonar:sonar -Dsonar.login=$${API_SPRINGBOOT_SECRET}
 
     depends_on: [ tests ]
 
