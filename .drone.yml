@@ -10,7 +10,6 @@ steps:
   - name: build
     image: maven:3.8.3
     commands:
-      - cd SportSpots2
       - ./mvnw clean install
 
   - name: tests
