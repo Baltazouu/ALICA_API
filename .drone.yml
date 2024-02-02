@@ -3,7 +3,7 @@ type: docker
 name: CI_ALICA_API_SPRINGBOOT
 
 variables:
-  MAVEN_CLI_OPTS: '--batch-mode --errors --fail-at-end --show-version' -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository'
+  MAVEN_CLI_OPTS: '--batch-mode --errors --fail-at-end --show-version -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository'
 
 trigger:
   event:
