@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/profile")
+@RequestMapping("/profiles")
 public class ProfileController {
 
     private final ProfileService profileService;
@@ -33,13 +33,19 @@ public class ProfileController {
         return this.profileService.findById(id);
     }
 
+    @GetMapping(value = "/alumni/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseProfileDTO findByAlumniId(@PathVariable UUID id){
+        return this.profileService.findByAlumniId(id);
+    }
+
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseProfileDTO createProfile(@Valid  @RequestBody RequestProfileDTO requestProfileDTO){
         return this.profileService.createProfile(requestProfileDTO);
     }
 
-    @GetMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseProfileDTO updateProfile(@PathVariable UUID id,@Valid @RequestBody RequestProfileDTO requestProfileDTO){
         return this.profileService.updateProfile(requestProfileDTO,id);

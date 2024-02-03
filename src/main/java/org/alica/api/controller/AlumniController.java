@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/alumni")
+@RequestMapping("/alumnis")
 public class AlumniController {
 
 

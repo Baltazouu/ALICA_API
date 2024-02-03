@@ -69,4 +69,13 @@ public class OfferService {
     }
 
 
+    public Page<ResponseOfferDTO> findOfferByAlumniId(UUID id, Pageable page) {
+
+        Alumni alumni = alumniRepository.findById(id).orElseThrow(() -> new PropertyNotFoundException(String.format("Alumni %s Not found !",id)));
+        Page<Offer> offers = offerRepository.findByAlumni(alumni, page);
+        return offers.map(offerMapper::mapToResponseOfferDTO);
+    }
+
+
+
 }

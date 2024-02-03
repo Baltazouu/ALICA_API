@@ -80,4 +80,15 @@ public class ProfileService {
         Profile profile = profileRepository.findById(id).orElseThrow(() -> new PropertyNotFoundException(String.format("Profile %s Not found !",id)));
         profileRepository.deleteById(id);
     }
+
+    public ResponseProfileDTO findByAlumniId(UUID id) {
+        Alumni alumni = alumniRepository.findById(id).orElseThrow(() -> new PropertyNotFoundException(String.format("Alumni %s Not found !",id)));
+        Profile profile = profileRepository.findByAlumni(alumni).orElseThrow(() -> new PropertyNotFoundException(String.format("Profile for Alumni %s Not found !",id)));
+        return PROFILE_MAPPER.mapToResponseProfileDTO(profile);
+    }
+
+
+
+
+
 }

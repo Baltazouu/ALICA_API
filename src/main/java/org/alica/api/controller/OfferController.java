@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/offer")
+@RequestMapping("/offers")
 public class OfferController {
 
     private final OfferService offerService;
@@ -55,6 +55,13 @@ public class OfferController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteOffer(@PathVariable UUID id){
         this.offerService.deleteOffer(id);
+    }
+
+
+    @GetMapping(value= "/alumni/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public Page<ResponseOfferDTO> findOfferByAlumniId(@PathVariable UUID id, @PageableDefault Pageable page){
+        return this.offerService.findOfferByAlumniId(id,page);
     }
 
 }
