@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Alica - REST SPRINGBOOT API  - Documentation
 
 [![Build Status](https://codefirst.iut.uca.fr/api/badges/SportsSpot/SportsSpot/status.svg)](https://codefirst.iut.uca.fr/SportsSpot/SportsSpot)
