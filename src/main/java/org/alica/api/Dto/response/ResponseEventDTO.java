@@ -10,5 +10,7 @@ public record ResponseEventDTO(
         String imageURL,
         String description,
         Date date,
-        int nbMaxRegistrations
+        int nbMaxRegistrations,
+
+        int nbRegistrations
 ){ }

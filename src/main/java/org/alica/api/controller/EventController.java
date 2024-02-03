@@ -2,6 +2,7 @@ package org.alica.api.controller;
 
 import jakarta.validation.Valid;
 import org.alica.api.Dto.request.RequestEventDTO;
+import org.alica.api.Dto.response.ResponseAlumniDTO;
 import org.alica.api.Dto.response.ResponseEventDTO;
 import org.alica.api.service.EventService;
 import org.springframework.data.domain.Page;
@@ -12,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -59,6 +61,26 @@ public class EventController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Page<ResponseEventDTO>> findEventByAlumniId(@PathVariable UUID id, @PageableDefault Pageable page) {
         return new ResponseEntity<>(this.eventService.findEventByAlumniId(id, page), HttpStatus.OK);
+    }
+
+    @GetMapping("/subscribe/{eventId}/alumni/{alumniId}")
+    @ResponseStatus(HttpStatus.OK)
+    public void Subscribe(@PathVariable UUID eventId, @PathVariable UUID alumniId) {
+        this.eventService.Subscribe(eventId, alumniId);
+    }
+
+    @GetMapping("/unsubscribe/{eventId}/alumni/{alumniId}")
+    @ResponseStatus(HttpStatus.OK)
+    public void Unsubscribe(@PathVariable UUID eventId, @PathVariable UUID alumniId) {
+        this.eventService.Unsubscribe(eventId, alumniId);
+    }
+
+    // I choose list instead of page bc i think that there will not be a large
+    // number of event subscribers to justify the use of a list
+    @GetMapping("/subscribers/{eventId}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<List<ResponseAlumniDTO>> findSubscribers(@PathVariable UUID eventId) {
+        return new ResponseEntity<>(this.eventService.findSubscribers(eventId), HttpStatus.OK);
     }
 
 }

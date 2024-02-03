@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.alica.api.Dto.request.RequestEventDTO;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -47,7 +48,15 @@ public class Event {
             joinColumns = @JoinColumn(name = "event_id"),
             inverseJoinColumns = @JoinColumn(name = "alumni_id")
     )
-    private Set<Alumni> alumnis;
+    private Set<Alumni> alumnis = new HashSet<>();
+
+    @Column(name = "nbRegistrations")
+    private int nbRegistrations;
+
+    @PrePersist
+    public void updateNbRegistrations(){
+        this.nbRegistrations = this.alumnis.size();
+    }
 
 
     public void Update(RequestEventDTO requestEventDTO){
@@ -69,5 +78,20 @@ public class Event {
                 ", date='" + date + '\'' +
                 ", nbMaxRegistrations=" + nbMaxRegistrations +
                 '}';
+    }
+
+    public void addAlumni(Alumni alumni){
+
+        this.alumnis.add(alumni);
+        this.nbRegistrations ++;
+    }
+
+    public void removeAlumni(Alumni alumni){
+        this.alumnis.remove(alumni);
+        this.nbRegistrations --;
+    }
+
+    public boolean isFull(){
+        return this.nbRegistrations == this.nbMaxRegistrations;
     }
 }

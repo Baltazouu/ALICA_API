@@ -73,11 +73,14 @@ Contrat d'interface :
 | --- | --- | --- | --- | --- | --- |
 | findAll | /events (?page) | GET |  | 200 OK  | page of Events |
 | findById | /events/{id} | GET |  | 200 OK  | event find |
+|  |  |  |  |  |  |
 | createEvent | /event | POST | event see swagger | 201 CREATED | event created |
 | updateEvent | /event/{id} | PUT | event see swagger | 200 OK  | event updated |
 | deleteEvent | /event/{id} | DELETE |  | 204 NO CONTENT |  |
 | findByAlumni( organisateur)  | /event/alumni/{id} | GET |  | 200 OK  | page of events find |
-
+| subscribe | /events/subscribe/{eventId}/alumni/{alumniId} | GET |  | 200 OK |  |
+| unsubscribe | /events/unsubscribe/{eventId}/alumni/{alumniId} | GET |  | 200 OK |  |
+| find subscribers | /events/subscribers/{eventId} | GET |  | 200 OK  | List of Alumnis |
 ## à Faire :
 Documentation pour la gestion des autorisations
 [Documentation Baeldung](https://www.baeldung.com/role-and-privilege-for-spring-security-registration)
