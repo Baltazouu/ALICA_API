@@ -11,7 +11,9 @@ import org.mapstruct.factory.Mappers;
 public interface FormationMapper {
     FormationMapper INSTANCE = Mappers.getMapper(FormationMapper.class);
 
+    @Mapping(target = "alumniId", source = "alumni.id")
     ResponseFormationDTO mapToResponseResponseFormationDTO(Formation formation);
 
+    @Mapping(target = "alumni", source = "alumni")
     Formation mapToFormation(RequestFormationDTO responseFormationDTO, Alumni alumni);
 }

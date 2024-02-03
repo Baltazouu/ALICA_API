@@ -43,6 +43,8 @@ public class FormationService {
         Alumni alumni = alumniRepository.findById(requestFormationDTO.alumniId()).orElseThrow(() -> new PropertyNotFoundException(String.format("Alumni %s Not found !", requestFormationDTO.alumniId())));
         Formation formation = FORMATION_MAPPER.mapToFormation(requestFormationDTO, alumni);
 
+        System.out.println(formation.toString());
+
         return FORMATION_MAPPER.mapToResponseResponseFormationDTO(formationRepository.save(formation));
     }
 
