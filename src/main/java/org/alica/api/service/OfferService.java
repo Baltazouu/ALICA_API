@@ -56,15 +56,14 @@ public class OfferService {
 
         Offer offer = offerRepository.findById(id).orElseThrow(() -> new PropertyNotFoundException(String.format("Offer %s Not found !",id)));
 
-        Alumni alumni = alumniRepository.findById(requestOfferDTO.alumniId()).orElseThrow(() -> new PropertyNotFoundException(String.format("Alumni %s Not found !",requestOfferDTO.alumniId())));
-
+        if(!alumniRepository.existsById(requestOfferDTO.alumniId())) throw new PropertyNotFoundException(String.format("Alumni %s Not found !",requestOfferDTO.alumniId()));
         offer.Update(requestOfferDTO);
-
         return offerMapper.mapToResponseOfferDTO(offerRepository.save(offer));
     }
 
     public void deleteOffer(UUID id){
-        Offer offer = offerRepository.findById(id).orElseThrow(() -> new PropertyNotFoundException(String.format("Offer %s Not found !",id)));
+
+        if(!offerRepository.existsById(id)) throw new PropertyNotFoundException(String.format("Offer %s Not found !",id));
         offerRepository.deleteById(id);
     }
 
@@ -75,7 +74,5 @@ public class OfferService {
         Page<Offer> offers = offerRepository.findByAlumni(alumni, page);
         return offers.map(offerMapper::mapToResponseOfferDTO);
     }
-
-
 
 }

@@ -56,15 +56,13 @@ public class EventService {
 
         Event event = eventRepository.findById(id).orElseThrow(() -> new PropertyNotFoundException(String.format("Event %s Not found !",id)));
 
-        Alumni alumni = alumniRepository.findById(requestEventDTO.alumniId()).orElseThrow(() -> new PropertyNotFoundException(String.format("Alumni %s Not found !",requestEventDTO.alumniId())));
-
+        if(!alumniRepository.existsById(requestEventDTO.alumniId())) throw new PropertyNotFoundException(String.format("Alumni %s Not found !",requestEventDTO.alumniId()));
         event.Update(requestEventDTO);
-
         return eventMapper.mapToResponseEventDTO(eventRepository.save(event));
     }
 
     public void deleteEvent(UUID id){
-        Event event = eventRepository.findById(id).orElseThrow(() -> new PropertyNotFoundException(String.format("Event %s Not found !",id)));
+        if(!eventRepository.existsById(id)) throw new PropertyNotFoundException(String.format("Event %s Not found !",id));
         eventRepository.deleteById(id);
     }
 

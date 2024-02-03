@@ -10,9 +10,18 @@ import org.springframework.validation.annotation.Validated;
 public record RequestAlumniDTO(
 
         @NotNull String email,
-
         @NotNull String password,
+        @NotNull Role role,
+        @NotNull String entryYear,
+        @NotNull String firstName,
+        @NotNull String lastName,
 
-        @NotNull Role role
+        String linkedinURL,
+
+        String githubURL,
+
+        String portfolioURL,
+
+        String imageId
 
 ) { }
