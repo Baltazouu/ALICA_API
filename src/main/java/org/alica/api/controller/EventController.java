@@ -54,4 +54,11 @@ public class EventController {
         this.eventService.deleteEvent(id);
     }
 
+
+    @GetMapping("/alumni/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Page<ResponseEventDTO>> findEventByAlumniId(@PathVariable UUID id, @PageableDefault Pageable page) {
+        return new ResponseEntity<>(this.eventService.findEventByAlumniId(id, page), HttpStatus.OK);
+    }
+
 }

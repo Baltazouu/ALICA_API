@@ -68,4 +68,14 @@ public class EventService {
         eventRepository.deleteById(id);
     }
 
+
+    public Page<ResponseEventDTO> findEventByAlumniId(UUID id, Pageable page){
+        if(!alumniRepository.existsById(id)) throw new PropertyNotFoundException(String.format("Alumni %s Not found !",id));
+        Alumni alumni = alumniRepository.findById(id).orElseThrow(() -> new PropertyNotFoundException(String.format("Alumni %s Not found !",id)));
+
+        Page<Event> events = eventRepository.findByOrganizer(alumni,page);
+        return events.map(eventMapper::mapToResponseEventDTO);
+    }
+
+
 }
