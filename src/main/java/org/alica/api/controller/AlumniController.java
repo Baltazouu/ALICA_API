@@ -12,8 +12,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.UUID;
+
 @RestController
-@RequestMapping("/alumni")
+@RequestMapping("/alumnis")
 public class AlumniController {
 
 
@@ -26,14 +29,32 @@ public class AlumniController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public Page<ResponseAlumniDTO> findAll(@PageableDefault Pageable page){
-
         return this.alumniService.findAll(page);
+    }
+
+    @GetMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseAlumniDTO findAlumniByEmail(@PathVariable UUID id){
+        return this.alumniService.findAlumniById(id);
     }
 
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
     public ResponseAlumniDTO createAlumni(@Valid @RequestBody RequestAlumniDTO alumniDTO){
         return this.alumniService.createAlumni(alumniDTO);
+    }
+
+    @PutMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseAlumniDTO updateAlumni(@Valid @RequestBody RequestAlumniDTO alumniDTO, @PathVariable UUID id){
+        return this.alumniService.updateAlumni(alumniDTO,id);
+    }
+
+    @DeleteMapping(value = "/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteAlumni(@PathVariable UUID id){
+        this.alumniService.deleteAlumni(id);
     }
 
 }

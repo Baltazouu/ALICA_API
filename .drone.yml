@@ -1,0 +1,35 @@
+kind: pipeline
+type: docker
+name: CI_ALICA_API_SPRINGBOOT
+
+variables:
+  MAVEN_CLI_OPTS: '--batch-mode --errors --fail-at-end --show-version -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository'
+
+trigger:
+  event:
+    - push
+
+steps:
+  - name: build-and-test
+    image: maven:3.8.3
+    commands:
+      - mvn $MAVEN_CLI_OPTS clean compile test
+
+#  - name: code-inspection
+#    image: maven:3.8.3
+#    environment:
+#      sonar_host: https://codefirst.iut.uca.fr/sonar/
+#      sonar_token:
+#        from_secret: API_SPRINGBOOT_SECRET
+#      project_key : ALICA_API_SPRINGBOOT
+#    commands:
+#      - mvn sonar:sonar -Dsonar.login=$${sonar_token}
+#
+#  - name: generate-and-deploy-docs
+#    image: hub.codefirst.iut.uca.fr/thomas.bellembois/codefirst-docdeployer
+#    failure: ignore
+#    volumes:
+#      - name: docs
+#        path: /docs
+#    commands:
+#      - /entrypoint.sh

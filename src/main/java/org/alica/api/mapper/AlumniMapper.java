@@ -11,7 +11,12 @@ public interface AlumniMapper {
     AlumniMapper INSTANCE = Mappers.getMapper(AlumniMapper.class);
 
     @Mapping(target = "id", ignore = true) // ignore bc generated with db
+    @Mapping(target = "formations", ignore = true)
+    @Mapping(target = "events", ignore = true)
+    @Mapping(target = "articles", ignore = true)
+    @Mapping(target = "offers", ignore = true)
     Alumni mapToAlumni(RequestAlumniDTO alumniDTO);
 
+    @Mapping(target = "id", source = "id")
     ResponseAlumniDTO mapResponseAlumniDTO(Alumni alumni);
 }

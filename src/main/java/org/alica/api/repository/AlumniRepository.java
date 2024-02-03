@@ -13,8 +13,7 @@ import java.util.UUID;
 @Repository
 public interface AlumniRepository extends JpaRepository<Alumni, UUID> {
 
-    @Query("select Alumni FROM Alumni ")
-    Page<Alumni> findAll(Pageable p);
+    Page<Alumni> findAll(Pageable pageable);
 
     Optional<Alumni> findByEmailAndPassword(String email, String password);
 
