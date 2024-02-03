@@ -1,5 +1,6 @@
 package org.alica.api.mapper;
 
+import org.alica.api.Dao.Alumni;
 import org.alica.api.Dao.Event;
 import org.alica.api.Dto.request.RequestEventDTO;
 import org.alica.api.Dto.response.ResponseEventDTO;
@@ -12,8 +13,11 @@ import java.util.UUID;
 @Mapper
 public interface EventMapper {
     EventMapper INSTANCE = Mappers.getMapper(EventMapper.class);
+
+    @Mapping(target = "alumniId", source = "organizer.id")
     ResponseEventDTO mapToResponseEventDTO(Event event);
 
-    @Mapping(target = "id", source = "alumniId")
-    Event mapToEvent(RequestEventDTO requestEventDTO, UUID alumniId);
+    @Mapping(target = "organizer", source = "alumni")
+    @Mapping(target = "imageURL", source = "requestEventDTO.imageURL")
+    Event mapToEvent(RequestEventDTO requestEventDTO, Alumni alumni);
 }

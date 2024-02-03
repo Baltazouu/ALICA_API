@@ -13,5 +13,6 @@ public interface AlumniMapper {
     @Mapping(target = "id", ignore = true) // ignore bc generated with db
     Alumni mapToAlumni(RequestAlumniDTO alumniDTO);
 
+    @Mapping(target = "id", source = "id")
     ResponseAlumniDTO mapResponseAlumniDTO(Alumni alumni);
 }

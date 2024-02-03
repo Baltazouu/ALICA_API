@@ -47,9 +47,10 @@ public class AlumniService {
     public ResponseAlumniDTO createAlumni(RequestAlumniDTO alumniDTO){
 
         Alumni alumni = alumniMapper.mapToAlumni(alumniDTO);
+        alumni = alumniRepository.save(alumni);
         System.out.println(alumni.toString());
 
-        return  alumniMapper.mapResponseAlumniDTO(alumniRepository.save(alumni));
+        return  alumniMapper.mapResponseAlumniDTO(alumni);
     }
 
 

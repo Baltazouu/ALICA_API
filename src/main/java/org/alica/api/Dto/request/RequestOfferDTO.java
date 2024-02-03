@@ -11,19 +11,19 @@ import java.util.UUID;
 @Validated
 public record RequestOfferDTO(
 
-        @NotNull UUID alumniId,
-        @NotNull String title,
-        @NotNull String description,
-        @NotNull Contract contract,
-        @NotNull Level level,
-        @NotNull String city,
-        @NotNull String company,
-        @NotNull String jobDescription,
-        @NotNull Studies studies,
-        @NotNull String email,
-        @NotNull  String image,
-        @NotNull String experienceRequired,
-        @NotNull int contactNumber,
-        String websiteURL
+        @NotNull(message = "alumniId is required") UUID alumniId,
+        @NotNull(message = "title is required") String title,
+        @NotNull(message = "description is required") String description,
+        @NotNull(message = "contract is required") Contract contract,
+        @NotNull(message = "level is required") Level level,
+        @NotNull(message = "city is required") String city,
+        @NotNull(message = "company is required") String company,
+        @NotNull(message = "jobDescription is required") String jobDescription,
+        @NotNull(message = "studies is required") Studies studies,
+        @NotNull(message = "contactEmail is required") String contactEmail,
+        @NotNull(message = "image is required") String image,
+        @NotNull(message = "experience is required") String experienceRequired,
+        @NotNull(message = "contactNumber is required") int contactNumber,
+        @NotNull(message = "companyURL is required") String companyURL
 
 ) { }

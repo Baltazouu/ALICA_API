@@ -9,12 +9,12 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 public record RequestAlumniDTO(
 
-        @NotNull String email,
-        @NotNull String password,
-        @NotNull Role role,
-        @NotNull String entryYear,
-        @NotNull String firstName,
-        @NotNull String lastName,
+        @NotNull(message = "email est required") String email,
+        @NotNull(message = "password is required") String password,
+        @NotNull(message = "role is required") Role role,
+        @NotNull(message = "entryYear is required") String entryYear,
+        @NotNull(message = "firstName is required") String firstName,
+        @NotNull(message = "lastName is required") String lastName,
 
         String linkedinURL,
 
@@ -22,6 +22,6 @@ public record RequestAlumniDTO(
 
         String portfolioURL,
 
-        String imageId
+        String imageURL
 
 ) { }

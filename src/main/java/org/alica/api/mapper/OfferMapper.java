@@ -15,5 +15,6 @@ public interface OfferMapper {
     @Mapping(target = "alumni",source = "alumni")
     Offer mapToOffer(RequestOfferDTO offerDTO, Alumni alumni);
 
+    @Mapping(target = "alumniId", source = "alumni.id")
     ResponseOfferDTO mapToResponseOfferDTO(Offer offer);
 }

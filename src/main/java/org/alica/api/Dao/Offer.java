@@ -18,7 +18,6 @@ import java.util.UUID;
 @Table(name = "Offer")
 public class Offer {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
@@ -27,8 +26,8 @@ public class Offer {
     @JoinColumn(name = "alumni_id")
     private Alumni alumni;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "title")
+    private String title;
 
     @Column(name = "image")
     private String image;
@@ -60,14 +59,18 @@ public class Offer {
     @Column(name = "contactNumber")
     private int contactNumber;
 
-    @Column(name = "websiteURL")
-    private String websiteURL;
+    @Column(name = "contactEmail")
+    private String contactEmail;
+
+    @Column(name = "companyURL")
+    private String companyURL;
 
     @Override
     public String toString() {
         return "Offer{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", alumni=" + alumni +
+                ", title='" + title + '\'' +
                 ", image='" + image + '\'' +
                 ", company='" + company + '\'' +
                 ", description='" + description + '\'' +
@@ -78,12 +81,13 @@ public class Offer {
                 ", experienceRequired='" + experienceRequired + '\'' +
                 ", level=" + level +
                 ", contactNumber=" + contactNumber +
-                ", websiteURL='" + websiteURL + '\'' +
+                ", contactEmail='" + contactEmail + '\'' +
+                ", companyURL='" + companyURL + '\'' +
                 '}';
     }
 
-   public void Update(RequestOfferDTO requestOfferDTO){
-        this.name = requestOfferDTO.title() != null ? requestOfferDTO.title() : this.name;
+    public void Update(RequestOfferDTO requestOfferDTO){
+        this.title = requestOfferDTO.title() != null ? requestOfferDTO.title() : this.title;
         this.image = requestOfferDTO.image() != null ? requestOfferDTO.image() : this.image;
         this.company = requestOfferDTO.company() != null ? requestOfferDTO.company() : this.company;
         this.description = requestOfferDTO.description() != null ? requestOfferDTO.description() : this.description;
@@ -94,6 +98,6 @@ public class Offer {
         this.experienceRequired = requestOfferDTO.experienceRequired() != null ? requestOfferDTO.experienceRequired() : this.experienceRequired;
         this.level = requestOfferDTO.level() != null ? requestOfferDTO.level() : this.level;
         this.contactNumber = requestOfferDTO.contactNumber() != 0 ? requestOfferDTO.contactNumber() : this.contactNumber;
-        this.websiteURL = requestOfferDTO.websiteURL() != null ? requestOfferDTO.websiteURL() : this.websiteURL;
+        this.companyURL = requestOfferDTO.companyURL() != null ? requestOfferDTO.companyURL() : this.companyURL;
    }
 }

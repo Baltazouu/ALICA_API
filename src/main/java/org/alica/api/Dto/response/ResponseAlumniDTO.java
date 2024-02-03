@@ -4,7 +4,7 @@ import org.alica.api.Enum.Role;
 import java.util.UUID;
 
 public record ResponseAlumniDTO(
-    UUID uuid,
+    UUID id,
     String email,
     String password,
     Role role,
@@ -14,7 +14,7 @@ public record ResponseAlumniDTO(
     String linkedinURL,
     String githubURL,
     String portfolioURL,
-    String imageId
+    String imageURL
 
 ) { }
 

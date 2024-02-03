@@ -43,7 +43,7 @@ public class Event {
 
     @ManyToMany
     @JoinTable(
-            name = "participate",
+            name = "event_subscriptions",
             joinColumns = @JoinColumn(name = "event_id"),
             inverseJoinColumns = @JoinColumn(name = "alumni_id")
     )

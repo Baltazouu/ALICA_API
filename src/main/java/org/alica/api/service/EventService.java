@@ -47,7 +47,9 @@ public class EventService {
 
         Alumni alumni = alumniRepository.findById(requestEventDTO.alumniId()).orElseThrow(() -> new PropertyNotFoundException(String.format("Alumni %s Not found !",requestEventDTO.alumniId())));
 
-        Event event = eventMapper.mapToEvent(requestEventDTO,alumni.getId());
+        Event event = eventMapper.mapToEvent(requestEventDTO,alumni);
+
+        System.out.println(event.toString());
 
         return eventMapper.mapToResponseEventDTO(eventRepository.save(event));
     }

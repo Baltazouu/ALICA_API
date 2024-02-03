@@ -47,8 +47,13 @@ public class OfferService {
         Alumni alumni = alumniRepository.findById(requestOfferDTO.alumniId()).orElseThrow(() -> new PropertyNotFoundException(String.format("Alumni %s Not found !",requestOfferDTO.alumniId())));
 
         Offer offer = offerMapper.mapToOffer(requestOfferDTO,alumni);
+        System.out.println(offer.toString());
 
-        return offerMapper.mapToResponseOfferDTO(offerRepository.save(offer));
+        offer = offerRepository.save(offer);
+
+        System.out.println(offer.toString());
+        return offerMapper.mapToResponseOfferDTO(offer);
+        //return offerMapper.mapToResponseOfferDTO(offerRepository.save(offer));
     }
 
 

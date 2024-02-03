@@ -1,6 +1,4 @@
 package org.alica.api.Dto.request;
-
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import org.springframework.validation.annotation.Validated;
@@ -12,12 +10,12 @@ import java.util.UUID;
 @Builder
 public record RequestEventDTO(
 
-        @NotNull UUID alumniId,
-        @NotNull String title,
-        @NotNull String imgURL,
-        @NotNull String description,
-        @NotNull Date date,
-        @NotNull String imageURL,
-        @NotNull int nbMaxRegistrations
+        @NotNull(message = "alumniId is required") UUID alumniId,
+        @NotNull(message = "title is required") String title,
+        @NotNull(message = "imgURL is required") String imgURL,
+        @NotNull(message = "description is required") String description,
+        @NotNull(message = "date is required") Date date,
+        @NotNull(message = "imageURL is required") String imageURL,
+        @NotNull(message = "nbMaxRegistrations is required") int nbMaxRegistrations
 ) {
 }
