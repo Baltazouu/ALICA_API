@@ -82,6 +82,13 @@ Contrat d'interface :
 | unsubscribe | /events/unsubscribe/{eventId}/alumni/{alumniId} | GET |  | 200 OK |  |
 | find subscribers | /events/subscribers/{eventId} | GET |  | 200 OK  | List of Alumnis |
 ## à Faire :
-Documentation pour la gestion des autorisations
-[Documentation Baeldung](https://www.baeldung.com/role-and-privilege-for-spring-security-registration)
+
+Endpoint with query paramters (ContractType, Experience & Studies ) for offers
+
+Endpoint with query of title for events
+
+some others....
+
+TO DO : manage authorizations 
+[Baeldung documentation](https://www.baeldung.com/role-and-privilege-for-spring-security-registration)
 
