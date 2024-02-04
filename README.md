@@ -73,7 +73,6 @@ Contrat d'interface :
 | --- | --- | --- | --- | --- | --- |
 | findAll | /events (?page) | GET |  | 200 OK  | page of Events |
 | findById | /events/{id} | GET |  | 200 OK  | event find |
-|  |  |  |  |  |  |
 | createEvent | /event | POST | event see swagger | 201 CREATED | event created |
 | updateEvent | /event/{id} | PUT | event see swagger | 200 OK  | event updated |
 | deleteEvent | /event/{id} | DELETE |  | 204 NO CONTENT |  |
