@@ -15,16 +15,16 @@ steps:
     commands:
       - mvn $MAVEN_CLI_OPTS clean compile test
 
-#  - name: code-inspection
-#    image: maven:3.8.3
-#    environment:
-#      sonar_host: https://codefirst.iut.uca.fr/sonar/
-#      sonar_token:
-#        from_secret: API_SPRINGBOOT_SECRET
-#      project_key : ALICA_API_SPRINGBOOT
-#    commands:
-#      - mvn sonar:sonar -Dsonar.login=$${sonar_token}
-#
+  - name: code-inspection
+    image: maven:3.8.3
+    environment:
+      sonar_host: https://codefirst.iut.uca.fr/sonar/
+      sonar_token:
+        from_secret: API_SPRINGBOOT_SECRET
+      project_key : ALICA_API_SPRINGBOOT
+    commands:
+      - mvn sonar:sonar -Dsonar.login=$${sonar_token}
+
 #  - name: generate-and-deploy-docs
 #    image: hub.codefirst.iut.uca.fr/thomas.bellembois/codefirst-docdeployer
 #    failure: ignore
@@ -33,3 +33,6 @@ steps:
 #        path: /docs
 #    commands:
 #      - /entrypoint.sh
+
+#  test
+#  mvn clean verify sonar:sonar -Dsonar.projectKey=API_SPRINGBOOT_SECRET -Dsonar.projectName='API_SPRINGBOOT' -Dsonar.host.url=https://codefirst.iut.uca.fr/sonar/ -Dsonar.token=ALICA_API_SPRINGBOOT -Dsonar.login=ALICA_API_SPRINGBOOT
