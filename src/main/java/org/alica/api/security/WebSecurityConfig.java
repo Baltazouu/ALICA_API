@@ -1,5 +1,7 @@
-package org.alica.api.security.JWT;
+package org.alica.api.security;
 
+import org.alica.api.security.JWT.AuthEntryPointJWT;
+import org.alica.api.security.JWT.AuthTokenFilter;
 import org.alica.api.service.AlumniService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,11 +28,14 @@ public class WebSecurityConfig {
     @Value("${target.api.base.url}")
     private String targetApiUrl;
 
-    @Autowired
-    private AlumniService alumniService;
+    private final AlumniService alumniService;
 
-    @Autowired
-    private AuthEntryPointJWT unauthorizedHandler;
+    private final AuthEntryPointJWT unauthorizedHandler;
+
+    public WebSecurityConfig(AlumniService alumniService, AuthEntryPointJWT unauthorizedHandler) {
+        this.alumniService = alumniService;
+        this.unauthorizedHandler = unauthorizedHandler;
+    }
 
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter() {
