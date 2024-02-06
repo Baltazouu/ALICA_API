@@ -3,7 +3,6 @@ package org.alica.api.security;
 import org.alica.api.security.JWT.AuthEntryPointJWT;
 import org.alica.api.security.JWT.AuthTokenFilter;
 import org.alica.api.service.AlumniService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -80,8 +79,10 @@ public class WebSecurityConfig {
                                 .requestMatchers("/").permitAll()
                                 .requestMatchers("/login").permitAll()
                                 .requestMatchers("/register").hasRole("ADMINISTRATOR")
-                                .requestMatchers("/api/test/**").authenticated()
-                                .anyRequest().authenticated()
+                                .requestMatchers("/alumnis/**").authenticated()
+                                .requestMatchers("/swagger-ui/**").permitAll()
+                                .anyRequest().permitAll()
+                                //.anyRequest().authenticated()
                 );
 
         http.authenticationProvider(authenticationProvider());

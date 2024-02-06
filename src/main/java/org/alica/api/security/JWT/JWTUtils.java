@@ -18,7 +18,7 @@ public class JWTUtils {
 
     @Value("${jwt.expirationMs}")
     private int jwtExpirationMs;
-    
+
 
     public String generateJwtToken(Authentication authentication){
 
