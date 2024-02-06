@@ -2,6 +2,7 @@ package org.alica.api.controller;
 
 
 import jakarta.validation.Valid;
+import org.alica.api.Dto.request.SignInRequestDTO;
 import org.alica.api.Dto.request.SignupRequestDTO;
 import org.alica.api.Dto.response.ResponseAuthentificationDTO;
 import org.alica.api.service.AuthService;
@@ -31,8 +32,8 @@ public class AuthController {
 
     @PostMapping("/signIn")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseAuthentificationDTO signIn(@Valid @RequestBody SignupRequestDTO signupRequestDTO){
-        return authService.signIn(signupRequestDTO);
+    public ResponseAuthentificationDTO signIn(@Valid @RequestBody SignInRequestDTO signInRequestDTO){
+        return authService.signIn(signInRequestDTO);
     }
 
 }
