@@ -17,6 +17,8 @@ public interface AlumniRepository extends JpaRepository<Alumni, UUID> {
 
     Optional<Alumni> findByEmailAndPassword(String email, String password);
 
+    Boolean existsByEmail(String email);
+
     Optional<Alumni> findByEmail(String email);
 
 

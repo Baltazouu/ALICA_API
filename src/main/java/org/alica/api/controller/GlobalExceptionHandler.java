@@ -1,5 +1,7 @@
 package org.alica.api.controller;
 import jakarta.persistence.EntityNotFoundException;
+import org.alica.api.exception.AuthenticateException;
+import org.alica.api.exception.UpdateObjectException;
 import org.hibernate.PropertyNotFoundException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
@@ -97,6 +99,24 @@ public class GlobalExceptionHandler {
         Map<String, String> body = new HashMap<>();
         body.put("message", ex.getMessage());
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(AuthenticateException.class)
+    protected ResponseEntity<Object> handleAuthenticateException(
+            AuthenticateException ex, WebRequest request) {
+
+        Map<String, String> body = new HashMap<>();
+        body.put("message", ex.getMessage());
+        return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(UpdateObjectException.class)
+    protected ResponseEntity<Object> handleUpdateObjectException(
+            UpdateObjectException ex, WebRequest request) {
+
+        Map<String, String> body = new HashMap<>();
+        body.put("message", ex.getMessage());
+        return new ResponseEntity<>(body, HttpStatus.NOT_MODIFIED);
     }
 
 }

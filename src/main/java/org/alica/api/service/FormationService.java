@@ -4,6 +4,7 @@ import org.alica.api.Dao.Alumni;
 import org.alica.api.Dao.Formation;
 import org.alica.api.Dto.request.RequestFormationDTO;
 import org.alica.api.Dto.response.ResponseFormationDTO;
+import org.alica.api.exception.UpdateObjectException;
 import org.alica.api.mapper.FormationMapper;
 import org.alica.api.repository.AlumniRepository;
 import org.alica.api.repository.FormationRepository;
@@ -50,9 +51,9 @@ public class FormationService {
 
     public ResponseFormationDTO updateFormation(RequestFormationDTO requestFormationDTO, UUID id) {
 
-        Formation formation = formationRepository.findById(id).orElseThrow(() -> new PropertyNotFoundException(String.format("Formation %s Not found !", id)));
+        Formation formation = formationRepository.findById(id).orElseThrow(() -> new UpdateObjectException(String.format("Formation %s Not found !", id)));
 
-        if (!alumniRepository.existsById(requestFormationDTO.alumniId())) throw new PropertyNotFoundException(String.format("Alumni %s Not found !", requestFormationDTO.alumniId()));
+        if (!alumniRepository.existsById(requestFormationDTO.alumniId())) throw new UpdateObjectException(String.format("Alumni %s Not found !", requestFormationDTO.alumniId()));
         formation.Update(requestFormationDTO);
 
         return FORMATION_MAPPER.mapToResponseResponseFormationDTO(formationRepository.save(formation));

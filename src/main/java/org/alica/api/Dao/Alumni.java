@@ -10,7 +10,7 @@ import java.util.Set;
 import java.util.UUID;
 
 @Entity
-@Table(name = "Alumnis")
+@Table(name = "Alumni",uniqueConstraints = {@UniqueConstraint(name = "email_index", columnNames = {"email"})})
 @EntityListeners(AuditingEntityListener.class)
 @Getter
 @Setter

@@ -7,6 +7,7 @@ import org.alica.api.Dao.Event;
 import org.alica.api.Dto.request.RequestEventDTO;
 import org.alica.api.Dto.response.ResponseAlumniDTO;
 import org.alica.api.Dto.response.ResponseEventDTO;
+import org.alica.api.exception.UpdateObjectException;
 import org.alica.api.mapper.AlumniMapper;
 import org.alica.api.mapper.EventMapper;
 import org.alica.api.repository.AlumniRepository;
@@ -64,9 +65,9 @@ public class EventService {
 
     public ResponseEventDTO updateEvent(RequestEventDTO requestEventDTO, UUID id){
 
-        Event event = eventRepository.findById(id).orElseThrow(() -> new PropertyNotFoundException(String.format("Event %s Not found !",id)));
+        Event event = eventRepository.findById(id).orElseThrow(() -> new UpdateObjectException(String.format("Event %s Not found !",id)));
 
-        if(!alumniRepository.existsById(requestEventDTO.alumniId())) throw new PropertyNotFoundException(String.format("Alumni %s Not found !",requestEventDTO.alumniId()));
+        if(!alumniRepository.existsById(requestEventDTO.alumniId())) throw new UpdateObjectException(String.format("Alumni %s Not found !",requestEventDTO.alumniId()));
         event.Update(requestEventDTO);
         return eventMapper.mapToResponseEventDTO(eventRepository.save(event));
     }
