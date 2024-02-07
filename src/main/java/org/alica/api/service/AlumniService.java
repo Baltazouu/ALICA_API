@@ -93,9 +93,7 @@ public class AlumniService implements UserDetailsService {
         Alumni alumni = alumniRepository.findByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
 
-        UserDetailsImpl userDetails = new UserDetailsImpl(alumni.getId(),alumni.getEmail(),alumni.getPassword(),getAuthority(alumni));
-
-        return userDetails;
+        return new UserDetailsImpl(alumni.getId(),alumni.getEmail(),alumni.getPassword(),getAuthority(alumni));
     }
 
     private Set<SimpleGrantedAuthority> getAuthority(Alumni user) {

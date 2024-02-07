@@ -12,7 +12,6 @@
     import org.alica.api.repository.RoleRepository;
     import org.alica.api.security.JWT.JWTUtils;
     import org.alica.api.security.JWT.TokenProvider;
-    import org.springframework.beans.factory.annotation.Value;
     import org.springframework.security.authentication.AuthenticationManager;
     import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
     import org.springframework.security.core.Authentication;
@@ -22,9 +21,6 @@
 
     @Service
     public class AuthService {
-
-        @Value("${target.api.base.url}")
-        private String targetApiUrl;
 
         private final AuthenticationManager authenticationManager;
         private final AlumniRepository alumniRepository;
@@ -73,9 +69,6 @@
             alumni.setPassword(encoder.encode(alumni.getPassword()));
 
             System.out.println("Password Encoded : " + alumni.getPassword());
-    //        Authentication authentication = ;
-    //
-    //        SecurityContextHolder.getContext().setAuthentication(authentication);
 
             alumni.addRole(role);
             alumniRepository.save(alumni);
@@ -91,11 +84,6 @@
                     .orElseThrow(() -> new RuntimeException("User Not Found"));
 
 
-
-//            UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-//            List<String> roles = userDetails.getAuthorities().stream()
-//                    .map(GrantedAuthority::getAuthority)
-//                    .toList();
             SecurityContextHolder.getContext().setAuthentication(authentication);
             final String token = jwtTokenUtil.generateToken(authentication);
 
