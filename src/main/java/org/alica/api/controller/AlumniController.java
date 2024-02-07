@@ -24,18 +24,16 @@ public class AlumniController {
 
     private final AlumniService alumniService;
 
+
     AlumniController(AlumniService alumniService){
         this.alumniService = alumniService;
     }
 
+    private UserDetailsImpl getUserDetails(){
+        return (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    }
 
-//    @PreAuthorize("isAuthenticated()")
-//    @PreAuthorize("hasRole(2)")
-//
-//
-//    @PreAuthorize("#ERole == authentication.principal.ERole")
-
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasAnyRole('USER', 'MODERATOR', 'ADMIN')")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public Page<ResponseAlumniDTO> findAll(@PageableDefault Pageable page){
@@ -43,24 +41,23 @@ public class AlumniController {
     }
 
 
-    @PreAuthorize("hasRole('USER')")
-    @GetMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAnyRole('USER', 'MODERATOR', 'ADMIN')")
+    @GetMapping(value = "/{email}",produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseAlumniDTO findAlumniByEmail(@PathVariable UUID id){
-        UserDetailsImpl details = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return this.alumniService.findAlumniById(details.getId());
+    public ResponseAlumniDTO findAlumniByEmail(@PathVariable String email){
+        return this.alumniService.findAlumniByEmail(email);
     }
 
 
     //@RolesAllowed("ADMIN")
-   @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping(value = "/admin",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseAlumniDTO createAlumni(@Valid @RequestBody RequestAlumniDTO alumniDTO){
         return this.alumniService.createAlumni(alumniDTO);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('USER', 'MODERATOR', 'ADMIN')")
     @PutMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseAlumniDTO updateAlumni(@Valid @RequestBody RequestAlumniDTO alumniDTO, @PathVariable UUID id){
@@ -68,12 +65,11 @@ public class AlumniController {
 
     }
 
-
-    @PreAuthorize("hasRole('USER')")
-    @DeleteMapping(value = "/{id}")
+    @PreAuthorize("hasAnyRole('USER', 'MODERATOR', 'ADMIN')")
+    @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteAlumni(@PathVariable UUID id){
-        this.alumniService.deleteAlumni(id);
+    public void deleteAlumni(){
+        this.alumniService.deleteAlumni(getUserDetails().getId());
     }
 
 }

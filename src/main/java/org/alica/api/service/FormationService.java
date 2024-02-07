@@ -8,6 +8,7 @@ import org.alica.api.exception.UpdateObjectException;
 import org.alica.api.mapper.FormationMapper;
 import org.alica.api.repository.AlumniRepository;
 import org.alica.api.repository.FormationRepository;
+import org.alica.api.security.JWT.UserDetailsImpl;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,9 @@ public class FormationService {
     private final FormationRepository formationRepository;
     private final AlumniRepository alumniRepository;
 
-    private final FormationMapper FORMATION_MAPPER = FormationMapper.INSTANCE;
+    private static final String FORMATION_NOT_FOUND = "Formation %s Not found !";
+
+    private static final FormationMapper FORMATION_MAPPER = FormationMapper.INSTANCE;
     public FormationService(FormationRepository formationRepository,
                             AlumniRepository alumniRepository) {
         this.formationRepository = formationRepository;
@@ -34,33 +37,34 @@ public class FormationService {
     }
 
     public ResponseFormationDTO findFormationById(UUID id) {
-        Formation formation = formationRepository.findById(id).orElseThrow(() -> new PropertyNotFoundException(String.format("Formation %s Not found !", id)));
+        Formation formation = formationRepository.findById(id).orElseThrow(() -> new PropertyNotFoundException(String.format(FORMATION_NOT_FOUND, id)));
 
         return FORMATION_MAPPER.mapToResponseResponseFormationDTO(formation);
     }
 
-    public ResponseFormationDTO createFormation(RequestFormationDTO requestFormationDTO) {
+    public ResponseFormationDTO createFormation(RequestFormationDTO requestFormationDTO, UserDetailsImpl user) {
 
-        Alumni alumni = alumniRepository.findById(requestFormationDTO.alumniId()).orElseThrow(() -> new PropertyNotFoundException(String.format("Alumni %s Not found !", requestFormationDTO.alumniId())));
+        Alumni alumni = alumniRepository.findById(user.getId()).orElseThrow(() -> new PropertyNotFoundException(String.format(FORMATION_NOT_FOUND, requestFormationDTO.alumniId())));
         Formation formation = FORMATION_MAPPER.mapToFormation(requestFormationDTO, alumni);
-
-        System.out.println(formation.toString());
 
         return FORMATION_MAPPER.mapToResponseResponseFormationDTO(formationRepository.save(formation));
     }
 
-    public ResponseFormationDTO updateFormation(RequestFormationDTO requestFormationDTO, UUID id) {
+    public ResponseFormationDTO updateFormation(RequestFormationDTO requestFormationDTO, UUID id,UserDetailsImpl user) {
 
-        Formation formation = formationRepository.findById(id).orElseThrow(() -> new UpdateObjectException(String.format("Formation %s Not found !", id)));
+        Formation formation = formationRepository.findById(id).orElseThrow(() -> new UpdateObjectException(String.format(FORMATION_NOT_FOUND, id)));
 
+        if(formation.getAlumni().getId() != user.getId()) throw new UpdateObjectException("You are not allowed to update this formation !");
         if (!alumniRepository.existsById(requestFormationDTO.alumniId())) throw new UpdateObjectException(String.format("Alumni %s Not found !", requestFormationDTO.alumniId()));
+
         formation.Update(requestFormationDTO);
 
         return FORMATION_MAPPER.mapToResponseResponseFormationDTO(formationRepository.save(formation));
     }
 
-    public void deleteFormation(UUID id) {
-        if(!formationRepository.existsById(id)) throw new PropertyNotFoundException(String.format("Formation %s Not found !", id));
+    public void deleteFormation(UUID id,UserDetailsImpl user) {
+        Formation formation = formationRepository.findById(id).orElseThrow(()-> new PropertyNotFoundException(String.format(FORMATION_NOT_FOUND, id)));
+        if(formation.getAlumni().getId() != user.getId()) throw new UpdateObjectException("You are not allowed to delete this formation !");
         formationRepository.deleteById(id);
     }
 

@@ -6,7 +6,6 @@ import java.util.UUID;
 public record ResponseAlumniDTO(
     UUID id,
     String email,
-    String password,
     ERole ERole,
     String entryYear,
     String firstName,

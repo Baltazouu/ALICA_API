@@ -46,11 +46,19 @@ public class AlumniService implements UserDetailsService {
         return alumnisPage.map(alumniMapper::mapResponseAlumniDTO);
     }
 
-    public ResponseAlumniDTO findByMailAndPassword(String mail,String password){
+    public ResponseAlumniDTO findAlumniByMailAndPassword(String mail, String password){
 
         Alumni alumni =  alumniRepository.findByEmailAndPassword(mail,password).orElse(null);
 
         return alumniMapper.mapResponseAlumniDTO(alumni);
+    }
+
+    public ResponseAlumniDTO findAlumniByEmail(String email){
+
+        Alumni alumni = alumniRepository.findByEmail(email).orElseThrow(() -> new PropertyNotFoundException(String.format("Alumni %s Not found !",email)));
+
+        return alumniMapper.mapResponseAlumniDTO(alumni);
+
     }
 
 
@@ -82,6 +90,8 @@ public class AlumniService implements UserDetailsService {
 
     }
 
+
+
     public void deleteAlumni(UUID id){
         if(!alumniRepository.existsById(id)) throw new PropertyNotFoundException(String.format("Alumni %s Not found !",id));
         alumniRepository.deleteById(id);
@@ -98,9 +108,7 @@ public class AlumniService implements UserDetailsService {
 
     private Set<SimpleGrantedAuthority> getAuthority(Alumni user) {
         Set<SimpleGrantedAuthority> authorities = new HashSet<>();
-        user.getRoles().forEach(role -> {
-            authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName()));
-        });
+        user.getRoles().forEach(role -> authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName())));
         return authorities;
     }
 

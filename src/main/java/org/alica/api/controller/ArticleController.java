@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
@@ -39,18 +40,21 @@ public class ArticleController {
          return this.articleService.findArticleById(id);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','MODERATOR')")
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseArticleDTO createArticle(@Valid @RequestBody RequestArticleDTO article){
         return this.articleService.createArticle(article);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','MODERATOR')")
     @PutMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseArticleDTO updateArticle(@Valid @RequestBody RequestArticleDTO article, @PathVariable UUID id){
         return this.articleService.updateArticle(article,id);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','MODERATOR')")
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteArticle(@PathVariable UUID id){

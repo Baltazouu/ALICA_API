@@ -8,6 +8,7 @@ import org.alica.api.Dto.response.ResponseOfferDTO;
 import org.alica.api.mapper.OfferMapper;
 import org.alica.api.repository.AlumniRepository;
 import org.alica.api.repository.OfferRepository;
+import org.alica.api.security.JWT.UserDetailsImpl;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,11 @@ public class OfferService {
 
     private final AlumniRepository alumniRepository;
 
-    private final OfferMapper offerMapper = OfferMapper.INSTANCE;
+    private static final String OFFER_NOT_FOUND = "Offer %s Not found !";
+
+    private static final String ALUMNI_NOT_FOUND = "Alumni %s Not found !";
+
+    private static final OfferMapper offerMapper = OfferMapper.INSTANCE;
 
     OfferService(OfferRepository offerRepository,
                  AlumniRepository alumniRepository) {
@@ -37,45 +42,45 @@ public class OfferService {
     }
 
     public ResponseOfferDTO findOfferById(UUID id){
-        Offer offer = offerRepository.findById(id).orElseThrow(() -> new PropertyNotFoundException(String.format("Offer %s Not found !",id)));
+        Offer offer = offerRepository.findById(id).orElseThrow(() -> new PropertyNotFoundException(String.format(OFFER_NOT_FOUND,id)));
 
         return offerMapper.mapToResponseOfferDTO(offer);
     }
 
-    public ResponseOfferDTO createOffer(RequestOfferDTO requestOfferDTO){
+    public ResponseOfferDTO createOffer(RequestOfferDTO requestOfferDTO,UserDetailsImpl user){
 
-        Alumni alumni = alumniRepository.findById(requestOfferDTO.alumniId()).orElseThrow(() -> new PropertyNotFoundException(String.format("Alumni %s Not found !",requestOfferDTO.alumniId())));
+        Alumni alumni = alumniRepository.findById(user.getId()).orElseThrow(() -> new PropertyNotFoundException(String.format(ALUMNI_NOT_FOUND,requestOfferDTO.alumniId())));
 
         Offer offer = offerMapper.mapToOffer(requestOfferDTO,alumni);
 
         offer = offerRepository.save(offer);
 
-        System.out.println(offer.toString());
         return offerMapper.mapToResponseOfferDTO(offer);
-        //return offerMapper.mapToResponseOfferDTO(offerRepository.save(offer));
     }
 
 
-    public ResponseOfferDTO updateOffer(RequestOfferDTO requestOfferDTO, UUID id){
+    public ResponseOfferDTO updateOffer(RequestOfferDTO requestOfferDTO, UUID id, UserDetailsImpl user){
 
-        Offer offer = offerRepository.findById(id).orElseThrow(() -> new PropertyNotFoundException(String.format("Offer %s Not found !",id)));
+        Offer offer = offerRepository.findById(id).orElseThrow(() -> new PropertyNotFoundException(String.format(OFFER_NOT_FOUND,id)));
 
-        if(!alumniRepository.existsById(requestOfferDTO.alumniId())) throw new PropertyNotFoundException(String.format("Alumni %s Not found !",requestOfferDTO.alumniId()));
+        if(offer.getAlumni().getId() != user.getId()) throw new PropertyNotFoundException("You are not allowed to update this offer !");
+
         offer.Update(requestOfferDTO);
-        System.out.println(offer.toString());
         return offerMapper.mapToResponseOfferDTO(offerRepository.save(offer));
     }
 
-    public void deleteOffer(UUID id){
+    public void deleteOffer(UUID id, UserDetailsImpl user){
 
-        if(!offerRepository.existsById(id)) throw new PropertyNotFoundException(String.format("Offer %s Not found !",id));
+        Offer offer = offerRepository.findById(id).orElseThrow(() -> new PropertyNotFoundException(String.format(OFFER_NOT_FOUND,id)));
+
+        if(offer.getAlumni().getId() != user.getId()) throw new PropertyNotFoundException("You are not allowed to delete this offer !");
         offerRepository.deleteById(id);
     }
 
 
     public Page<ResponseOfferDTO> findOfferByAlumniId(UUID id, Pageable page) {
 
-        Alumni alumni = alumniRepository.findById(id).orElseThrow(() -> new PropertyNotFoundException(String.format("Alumni %s Not found !",id)));
+        Alumni alumni = alumniRepository.findById(id).orElseThrow(() -> new PropertyNotFoundException(String.format(ALUMNI_NOT_FOUND,id)));
         Page<Offer> offers = offerRepository.findByAlumni(alumni, page);
         return offers.map(offerMapper::mapToResponseOfferDTO);
     }

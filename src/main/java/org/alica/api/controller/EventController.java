@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import org.alica.api.Dto.request.RequestEventDTO;
 import org.alica.api.Dto.response.ResponseAlumniDTO;
 import org.alica.api.Dto.response.ResponseEventDTO;
+import org.alica.api.security.JWT.UserDetailsImpl;
 import org.alica.api.service.EventService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,6 +12,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,9 +23,12 @@ import java.util.UUID;
 public class EventController {
 
     private final EventService eventService;
-
     public EventController(EventService eventService) {
         this.eventService = eventService;
+    }
+
+    private UserDetailsImpl getUserAuthenticate(){
+        return (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -39,21 +44,19 @@ public class EventController {
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<ResponseEventDTO> createEvent(@Valid @RequestBody RequestEventDTO event) {
         return new ResponseEntity<>(this.eventService.createEvent(event), HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<ResponseEventDTO> updateEvent(@Valid @RequestBody RequestEventDTO event, @PathVariable UUID id) {
-        return new ResponseEntity<>(this.eventService.updateEvent(event, id), HttpStatus.OK);
+        return new ResponseEntity<>(this.eventService.updateEvent(event, id, getUserAuthenticate()), HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteEvent(@PathVariable UUID id) {
-        this.eventService.deleteEvent(id);
+        this.eventService.deleteEvent(id, (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
     }
 
 
@@ -63,19 +66,21 @@ public class EventController {
         return new ResponseEntity<>(this.eventService.findEventByAlumniId(id, page), HttpStatus.OK);
     }
 
-    @GetMapping("/subscribe/{eventId}/alumni/{alumniId}")
+
+    @GetMapping("/subscribe/{eventId}")
     @ResponseStatus(HttpStatus.OK)
-    public void Subscribe(@PathVariable UUID eventId, @PathVariable UUID alumniId) {
-        this.eventService.Subscribe(eventId, alumniId);
+    public void subscribe(@PathVariable UUID eventId) {
+        this.eventService.subscribe(eventId, getUserAuthenticate().getId());
     }
 
-    @GetMapping("/unsubscribe/{eventId}/alumni/{alumniId}")
+    // user id is passed by user details
+    @GetMapping("/unsubscribe/{eventId}")
     @ResponseStatus(HttpStatus.OK)
-    public void Unsubscribe(@PathVariable UUID eventId, @PathVariable UUID alumniId) {
-        this.eventService.Unsubscribe(eventId, alumniId);
+    public void unsubscribe(@PathVariable UUID eventId) {
+        this.eventService.unsubscribe(eventId, getUserAuthenticate().getId());
     }
 
-    // I choose list instead of page bc i think that there will not be a large
+    // I choose list instead of page bc I think that there will not be a large
     // number of event subscribers to justify the use of a list
     @GetMapping("/subscribers/{eventId}")
     @ResponseStatus(HttpStatus.OK)
