@@ -4,7 +4,7 @@ import jakarta.validation.Valid;
 import org.alica.api.Dto.request.RequestEventDTO;
 import org.alica.api.Dto.response.ResponseAlumniDTO;
 import org.alica.api.Dto.response.ResponseEventDTO;
-import org.alica.api.security.JWT.UserDetailsImpl;
+import org.alica.api.security.jwt.UserDetailsImpl;
 import org.alica.api.service.EventService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

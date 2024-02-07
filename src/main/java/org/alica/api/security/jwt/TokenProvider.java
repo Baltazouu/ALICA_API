@@ -1,4 +1,4 @@
-package org.alica.api.security.JWT;
+package org.alica.api.security.jwt;
 
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,13 +20,13 @@ import java.util.stream.Collectors;
 public class TokenProvider implements Serializable {
 
     @Value("${jwt.token.validity}")
-    public long TOKEN_VALIDITY;
+    public static long TOKEN_VALIDITY;
 
     @Value("${jwt.signing.key}")
-    public String SIGNING_KEY;
+    public static String SIGNING_KEY;
 
     @Value("${jwt.authorities.key}")
-    public String AUTHORITIES_KEY;
+    public static String AUTHORITIES_KEY;
 
     public String getUsernameFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);
@@ -42,11 +42,12 @@ public class TokenProvider implements Serializable {
     }
 
     private Claims getAllClaimsFromToken(String token) {
-        return Jwts.parser()
+        JwtParser jwtParser = Jwts.parserBuilder()
                 .setSigningKey(SIGNING_KEY)
-                .parseClaimsJws(token)
-                .getBody();
+                .build();
+        return jwtParser.parseClaimsJws(token).getBody();
     }
+
 
     private Boolean isTokenExpired(String token) {
         final Date expiration = getExpirationDateFromToken(token);

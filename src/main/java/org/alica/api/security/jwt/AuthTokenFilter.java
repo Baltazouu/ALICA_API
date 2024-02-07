@@ -1,4 +1,4 @@
-package org.alica.api.security.JWT;
+package org.alica.api.security.jwt;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

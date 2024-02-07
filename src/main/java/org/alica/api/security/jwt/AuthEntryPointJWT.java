@@ -1,4 +1,4 @@
-package org.alica.api.security.JWT;
+package org.alica.api.security.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;

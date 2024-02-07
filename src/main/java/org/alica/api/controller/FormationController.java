@@ -3,7 +3,7 @@ package org.alica.api.controller;
 import jakarta.validation.Valid;
 import org.alica.api.Dto.request.RequestFormationDTO;
 import org.alica.api.Dto.response.ResponseFormationDTO;
-import org.alica.api.security.JWT.UserDetailsImpl;
+import org.alica.api.security.jwt.UserDetailsImpl;
 import org.alica.api.service.FormationService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

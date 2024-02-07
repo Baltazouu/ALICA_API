@@ -1,4 +1,4 @@
-package org.alica.api.security.JWT;
+package org.alica.api.security.jwt;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -83,6 +83,11 @@ public class UserDetailsImpl implements UserDetails {
             return false;
         UserDetailsImpl user = (UserDetailsImpl) o;
         return Objects.equals(id, user.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
     @Override

@@ -3,7 +3,7 @@ package org.alica.api.controller;
 import jakarta.validation.Valid;
 import org.alica.api.Dto.request.RequestAlumniDTO;
 import org.alica.api.Dto.response.ResponseAlumniDTO;
-import org.alica.api.security.JWT.UserDetailsImpl;
+import org.alica.api.security.jwt.UserDetailsImpl;
 import org.alica.api.service.AlumniService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

@@ -5,7 +5,7 @@ import org.alica.api.Dao.Role;
 import org.alica.api.Dto.request.RequestAlumniDTO;
 import org.alica.api.Dto.request.SignupRequestDTO;
 import org.alica.api.Dto.response.ResponseAlumniDTO;
-import org.alica.api.security.JWT.UserDetailsImpl;
+import org.alica.api.security.jwt.UserDetailsImpl;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;

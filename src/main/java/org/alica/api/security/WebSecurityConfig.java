@@ -1,7 +1,7 @@
 package org.alica.api.security;
 
-import org.alica.api.security.JWT.AuthEntryPointJWT;
-import org.alica.api.security.JWT.AuthTokenFilter;
+import org.alica.api.security.jwt.AuthEntryPointJWT;
+import org.alica.api.security.jwt.AuthTokenFilter;
 import org.alica.api.service.AlumniService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

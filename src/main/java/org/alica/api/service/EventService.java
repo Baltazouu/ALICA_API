@@ -13,7 +13,7 @@ import org.alica.api.mapper.AlumniMapper;
 import org.alica.api.mapper.EventMapper;
 import org.alica.api.repository.AlumniRepository;
 import org.alica.api.repository.EventRepository;
-import org.alica.api.security.JWT.UserDetailsImpl;
+import org.alica.api.security.jwt.UserDetailsImpl;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

@@ -10,8 +10,8 @@
     import org.alica.api.mapper.AlumniMapper;
     import org.alica.api.repository.AlumniRepository;
     import org.alica.api.repository.RoleRepository;
-    import org.alica.api.security.JWT.JWTUtils;
-    import org.alica.api.security.JWT.TokenProvider;
+    import org.alica.api.security.jwt.JWTUtils;
+    import org.alica.api.security.jwt.TokenProvider;
     import org.springframework.security.authentication.AuthenticationManager;
     import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
     import org.springframework.security.core.Authentication;
