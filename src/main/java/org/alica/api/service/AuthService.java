@@ -2,13 +2,16 @@
 
 
     import org.alica.api.Dao.Alumni;
+    import org.alica.api.Dao.Role;
     import org.alica.api.Dto.request.SignInRequestDTO;
     import org.alica.api.Dto.request.SignupRequestDTO;
-    import org.alica.api.Dto.response.ResponseAuthentificationDTO;
-    import org.alica.api.Enum.Role;
+    import org.alica.api.Dto.response.ResponseAuthenticationDTO;
+    import org.alica.api.Enum.ERole;
     import org.alica.api.mapper.AlumniMapper;
     import org.alica.api.repository.AlumniRepository;
+    import org.alica.api.repository.RoleRepository;
     import org.alica.api.security.JWT.JWTUtils;
+    import org.alica.api.security.JWT.TokenProvider;
     import org.springframework.beans.factory.annotation.Value;
     import org.springframework.security.authentication.AuthenticationManager;
     import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,21 +29,29 @@
         private final AuthenticationManager authenticationManager;
         private final AlumniRepository alumniRepository;
 
+        private final RoleRepository roleRepository;
+
         private final AlumniMapper alumniMapper = AlumniMapper.INSTANCE;
 
         private final PasswordEncoder encoder;
         private final JWTUtils jwtUtils;
 
+        private final TokenProvider jwtTokenUtil;
 
         public AuthService(AlumniRepository alumniRepository,
                            AuthenticationManager authenticationManager,
                            JWTUtils jwtUtils,
-                           PasswordEncoder encoder) {
+                           TokenProvider jwtTokenUtil,
+                           PasswordEncoder encoder,
+                           RoleRepository roleRepository) {
 
             this.alumniRepository = alumniRepository;
             this.authenticationManager = authenticationManager;
+            this.roleRepository = roleRepository;
             this.jwtUtils = jwtUtils;
             this.encoder = encoder;
+            this.jwtTokenUtil = jwtTokenUtil;
+
 
 
         }
@@ -51,8 +62,12 @@
                 throw new RuntimeException("Email already exists");
             }
 
+            Role role = roleRepository.findByName(ERole.USER)
+                    .orElseThrow(() -> new RuntimeException("Role not found"));
+
             Alumni alumni = alumniMapper.mapToAlumni(signupRequestDTO);
-            alumni.setRole(Role.USER);
+            // default role is user
+            //alumni.setRoles(role);
 
             System.out.println("Password : " + alumni.getPassword());
             alumni.setPassword(encoder.encode(alumni.getPassword()));
@@ -62,28 +77,37 @@
     //
     //        SecurityContextHolder.getContext().setAuthentication(authentication);
 
+            alumni.addRole(role);
             alumniRepository.save(alumni);
         }
 
-        public ResponseAuthentificationDTO signIn(SignInRequestDTO signInRequestDTO) {
-//            Alumni alumni = alumniRepository.findByEmailAndPassword(signInRequestDTO.email(), encoder.encode(signInRequestDTO.password()))
-//                    .orElseThrow(() -> new AuthenticateException("Invalid Email or Password !"));
+        public ResponseAuthenticationDTO signIn(SignInRequestDTO signInRequestDTO) {
 
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(signInRequestDTO.email(), signInRequestDTO.password()));
 
+            System.out.println("Authentication : " + authentication.getPrincipal());
             Alumni alumni = alumniRepository.findByEmail(signInRequestDTO.email())
                     .orElseThrow(() -> new RuntimeException("User Not Found"));
 
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            String JWT = jwtUtils.generateJwtToken(authentication);
 
-            return ResponseAuthentificationDTO.builder()
+
+//            UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+//            List<String> roles = userDetails.getAuthorities().stream()
+//                    .map(GrantedAuthority::getAuthority)
+//                    .toList();
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            final String token = jwtTokenUtil.generateToken(authentication);
+
+            return ResponseAuthenticationDTO.builder()
                     .email(signInRequestDTO.email())
-                    .token(JWT)
+                    .token(jwtUtils.generateJwtToken(authentication))
                     .type("Bearer")
-                    .role(alumni.getRole().toString())
+                    .roles(alumni.getRoles())
                     .build();
         }
 
-    }
+}
+
+
+

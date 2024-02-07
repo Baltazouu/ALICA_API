@@ -3,9 +3,9 @@ package org.alica.api.Dao;
 import jakarta.persistence.*;
 import lombok.*;
 import org.alica.api.Dto.request.RequestOfferDTO;
-import org.alica.api.Enum.Contract;
-import org.alica.api.Enum.Level;
-import org.alica.api.Enum.Studies;
+import org.alica.api.Enum.EContract;
+import org.alica.api.Enum.ELevel;
+import org.alica.api.Enum.EStudies;
 
 import java.util.UUID;
 
@@ -41,20 +41,20 @@ public class Offer {
     @Column(name = "jobDescription")
     private String jobDescription;
 
-    @Column(name = "contract")
-    private Contract contract;
+    @Column(name = "EContract")
+    private EContract EContract;
 
     @Column(name = "city")
     private String city;
 
-    @Column(name = "studies")
-    private Studies studies;
+    @Column(name = "EStudies")
+    private EStudies EStudies;
 
     @Column(name = "experienceRequired")
     private String experienceRequired;
 
-    @Column(name = "level")
-    private Level level;
+    @Column(name = "ELevel")
+    private ELevel ELevel;
 
     @Column(name = "contactNumber")
     private int contactNumber;
@@ -75,11 +75,11 @@ public class Offer {
                 ", company='" + company + '\'' +
                 ", description='" + description + '\'' +
                 ", jobDescription='" + jobDescription + '\'' +
-                ", contract=" + contract +
+                ", EContract=" + EContract +
                 ", city='" + city + '\'' +
-                ", studies=" + studies +
+                ", EStudies=" + EStudies +
                 ", experienceRequired='" + experienceRequired + '\'' +
-                ", level=" + level +
+                ", ELevel=" + ELevel +
                 ", contactNumber=" + contactNumber +
                 ", contactEmail='" + contactEmail + '\'' +
                 ", companyURL='" + companyURL + '\'' +
@@ -92,11 +92,11 @@ public class Offer {
         this.company = requestOfferDTO.company() != null ? requestOfferDTO.company() : this.company;
         this.description = requestOfferDTO.description() != null ? requestOfferDTO.description() : this.description;
         this.jobDescription = requestOfferDTO.jobDescription() != null ? requestOfferDTO.jobDescription() : this.jobDescription;
-        this.contract = requestOfferDTO.contract() != null ? requestOfferDTO.contract() : this.contract;
+        this.EContract = requestOfferDTO.EContract() != null ? requestOfferDTO.EContract() : this.EContract;
         this.city = requestOfferDTO.city() != null ? requestOfferDTO.city() : this.city;
-        this.studies = requestOfferDTO.studies() != null ? requestOfferDTO.studies() : this.studies;
+        this.EStudies = requestOfferDTO.EStudies() != null ? requestOfferDTO.EStudies() : this.EStudies;
         this.experienceRequired = requestOfferDTO.experienceRequired() != null ? requestOfferDTO.experienceRequired() : this.experienceRequired;
-        this.level = requestOfferDTO.level() != null ? requestOfferDTO.level() : this.level;
+        this.ELevel = requestOfferDTO.ELevel() != null ? requestOfferDTO.ELevel() : this.ELevel;
         this.contactNumber = requestOfferDTO.contactNumber() != 0 ? requestOfferDTO.contactNumber() : this.contactNumber;
         this.companyURL = requestOfferDTO.companyURL() != null ? requestOfferDTO.companyURL() : this.companyURL;
    }

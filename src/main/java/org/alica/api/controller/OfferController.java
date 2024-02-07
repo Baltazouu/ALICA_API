@@ -1,8 +1,6 @@
 package org.alica.api.controller;
 
 import jakarta.validation.Valid;
-import jakarta.ws.rs.Path;
-import org.alica.api.Dao.Offer;
 import org.alica.api.Dto.request.RequestOfferDTO;
 import org.alica.api.Dto.response.ResponseOfferDTO;
 import org.alica.api.service.OfferService;
@@ -12,13 +10,12 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/offers")
+@RequestMapping("/api/offers")
 public class OfferController {
 
     private final OfferService offerService;
@@ -56,7 +53,6 @@ public class OfferController {
     public void deleteOffer(@PathVariable UUID id){
         this.offerService.deleteOffer(id);
     }
-
 
     @GetMapping(value= "/alumni/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)

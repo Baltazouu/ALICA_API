@@ -1,6 +1,7 @@
 package org.alica.api.mapper;
 
 import org.alica.api.Dao.Alumni;
+import org.alica.api.Dao.Role;
 import org.alica.api.Dto.request.RequestAlumniDTO;
 import org.alica.api.Dto.request.SignupRequestDTO;
 import org.alica.api.Dto.response.ResponseAlumniDTO;
@@ -18,7 +19,7 @@ public interface AlumniMapper {
     @Mapping(target = "events", ignore = true)
     @Mapping(target = "articles", ignore = true)
     @Mapping(target = "offers", ignore = true)
-    Alumni mapToAlumni(RequestAlumniDTO alumniDTO);
+    Alumni mapToAlumni(RequestAlumniDTO alumniDTO, Role role);
 
     @Mapping(target = "id", source = "id")
     ResponseAlumniDTO mapResponseAlumniDTO(Alumni alumni);

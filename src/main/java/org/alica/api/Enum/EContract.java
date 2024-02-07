@@ -1,6 +1,6 @@
 package org.alica.api.Enum;
 
-public enum Contract {
+public enum EContract {
     CDI,
     CDD,
     STAGE,

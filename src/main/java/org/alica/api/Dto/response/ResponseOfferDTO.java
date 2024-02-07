@@ -1,9 +1,9 @@
 package org.alica.api.Dto.response;
 
 import lombok.Builder;
-import org.alica.api.Enum.Contract;
-import org.alica.api.Enum.Level;
-import org.alica.api.Enum.Studies;
+import org.alica.api.Enum.EContract;
+import org.alica.api.Enum.ELevel;
+import org.alica.api.Enum.EStudies;
 
 import java.util.UUID;
 
@@ -16,9 +16,9 @@ public record ResponseOfferDTO(
         String jobDescription,
         String experienceRequired,
         String city,
-        Contract contract,
-        Studies studies,
-        Level level,
+        EContract EContract,
+        EStudies EStudies,
+        ELevel ELevel,
         String company,
         String contactEmail,
         String contactNumber,

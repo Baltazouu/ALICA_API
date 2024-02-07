@@ -1,7 +1,7 @@
 package org.alica.api.controller;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
-import org.alica.api.Dao.Alumni;
 import org.alica.api.Dto.request.RequestAlumniDTO;
 import org.alica.api.Dto.response.ResponseAlumniDTO;
 import org.alica.api.service.AlumniService;
@@ -12,11 +12,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
+
 @RestController
-@RequestMapping("/alumnis")
+@RequestMapping("/api/alumnis")
 public class AlumniController {
 
 
@@ -26,6 +26,15 @@ public class AlumniController {
         this.alumniService = alumniService;
     }
 
+
+   // @PreAuthorize("isAuthenticated()")
+   // @PreAuthorize("hasRole(2)")
+
+    //
+   // @PreAuthorize("#ERole == authentication.principal.ERole")
+
+    //@PreAuthorize("hasRole('USER')")
+    @RolesAllowed("USER")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public Page<ResponseAlumniDTO> findAll(@PageableDefault Pageable page){

@@ -2,12 +2,15 @@ package org.alica.api.Dto.response;
 
 
 import lombok.Builder;
+import org.alica.api.Dao.Role;
+
+import java.util.Set;
 
 @Builder
-public record ResponseAuthentificationDTO(
+public record ResponseAuthenticationDTO(
         String token,
         String type,
        // UUID id,
         String email,
-        String role
+        Set<Role> roles
 ) { }

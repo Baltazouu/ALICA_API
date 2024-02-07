@@ -3,13 +3,14 @@ package org.alica.api.security;
 import org.alica.api.security.JWT.AuthEntryPointJWT;
 import org.alica.api.security.JWT.AuthTokenFilter;
 import org.alica.api.service.AlumniService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -21,7 +22,7 @@ import org.springframework.web.client.RestTemplate;
 
 
 @Configuration
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity( securedEnabled = true, jsr250Enabled = true)
 public class WebSecurityConfig {
 
     @Value("${target.api.base.url}")
@@ -31,6 +32,7 @@ public class WebSecurityConfig {
 
     private final AuthEntryPointJWT unauthorizedHandler;
 
+    @Autowired
     public WebSecurityConfig(AlumniService alumniService, AuthEntryPointJWT unauthorizedHandler) {
         this.alumniService = alumniService;
         this.unauthorizedHandler = unauthorizedHandler;
@@ -76,8 +78,8 @@ public class WebSecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/api/auth/**").permitAll()
-                                .requestMatchers("/").permitAll()
-                                .requestMatchers("/login").permitAll()
+                               // .requestMatchers("/").permitAll()
+                               // .requestMatchers()
                                 .requestMatchers("/register").hasRole("ADMINISTRATOR")
                                 .requestMatchers("/alumnis/**").authenticated()
                                 .requestMatchers("/swagger-ui/**").permitAll()
