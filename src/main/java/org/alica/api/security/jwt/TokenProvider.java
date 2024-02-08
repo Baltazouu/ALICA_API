@@ -20,13 +20,13 @@ import java.util.stream.Collectors;
 public class TokenProvider implements Serializable {
 
     @Value("${jwt.token.validity}")
-    public static long TOKEN_VALIDITY;
+    public long TOKEN_VALIDITY;
 
     @Value("${jwt.signing.key}")
-    public static String SIGNING_KEY;
+    public String SIGNING_KEY;
 
     @Value("${jwt.authorities.key}")
-    public static String AUTHORITIES_KEY;
+    public String AUTHORITIES_KEY;
 
     public String getUsernameFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);
@@ -42,12 +42,11 @@ public class TokenProvider implements Serializable {
     }
 
     private Claims getAllClaimsFromToken(String token) {
-        JwtParser jwtParser = Jwts.parserBuilder()
+        return Jwts.parser()
                 .setSigningKey(SIGNING_KEY)
-                .build();
-        return jwtParser.parseClaimsJws(token).getBody();
+                .parseClaimsJws(token)
+                .getBody();
     }
-
 
     private Boolean isTokenExpired(String token) {
         final Date expiration = getExpirationDateFromToken(token);
