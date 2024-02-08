@@ -1,6 +1,6 @@
 package org.alica.api.Enum;
 
-public enum Role {
+public enum ERole {
 
     ADMIN,
     MODERATOR,

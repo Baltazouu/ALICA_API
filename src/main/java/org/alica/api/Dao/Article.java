@@ -53,4 +53,6 @@ public class Article {
         this.imgURL = articleDTO.imgURL();
     }
 
+
+
 }

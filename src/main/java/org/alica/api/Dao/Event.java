@@ -44,7 +44,7 @@ public class Event {
 
     @ManyToMany
     @JoinTable(
-            name = "event_subscriptions",
+            name = "event_subscription",
             joinColumns = @JoinColumn(name = "event_id"),
             inverseJoinColumns = @JoinColumn(name = "alumni_id")
     )

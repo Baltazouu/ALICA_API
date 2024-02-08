@@ -1,6 +1,6 @@
 package org.alica.api.Enum;
 
-public enum Studies {
+public enum EStudies {
     BAC_2,
     BAC_3,
     BAC_5,

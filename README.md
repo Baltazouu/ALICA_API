@@ -89,5 +89,5 @@ Endpoint with query of title for events
 some others....
 
 TO DO : manage authorizations 
-[Baeldung documentation](https://www.baeldung.com/role-and-privilege-for-spring-security-registration)
+[Baeldung documentation](https://www.baeldung.com/ERole-and-privilege-for-spring-security-registration)
 

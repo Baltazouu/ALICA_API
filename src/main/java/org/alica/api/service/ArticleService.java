@@ -5,10 +5,10 @@ import org.alica.api.Dao.Alumni;
 import org.alica.api.Dao.Article;
 import org.alica.api.Dto.request.RequestArticleDTO;
 import org.alica.api.Dto.response.ResponseArticleDTO;
+import org.alica.api.exception.UpdateObjectException;
 import org.alica.api.mapper.ArticleMapper;
 import org.alica.api.repository.AlumniRepository;
 import org.alica.api.repository.ArticleRepository;
-import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -46,14 +46,12 @@ public class ArticleService {
         Alumni alumni = this.alumniRepository.findById(article.alumniId()).orElseThrow(() -> new EntityNotFoundException("Alumni not found"));
         Article newArticle = ARTICLE_MAPPER.mapToArticle(article,alumni);
 
-        System.out.println(newArticle.toString());
-
         return ARTICLE_MAPPER.mapToResponseArticleDTO(this.articleRepository.save(newArticle));
     }
 
     public ResponseArticleDTO updateArticle(RequestArticleDTO article, UUID id){
-        Article articleToUpdate = this.articleRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Article not found"));
-        Alumni alumni = this.alumniRepository.findById(article.alumniId()).orElseThrow(() -> new EntityNotFoundException("Alumni not found"));
+        Article articleToUpdate = this.articleRepository.findById(id).orElseThrow(() -> new UpdateObjectException("Article not found"));
+        Alumni alumni = this.alumniRepository.findById(article.alumniId()).orElseThrow(() -> new UpdateObjectException("Alumni not found"));
         articleToUpdate.setTitle(article.title());
         articleToUpdate.setContent(article.content());
         articleToUpdate.setAlumni(alumni);

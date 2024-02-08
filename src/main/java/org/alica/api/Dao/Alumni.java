@@ -3,21 +3,21 @@ package org.alica.api.Dao;
 import jakarta.persistence.*;
 import lombok.*;
 import org.alica.api.Dto.request.RequestAlumniDTO;
-import org.alica.api.Enum.Role;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
 @Entity
-@Table(name = "Alumnis")
+@Table(name = "Alumni",uniqueConstraints = {@UniqueConstraint(name = "email_index", columnNames = {"email"})})
 @EntityListeners(AuditingEntityListener.class)
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Alumni {
+public class Alumni{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -38,14 +38,27 @@ public class Alumni {
     @OneToMany(mappedBy = "alumni", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Formation> formations;
 
+
+//    @JoinColumn(name = "role_id")
+//    @ManyToOne
+//    private Role role;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "USER_ROLES",
+            joinColumns = {
+                    @JoinColumn(name = "USER_ID")
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(name = "ROLE_ID") })
+    private Set<Role> roles = new HashSet<>();
+
+
     @Column(name = "email")
     private String email;
 
     @Column(name = "password")
     private String password;
 
-    @Column(name = "role")
-    private Role role;
 
     @Column(name = "firstName")
     private String firstName;
@@ -72,7 +85,7 @@ public class Alumni {
     public void update(RequestAlumniDTO dto){
         this.email = dto.email();
         this.password = dto.password();
-        this.role = dto.role();
+       // this.role = role
         this.entryYear = dto.entryYear();
         this.firstName = dto.firstName();
         this.lastName = dto.lastName();
@@ -90,7 +103,7 @@ public class Alumni {
                 //", events=" + events +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", role=" + role +
+                ", Role size =" + roles.size() +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", entryYear='" + entryYear + '\'' +
@@ -99,5 +112,12 @@ public class Alumni {
                 ", portfolioURL='" + portfolioURL + '\'' +
                 ", imageId='" + imageURL + '\'' +
                 '}';
+    }
+
+
+    public void addRole(Role role){
+        if(this.roles == null)
+            this.roles = new HashSet<>();
+        this.roles.add(role);
     }
 }
