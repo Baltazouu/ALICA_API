@@ -32,15 +32,20 @@ public class WebSecurityConfig {
 
     private final AuthEntryPointJWT unauthorizedHandler;
 
+    private final AuthTokenFilter authTokenFilter;
+
     @Autowired
-    public WebSecurityConfig(AlumniService alumniService, AuthEntryPointJWT unauthorizedHandler) {
+    public WebSecurityConfig(AlumniService alumniService, AuthEntryPointJWT unauthorizedHandler, AuthTokenFilter authTokenFilter) {
         this.alumniService = alumniService;
         this.unauthorizedHandler = unauthorizedHandler;
+        this.authTokenFilter = authTokenFilter;
+
+
     }
 
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter() {
-        return new AuthTokenFilter();
+        return authTokenFilter;
     }
 
     @Bean
@@ -72,17 +77,20 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        // csrf -> csrf.disable()
+
         http.csrf(AbstractHttpConfigurer::disable)
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/api/auth/**").permitAll()
+                                .requestMatchers("/api/alumni-restricted").permitAll()
                                 .requestMatchers("/api/alumnis/admin/**").hasRole("ADMIN")
-                                .requestMatchers("/alumnis/**").authenticated()
+                                .requestMatchers("/api/alumnis/**").authenticated()
+                                .requestMatchers("/api/events/**").permitAll()
+                                .requestMatchers("/api/formations/**").permitAll()
+                                .requestMatchers("/api/articles/**").permitAll()
                                 .requestMatchers("/swagger-ui/**").permitAll()
                                 .anyRequest().permitAll()
-                                //.anyRequest().authenticated()
                 );
 
         http.authenticationProvider(authenticationProvider());

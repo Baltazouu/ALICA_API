@@ -2,8 +2,8 @@ package org.alica.api.mapper;
 
 import org.alica.api.Dao.Alumni;
 import org.alica.api.Dao.Offer;
-import org.alica.api.Dto.request.RequestOfferDTO;
-import org.alica.api.Dto.response.ResponseOfferDTO;
+import org.alica.api.dto.request.RequestOfferDTO;
+import org.alica.api.dto.response.ResponseOfferDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

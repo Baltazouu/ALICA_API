@@ -2,7 +2,7 @@ package org.alica.api.Dao;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.alica.api.Dto.request.RequestAlumniDTO;
+import org.alica.api.dto.request.RequestAlumniDTO;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.HashSet;

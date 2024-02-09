@@ -1,8 +1,7 @@
-package org.alica.api.Dto.request;
+package org.alica.api.dto.request;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
-import org.aspectj.weaver.ast.Not;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.UUID;

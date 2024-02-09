@@ -1,9 +1,9 @@
 package org.alica.api.controller;
 
 import jakarta.validation.Valid;
-import org.alica.api.Dto.request.RequestEventDTO;
-import org.alica.api.Dto.response.ResponseAlumniDTO;
-import org.alica.api.Dto.response.ResponseEventDTO;
+import org.alica.api.dto.request.RequestEventDTO;
+import org.alica.api.dto.response.ResponseAlumniDTO;
+import org.alica.api.dto.response.ResponseEventDTO;
 import org.alica.api.security.jwt.UserDetailsImpl;
 import org.alica.api.service.EventService;
 import org.springframework.data.domain.Page;
@@ -16,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -33,8 +34,8 @@ public class EventController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Page<ResponseEventDTO>> findAll(@PageableDefault Pageable page) {
-        return new ResponseEntity<>(this.eventService.findAll(page), HttpStatus.OK);
+    public ResponseEntity<Page<ResponseEventDTO>> findAll(@PageableDefault Pageable page,@RequestParam(required = false) Optional<String> title) {
+        return new ResponseEntity<>(this.eventService.findAll(page,title), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -45,7 +46,7 @@ public class EventController {
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ResponseEventDTO> createEvent(@Valid @RequestBody RequestEventDTO event) {
-        return new ResponseEntity<>(this.eventService.createEvent(event), HttpStatus.CREATED);
+        return new ResponseEntity<>(this.eventService.createEvent(event,getUserAuthenticate()), HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)

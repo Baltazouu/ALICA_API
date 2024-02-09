@@ -2,9 +2,9 @@ package org.alica.api.controller;
 
 
 import jakarta.validation.Valid;
-import org.alica.api.Dto.request.SignInRequestDTO;
-import org.alica.api.Dto.request.SignupRequestDTO;
-import org.alica.api.Dto.response.ResponseAuthenticationDTO;
+import org.alica.api.dto.request.SignInRequestDTO;
+import org.alica.api.dto.request.SignupRequestDTO;
+import org.alica.api.dto.response.ResponseAuthenticationDTO;
 import org.alica.api.service.AuthService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;

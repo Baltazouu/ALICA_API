@@ -1,7 +1,7 @@
 package org.alica.api.Dao;
 import jakarta.persistence.*;
 import lombok.*;
-import org.alica.api.Dto.request.RequestFormationDTO;
+import org.alica.api.dto.request.RequestFormationDTO;
 import java.util.UUID;
 
 

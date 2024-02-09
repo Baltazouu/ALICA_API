@@ -1,8 +1,8 @@
 package org.alica.api.controller;
 
 import jakarta.validation.Valid;
-import org.alica.api.Dto.request.RequestOfferDTO;
-import org.alica.api.Dto.response.ResponseOfferDTO;
+import org.alica.api.dto.request.RequestOfferDTO;
+import org.alica.api.dto.response.ResponseOfferDTO;
 import org.alica.api.security.jwt.UserDetailsImpl;
 import org.alica.api.service.OfferService;
 import org.springframework.data.domain.Page;

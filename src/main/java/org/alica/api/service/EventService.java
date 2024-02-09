@@ -4,9 +4,9 @@ package org.alica.api.service;
 import jakarta.el.PropertyNotFoundException;
 import org.alica.api.Dao.Alumni;
 import org.alica.api.Dao.Event;
-import org.alica.api.Dto.request.RequestEventDTO;
-import org.alica.api.Dto.response.ResponseAlumniDTO;
-import org.alica.api.Dto.response.ResponseEventDTO;
+import org.alica.api.dto.request.RequestEventDTO;
+import org.alica.api.dto.response.ResponseAlumniDTO;
+import org.alica.api.dto.response.ResponseEventDTO;
 import org.alica.api.exception.AuthenticateException;
 import org.alica.api.exception.UpdateObjectException;
 import org.alica.api.mapper.AlumniMapper;
@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -43,13 +44,17 @@ public class EventService {
         this.alumniRepository = alumniRepository;
     }
 
-    public Page<ResponseEventDTO> findAll(Pageable page){
+    public Page<ResponseEventDTO> findAll(Pageable page, Optional<String> title) {
+        Page<Event> events;
 
-        Page<Event> events = this.eventRepository.findAll(page);
-
+        if (title.isEmpty()) {
+            events = this.eventRepository.findAll(page);
+        } else {
+            events = this.eventRepository.findByTitleContaining(title.get(), page);
+        }
         return events.map(eventMapper::mapToResponseEventDTO);
-
     }
+
 
     public ResponseEventDTO findEventById(UUID id){
         Event event = eventRepository.findById(id).orElseThrow(() -> new PropertyNotFoundException(String.format(EVENT_NOT_FOUND,id)));
@@ -57,9 +62,9 @@ public class EventService {
         return eventMapper.mapToResponseEventDTO(event);
     }
 
-    public ResponseEventDTO createEvent(RequestEventDTO requestEventDTO){
+    public ResponseEventDTO createEvent(RequestEventDTO requestEventDTO, UserDetailsImpl user){
 
-        Alumni alumni = alumniRepository.findById(requestEventDTO.alumniId()).orElseThrow(() -> new PropertyNotFoundException(String.format(ALUMNI_NOT_FOUND,requestEventDTO.alumniId())));
+        Alumni alumni = alumniRepository.findById(user.getId()).orElseThrow(() -> new PropertyNotFoundException(String.format(ALUMNI_NOT_FOUND,requestEventDTO.alumniId())));
 
         Event event = eventMapper.mapToEvent(requestEventDTO,alumni);
 

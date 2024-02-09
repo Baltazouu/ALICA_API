@@ -17,12 +17,14 @@ import java.io.IOException;
 
 public class AuthTokenFilter extends OncePerRequestFilter {
 
-    @Autowired
     private JWTUtils jwtUtils;
-
-    @Autowired
     private UserDetailsService userDetailsService;
 
+    @Autowired
+    public AuthTokenFilter(JWTUtils jwtUtils, UserDetailsService userDetailsService) {
+        this.jwtUtils = jwtUtils;
+        this.userDetailsService = userDetailsService;
+    }
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String jwt = null;
@@ -53,7 +55,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }catch (Exception e) {
-            System.out.println("Cannot set user authentication: {}"+ e);
+            logger.trace("Cannot set user authentication: {}"+ e);
         }
         filterChain.doFilter(request, response);
     }

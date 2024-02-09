@@ -12,4 +12,8 @@ import java.util.UUID;
 public interface EventRepository extends JpaRepository<Event, UUID> {
 
     Page<Event> findByOrganizer(Alumni alumni, Pageable page);
+
+    Page<Event> findByTitleContaining(String title, Pageable page);
+
+
 }

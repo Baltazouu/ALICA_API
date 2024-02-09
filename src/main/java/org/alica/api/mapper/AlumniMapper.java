@@ -2,9 +2,10 @@ package org.alica.api.mapper;
 
 import org.alica.api.Dao.Alumni;
 import org.alica.api.Dao.Role;
-import org.alica.api.Dto.request.RequestAlumniDTO;
-import org.alica.api.Dto.request.SignupRequestDTO;
-import org.alica.api.Dto.response.ResponseAlumniDTO;
+import org.alica.api.dto.request.RequestAlumniDTO;
+import org.alica.api.dto.request.SignupRequestDTO;
+import org.alica.api.dto.response.ResponseAlumniDTO;
+import org.alica.api.dto.response.ResponseAlumniRestricted;
 import org.alica.api.security.jwt.UserDetailsImpl;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -34,4 +35,7 @@ public interface AlumniMapper {
 
 
     UserDetailsImpl mapToUserDetailsImpl(Alumni alumni);
+
+
+    ResponseAlumniRestricted mapResponseAlumniRestricted(Alumni alumni);
 }
