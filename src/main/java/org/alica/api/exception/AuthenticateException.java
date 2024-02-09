@@ -1,8 +1,14 @@
 package org.alica.api.exception;
 
+import lombok.Getter;
+
+@Getter
 public class AuthenticateException extends RuntimeException {
-    public AuthenticateException(String message) {
+
+    private final String path;
+    public AuthenticateException(String message,String path) {
         super(message);
+        this.path = path;
     }
 }
 

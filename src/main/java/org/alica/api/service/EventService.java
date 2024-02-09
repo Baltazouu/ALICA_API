@@ -7,7 +7,7 @@ import org.alica.api.dao.Event;
 import org.alica.api.dto.request.RequestEventDTO;
 import org.alica.api.dto.response.ResponseAlumniDTO;
 import org.alica.api.dto.response.ResponseEventDTO;
-import org.alica.api.exception.AuthenticateException;
+import org.alica.api.exception.InsufficientPermissions;
 import org.alica.api.exception.UpdateObjectException;
 import org.alica.api.mapper.AlumniMapper;
 import org.alica.api.mapper.EventMapper;
@@ -78,7 +78,7 @@ public class EventService {
         if(user.getId() != event.getOrganizer().getId() || user.getAuthorities().stream().noneMatch(authority
                 -> authority.getAuthority().equals("ROLE_USER") ||
                 authority.getAuthority().equals("ROLE_MODERATOR")
-                ))throw new AuthenticateException(String.format("You are not able to update this event %s !",id));
+                ))throw new InsufficientPermissions(String.format("You are not able to update this event %s !",id));
 
         event.Update(requestEventDTO);
         return eventMapper.mapToResponseEventDTO(eventRepository.save(event));
@@ -93,7 +93,7 @@ public class EventService {
             return;
         }
 
-        if(user.getId() != event.getOrganizer().getId()) throw new AuthenticateException(String.format("You are not the organizer of event %s !",id));
+        if(user.getId() != event.getOrganizer().getId()) throw new InsufficientPermissions(String.format("You are not the organizer of event %s !",id));
         eventRepository.deleteById(id);
     }
 

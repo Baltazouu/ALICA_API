@@ -1,9 +1,11 @@
 package org.alica.api.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.alica.api.dto.request.RequestEventDTO;
 import org.alica.api.dto.response.ResponseAlumniDTO;
 import org.alica.api.dto.response.ResponseEventDTO;
+import org.alica.api.security.jwt.JWTUtils;
 import org.alica.api.security.jwt.UserDetailsImpl;
 import org.alica.api.service.EventService;
 import org.springframework.data.domain.Page;
@@ -28,9 +30,6 @@ public class EventController {
         this.eventService = eventService;
     }
 
-    private UserDetailsImpl getUserAuthenticate(){
-        return (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
@@ -45,13 +44,13 @@ public class EventController {
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ResponseEventDTO> createEvent(@Valid @RequestBody RequestEventDTO event) {
-        return new ResponseEntity<>(this.eventService.createEvent(event,getUserAuthenticate()), HttpStatus.CREATED);
+    public ResponseEntity<ResponseEventDTO> createEvent(HttpServletRequest request,@Valid @RequestBody RequestEventDTO event) {
+        return new ResponseEntity<>(this.eventService.createEvent(event,JWTUtils.getUserAuthenticate(request)), HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ResponseEventDTO> updateEvent(@Valid @RequestBody RequestEventDTO event, @PathVariable UUID id) {
-        return new ResponseEntity<>(this.eventService.updateEvent(event, id, getUserAuthenticate()), HttpStatus.OK);
+    public ResponseEntity<ResponseEventDTO> updateEvent(HttpServletRequest request,@Valid @RequestBody RequestEventDTO event, @PathVariable UUID id) {
+        return new ResponseEntity<>(this.eventService.updateEvent(event, id, JWTUtils.getUserAuthenticate(request)), HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/{id}")
@@ -70,15 +69,15 @@ public class EventController {
 
     @GetMapping("/subscribe/{eventId}")
     @ResponseStatus(HttpStatus.OK)
-    public void subscribe(@PathVariable UUID eventId) {
-        this.eventService.subscribe(eventId, getUserAuthenticate().getId());
+    public void subscribe(HttpServletRequest request,@PathVariable UUID eventId) {
+        this.eventService.subscribe(eventId, JWTUtils.getUserAuthenticate(request).getId());
     }
 
     // user id is passed by user details
     @GetMapping("/unsubscribe/{eventId}")
     @ResponseStatus(HttpStatus.OK)
-    public void unsubscribe(@PathVariable UUID eventId) {
-        this.eventService.unsubscribe(eventId, getUserAuthenticate().getId());
+    public void unsubscribe(HttpServletRequest request, @PathVariable UUID eventId) {
+        this.eventService.unsubscribe(eventId, JWTUtils.getUserAuthenticate(request).getId());
     }
 
     // I choose list instead of page bc I think that there will not be a large

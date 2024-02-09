@@ -1,9 +1,10 @@
 package org.alica.api.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.alica.api.dto.request.RequestAlumniDTO;
 import org.alica.api.dto.response.ResponseAlumniDTO;
-import org.alica.api.security.jwt.UserDetailsImpl;
+import org.alica.api.security.jwt.JWTUtils;
 import org.alica.api.service.AlumniService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,7 +12,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -29,9 +29,6 @@ public class AlumniController {
         this.alumniService = alumniService;
     }
 
-    private UserDetailsImpl getUserDetails(){
-        return (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    }
 
     @PreAuthorize("hasAnyRole('USER', 'MODERATOR', 'ADMIN')")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -68,8 +65,8 @@ public class AlumniController {
     @PreAuthorize("hasAnyRole('USER', 'MODERATOR', 'ADMIN')")
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteAlumni(){
-        this.alumniService.deleteAlumni(getUserDetails().getId());
+    public void deleteAlumni(HttpServletRequest request){
+        this.alumniService.deleteAlumni(JWTUtils.getUserAuthenticate(request).getId());
     }
 
 }

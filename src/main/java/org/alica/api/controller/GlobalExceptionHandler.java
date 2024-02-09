@@ -109,7 +109,10 @@ public class GlobalExceptionHandler {
             AuthenticateException ex, WebRequest request) {
 
         Map<String, String> body = new HashMap<>();
+        body.put("status", String.valueOf(HttpStatus.UNAUTHORIZED.value()));
+        body.put("error", "Unauthorized");
         body.put("message", ex.getMessage());
+        body.put("path", ex.getPath());
         return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
     }
 
@@ -130,5 +133,6 @@ public class GlobalExceptionHandler {
         body.put("jwt exception message", ex.getMessage());
         return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 
 }
