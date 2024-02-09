@@ -1,4 +1,4 @@
-package org.alica.api.Dao;
+package org.alica.api.dao;
 import jakarta.persistence.*;
 import lombok.*;
 import org.alica.api.dto.request.RequestArticleDTO;
@@ -46,7 +46,7 @@ public class Article {
                 '}';
     }
 
-    public void Update(RequestArticleDTO articleDTO) {
+    public void update(RequestArticleDTO articleDTO) {
         this.title = articleDTO.title();
         this.subtitle = articleDTO.subtitle();
         this.content = articleDTO.content();

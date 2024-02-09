@@ -1,4 +1,4 @@
-package org.alica.api.Dao;
+package org.alica.api.dao;
 
 import jakarta.persistence.*;
 import lombok.*;

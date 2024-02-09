@@ -2,7 +2,7 @@ package org.alica.api.dto.response;
 
 
 import lombok.Builder;
-import org.alica.api.Dao.Role;
+import org.alica.api.dao.Role;
 
 import java.util.Set;
 

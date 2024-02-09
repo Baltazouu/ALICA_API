@@ -1,7 +1,7 @@
 package org.alica.api.config;
 
 
-import org.alica.api.Dao.Role;
+import org.alica.api.dao.Role;
 import org.alica.api.Enum.ERole;
 import org.alica.api.repository.RoleRepository;
 import org.springframework.boot.ApplicationArguments;

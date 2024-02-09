@@ -32,20 +32,18 @@ public class WebSecurityConfig {
 
     private final AuthEntryPointJWT unauthorizedHandler;
 
-    private final AuthTokenFilter authTokenFilter;
+
 
     @Autowired
-    public WebSecurityConfig(AlumniService alumniService, AuthEntryPointJWT unauthorizedHandler, AuthTokenFilter authTokenFilter) {
+    public WebSecurityConfig(AlumniService alumniService, AuthEntryPointJWT unauthorizedHandler) {
         this.alumniService = alumniService;
         this.unauthorizedHandler = unauthorizedHandler;
-        this.authTokenFilter = authTokenFilter;
-
 
     }
 
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter() {
-        return authTokenFilter;
+        return new AuthTokenFilter();
     }
 
     @Bean

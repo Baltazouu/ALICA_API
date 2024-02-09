@@ -1,8 +1,8 @@
     package org.alica.api.service;
 
 
-    import org.alica.api.Dao.Alumni;
-    import org.alica.api.Dao.Role;
+    import org.alica.api.dao.Alumni;
+    import org.alica.api.dao.Role;
     import org.alica.api.Enum.ERole;
     import org.alica.api.dto.request.SignInRequestDTO;
     import org.alica.api.dto.request.SignupRequestDTO;

@@ -1,7 +1,7 @@
 package org.alica.api.service;
 import jakarta.el.PropertyNotFoundException;
-import org.alica.api.Dao.Alumni;
-import org.alica.api.Dao.Formation;
+import org.alica.api.dao.Alumni;
+import org.alica.api.dao.Formation;
 import org.alica.api.dto.request.RequestFormationDTO;
 import org.alica.api.dto.response.ResponseFormationDTO;
 import org.alica.api.exception.UpdateObjectException;
@@ -57,7 +57,7 @@ public class FormationService {
         if(formation.getAlumni().getId() != user.getId()) throw new UpdateObjectException("You are not allowed to update this formation !");
         if (!alumniRepository.existsById(requestFormationDTO.alumniId())) throw new UpdateObjectException(String.format("Alumni %s Not found !", requestFormationDTO.alumniId()));
 
-        formation.Update(requestFormationDTO);
+        formation.update(requestFormationDTO);
 
         return FORMATION_MAPPER.mapToResponseResponseFormationDTO(formationRepository.save(formation));
     }

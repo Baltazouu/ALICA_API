@@ -1,8 +1,8 @@
 package org.alica.api.service;
 
 import jakarta.persistence.EntityNotFoundException;
-import org.alica.api.Dao.Alumni;
-import org.alica.api.Dao.Article;
+import org.alica.api.dao.Alumni;
+import org.alica.api.dao.Article;
 import org.alica.api.dto.request.RequestArticleDTO;
 import org.alica.api.dto.response.ResponseArticleDTO;
 import org.alica.api.exception.UpdateObjectException;
