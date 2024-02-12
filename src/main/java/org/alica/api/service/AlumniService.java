@@ -48,12 +48,6 @@ public class AlumniService implements UserDetailsService {
         return alumnisPage.map(alumniMapper::mapResponseAlumniDTO);
     }
 
-    public ResponseAlumniDTO findAlumniByMailAndPassword(String mail, String password){
-
-        Alumni alumni =  alumniRepository.findByEmailAndPassword(mail,password).orElse(null);
-
-        return alumniMapper.mapResponseAlumniDTO(alumni);
-    }
 
     public ResponseAlumniDTO findAlumniByEmail(String email){
 
@@ -78,7 +72,6 @@ public class AlumniService implements UserDetailsService {
                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
         Alumni alumni = alumniMapper.mapToAlumni(alumniDTO,role);
         alumni = alumniRepository.save(alumni);
-       // logger.debug.(alumni.toString());
 
         return  alumniMapper.mapResponseAlumniDTO(alumni);
     }
