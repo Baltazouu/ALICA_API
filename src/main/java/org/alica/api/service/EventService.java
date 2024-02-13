@@ -2,12 +2,12 @@ package org.alica.api.service;
 
 
 import jakarta.el.PropertyNotFoundException;
-import org.alica.api.Dao.Alumni;
-import org.alica.api.Dao.Event;
-import org.alica.api.Dto.request.RequestEventDTO;
-import org.alica.api.Dto.response.ResponseAlumniDTO;
-import org.alica.api.Dto.response.ResponseEventDTO;
-import org.alica.api.exception.AuthenticateException;
+import org.alica.api.dao.Alumni;
+import org.alica.api.dao.Event;
+import org.alica.api.dto.request.RequestEventDTO;
+import org.alica.api.dto.response.ResponseAlumniDTO;
+import org.alica.api.dto.response.ResponseEventDTO;
+import org.alica.api.exception.InsufficientPermissions;
 import org.alica.api.exception.UpdateObjectException;
 import org.alica.api.mapper.AlumniMapper;
 import org.alica.api.mapper.EventMapper;
@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -43,13 +44,17 @@ public class EventService {
         this.alumniRepository = alumniRepository;
     }
 
-    public Page<ResponseEventDTO> findAll(Pageable page){
+    public Page<ResponseEventDTO> findAll(Pageable page, Optional<String> title) {
+        Page<Event> events;
 
-        Page<Event> events = this.eventRepository.findAll(page);
-
+        if (title.isEmpty()) {
+            events = this.eventRepository.findAll(page);
+        } else {
+            events = this.eventRepository.findByTitleContaining(title.get(), page);
+        }
         return events.map(eventMapper::mapToResponseEventDTO);
-
     }
+
 
     public ResponseEventDTO findEventById(UUID id){
         Event event = eventRepository.findById(id).orElseThrow(() -> new PropertyNotFoundException(String.format(EVENT_NOT_FOUND,id)));
@@ -66,15 +71,9 @@ public class EventService {
         return eventMapper.mapToResponseEventDTO(eventRepository.save(event));
     }
 
-    public ResponseEventDTO updateEvent(RequestEventDTO requestEventDTO, UUID id,UserDetailsImpl user){
+    public ResponseEventDTO updateEvent(RequestEventDTO requestEventDTO, UUID id){
 
         Event event = eventRepository.findById(id).orElseThrow(() -> new UpdateObjectException(String.format(EVENT_NOT_FOUND,id)));
-
-        if(user.getId() != event.getOrganizer().getId() || user.getAuthorities().stream().noneMatch(authority
-                -> authority.getAuthority().equals("ROLE_USER") ||
-                authority.getAuthority().equals("ROLE_MODERATOR")
-                ))throw new AuthenticateException(String.format("You are not able to update this event %s !",id));
-
         event.Update(requestEventDTO);
         return eventMapper.mapToResponseEventDTO(eventRepository.save(event));
     }
@@ -88,7 +87,7 @@ public class EventService {
             return;
         }
 
-        if(user.getId() != event.getOrganizer().getId()) throw new AuthenticateException(String.format("You are not the organizer of event %s !",id));
+        if(user.getId() != event.getOrganizer().getId()) throw new InsufficientPermissions(String.format("You are not the organizer of event %s !",id));
         eventRepository.deleteById(id);
     }
 

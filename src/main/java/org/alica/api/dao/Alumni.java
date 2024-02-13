@@ -1,8 +1,8 @@
-package org.alica.api.Dao;
+package org.alica.api.dao;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.alica.api.Dto.request.RequestAlumniDTO;
+import org.alica.api.dto.request.RequestAlumniDTO;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.HashSet;
@@ -38,10 +38,6 @@ public class Alumni{
     @OneToMany(mappedBy = "alumni", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Formation> formations;
 
-
-//    @JoinColumn(name = "role_id")
-//    @ManyToOne
-//    private Role role;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "USER_ROLES",

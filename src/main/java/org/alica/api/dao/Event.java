@@ -1,11 +1,11 @@
-package org.alica.api.Dao;
+package org.alica.api.dao;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.alica.api.Dto.request.RequestEventDTO;
+import org.alica.api.dto.request.RequestEventDTO;
 
 import java.util.Date;
 import java.util.HashSet;

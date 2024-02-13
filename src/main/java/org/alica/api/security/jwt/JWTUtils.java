@@ -3,12 +3,16 @@ package org.alica.api.security.jwt;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;
+import org.alica.api.exception.AuthenticateException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.logging.Logger;
 
 @Component
 public class JWTUtils {
@@ -18,6 +22,8 @@ public class JWTUtils {
 
     @Value("${jwt.expirationMs}")
     private int jwtExpirationMs;
+    
+    private final Logger logger = Logger.getLogger(JWTUtils.class.getName());
 
 
     public String generateJwtToken(Authentication authentication){
@@ -42,13 +48,13 @@ public class JWTUtils {
             Jwts.parserBuilder().setSigningKey(key()).build().parse(authToken);
             return true;
         } catch (MalformedJwtException e) {
-            System.out.println("Invalid JWT token: {}" + e.getMessage());
+            logger.info("Invalid JWT token: {}" + e.getMessage());
         } catch (ExpiredJwtException e) {
-            System.out.println("JWT token is expired: " + e.getMessage());
+            logger.info("JWT token is expired: " + e.getMessage());
         } catch (UnsupportedJwtException e) {
-            System.out.println("JWT token is unsupported: " + e.getMessage());
+            logger.info("JWT token is unsupported: " + e.getMessage());
         } catch (IllegalArgumentException e) {
-            System.out.println("JWT claims string is empty: " + e.getMessage());
+            logger.info("JWT claims string is empty: " + e.getMessage());
         }
         return false;
     }
@@ -56,6 +62,14 @@ public class JWTUtils {
     public String getUserNameFromJwtToken(String token) {
         return Jwts.parserBuilder().setSigningKey(key()).build()
                 .parseClaimsJws(token).getBody().getSubject();
+    }
+
+    public static UserDetailsImpl getUserAuthenticate(HttpServletRequest request){
+        try{
+            return (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        }catch (Exception e){
+            throw new AuthenticateException("Authentication is required to access this resource",request.getRequestURI());
+        }
     }
 
 }

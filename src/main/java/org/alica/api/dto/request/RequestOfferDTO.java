@@ -1,4 +1,4 @@
-package org.alica.api.Dto.request;
+package org.alica.api.dto.request;
 
 import jakarta.validation.constraints.NotNull;
 import org.alica.api.Enum.EContract;

@@ -1,9 +1,10 @@
 package org.alica.api.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import org.alica.api.Dto.request.RequestOfferDTO;
-import org.alica.api.Dto.response.ResponseOfferDTO;
-import org.alica.api.security.jwt.UserDetailsImpl;
+import org.alica.api.dto.request.RequestOfferDTO;
+import org.alica.api.dto.response.ResponseOfferDTO;
+import org.alica.api.security.jwt.JWTUtils;
 import org.alica.api.service.OfferService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,7 +12,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -22,14 +23,8 @@ public class OfferController {
 
     private final OfferService offerService;
 
-
-
     OfferController(OfferService offerService){
         this.offerService = offerService;
-    }
-
-    private UserDetailsImpl getUserAuthenticate(){
-        return (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -44,22 +39,25 @@ public class OfferController {
          return new ResponseEntity<>(this.offerService.findOfferById(id), HttpStatus.OK);
     }
 
+
+    @PreAuthorize("#offer.alumniId() == authentication.principal.id")
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<ResponseOfferDTO> createOffer(@Valid @RequestBody RequestOfferDTO offer){
-        return new ResponseEntity<>(this.offerService.createOffer(offer,getUserAuthenticate()), HttpStatus.CREATED);
+    public ResponseEntity<ResponseOfferDTO> createOffer(HttpServletRequest request, @Valid @RequestBody RequestOfferDTO offer){
+        return new ResponseEntity<>(this.offerService.createOffer(offer), HttpStatus.CREATED);
     }
 
+    @PreAuthorize("#offer.alumniId() == authentication.principal.id")
     @PutMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<ResponseOfferDTO> updateOffer(@Valid @RequestBody RequestOfferDTO offer, @PathVariable UUID id){
-        return new ResponseEntity<>(this.offerService.updateOffer(offer,id,getUserAuthenticate()), HttpStatus.OK);
+        return new ResponseEntity<>(this.offerService.updateOffer(offer,id), HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteOffer(@PathVariable UUID id){
-        this.offerService.deleteOffer(id,getUserAuthenticate());
+    public void deleteOffer(HttpServletRequest request,@PathVariable UUID id){
+        this.offerService.deleteOffer(id,JWTUtils.getUserAuthenticate(request));
     }
 
     @GetMapping(value= "/alumni/{id}",produces = MediaType.APPLICATION_JSON_VALUE)

@@ -1,4 +1,4 @@
-package org.alica.api.Dto.response;
+package org.alica.api.dto.response;
 import lombok.Builder;
 import org.springframework.validation.annotation.Validated;
 import java.util.UUID;

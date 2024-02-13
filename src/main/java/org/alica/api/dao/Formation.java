@@ -1,7 +1,7 @@
-package org.alica.api.Dao;
+package org.alica.api.dao;
 import jakarta.persistence.*;
 import lombok.*;
-import org.alica.api.Dto.request.RequestFormationDTO;
+import org.alica.api.dto.request.RequestFormationDTO;
 import java.util.UUID;
 
 
@@ -25,16 +25,16 @@ public class Formation {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "startDate")
+    @Column(name = "start_date")
     private String startDate;
 
-    @Column(name = "endDate")
+    @Column(name = "end_date")
     private String endDate;
 
     @Column(name = "company")
     private String company;
 
-    @Column(name = "currentJob")
+    @Column(name = "current_Job")
     private boolean currentJob;
 
     @Override
@@ -50,7 +50,7 @@ public class Formation {
                 '}';
     }
 
-    public void Update(RequestFormationDTO formationDTO) {
+    public void update(RequestFormationDTO formationDTO) {
         this.name = formationDTO.name();
         this.startDate = formationDTO.startDate();
         this.endDate = formationDTO.endDate();

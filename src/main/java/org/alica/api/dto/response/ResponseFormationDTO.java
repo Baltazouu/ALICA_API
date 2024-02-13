@@ -1,7 +1,6 @@
-package org.alica.api.Dto.response;
+package org.alica.api.dto.response;
 
 
-import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 
 import java.util.UUID;

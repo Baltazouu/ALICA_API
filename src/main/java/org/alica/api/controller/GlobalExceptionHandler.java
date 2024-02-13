@@ -1,4 +1,6 @@
 package org.alica.api.controller;
+
+import io.jsonwebtoken.JwtException;
 import jakarta.persistence.EntityNotFoundException;
 import org.alica.api.exception.AuthenticateException;
 import org.alica.api.exception.UpdateObjectException;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -106,7 +109,10 @@ public class GlobalExceptionHandler {
             AuthenticateException ex, WebRequest request) {
 
         Map<String, String> body = new HashMap<>();
+        body.put("status", String.valueOf(HttpStatus.UNAUTHORIZED.value()));
+        body.put("error", "Unauthorized");
         body.put("message", ex.getMessage());
+        body.put("path", ex.getPath());
         return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
     }
 
@@ -118,5 +124,15 @@ public class GlobalExceptionHandler {
         body.put("message", ex.getMessage());
         return new ResponseEntity<>(body, HttpStatus.NOT_MODIFIED);
     }
+
+    @ExceptionHandler(JwtException.class)
+    protected ResponseEntity<Object> handleJMException(
+            JwtException ex, WebRequest request) {
+
+        Map<String, String> body = new HashMap<>();
+        body.put("jwt exception message", ex.getMessage());
+        return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 
 }

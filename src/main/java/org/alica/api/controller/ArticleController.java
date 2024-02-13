@@ -1,7 +1,7 @@
 package org.alica.api.controller;
 import jakarta.validation.Valid;
-import org.alica.api.Dto.request.RequestArticleDTO;
-import org.alica.api.Dto.response.ResponseArticleDTO;
+import org.alica.api.dto.request.RequestArticleDTO;
+import org.alica.api.dto.response.ResponseArticleDTO;
 import org.alica.api.service.ArticleService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

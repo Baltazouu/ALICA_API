@@ -4,7 +4,6 @@ import org.alica.api.security.jwt.AuthEntryPointJWT;
 import org.alica.api.security.jwt.AuthTokenFilter;
 import org.alica.api.service.AlumniService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,17 +24,17 @@ import org.springframework.web.client.RestTemplate;
 @EnableMethodSecurity( securedEnabled = true, jsr250Enabled = true)
 public class WebSecurityConfig {
 
-    @Value("${target.api.base.url}")
-    private String targetApiUrl;
-
     private final AlumniService alumniService;
 
     private final AuthEntryPointJWT unauthorizedHandler;
+
+
 
     @Autowired
     public WebSecurityConfig(AlumniService alumniService, AuthEntryPointJWT unauthorizedHandler) {
         this.alumniService = alumniService;
         this.unauthorizedHandler = unauthorizedHandler;
+
     }
 
     @Bean
@@ -72,17 +71,19 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        // csrf -> csrf.disable()
+
         http.csrf(AbstractHttpConfigurer::disable)
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/api/auth/**").permitAll()
-                                .requestMatchers("/api/alumnis/admin/**").hasRole("ADMIN")
-                                .requestMatchers("/alumnis/**").authenticated()
                                 .requestMatchers("/swagger-ui/**").permitAll()
-                                .anyRequest().permitAll()
-                                //.anyRequest().authenticated()
+                                .requestMatchers("/api/alumni-restricted").permitAll()
+                                .requestMatchers("/api/events/**").permitAll()
+                                .requestMatchers("/api/articles/**").permitAll()
+                                .requestMatchers("/api/formations/**").permitAll()
+                                .requestMatchers("/api/alumnis/**").authenticated()
+                                .requestMatchers("/api/alumnis/admin/**").hasRole("ADMIN").anyRequest().permitAll()
                 );
 
         http.authenticationProvider(authenticationProvider());

@@ -1,5 +1,6 @@
-package org.alica.api.Dto.request;
+package org.alica.api.dto.request;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import org.springframework.validation.annotation.Validated;
@@ -8,19 +9,14 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 public record RequestAlumniDTO(
 
-        @NotNull(message = "email est required") String email,
+        @Email @NotNull(message = "email est required") String email,
         @NotNull(message = "password is required") String password,
-        //@NotNull(message = "ERole is required") ERole role,
         @NotNull(message = "entryYear is required") String entryYear,
         @NotNull(message = "firstName is required") String firstName,
         @NotNull(message = "lastName is required") String lastName,
-
         String linkedinURL,
-
         String githubURL,
-
         String portfolioURL,
-
         String imageURL
 
 ) { }

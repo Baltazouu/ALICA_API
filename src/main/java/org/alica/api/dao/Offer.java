@@ -1,8 +1,8 @@
-package org.alica.api.Dao;
+package org.alica.api.dao;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.alica.api.Dto.request.RequestOfferDTO;
+import org.alica.api.dto.request.RequestOfferDTO;
 import org.alica.api.Enum.EContract;
 import org.alica.api.Enum.ELevel;
 import org.alica.api.Enum.EStudies;
