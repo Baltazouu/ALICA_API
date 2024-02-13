@@ -39,10 +39,6 @@ public class Alumni{
     private Set<Formation> formations;
 
 
-//    @JoinColumn(name = "role_id")
-//    @ManyToOne
-//    private Role role;
-
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "USER_ROLES",
             joinColumns = {

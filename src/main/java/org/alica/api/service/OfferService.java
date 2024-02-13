@@ -47,9 +47,9 @@ public class OfferService {
         return offerMapper.mapToResponseOfferDTO(offer);
     }
 
-    public ResponseOfferDTO createOffer(RequestOfferDTO requestOfferDTO,UserDetailsImpl user){
+    public ResponseOfferDTO createOffer(RequestOfferDTO requestOfferDTO ){
 
-        Alumni alumni = alumniRepository.findById(user.getId()).orElseThrow(() -> new PropertyNotFoundException(String.format(ALUMNI_NOT_FOUND,requestOfferDTO.alumniId())));
+        Alumni alumni = alumniRepository.findById(requestOfferDTO.alumniId()).orElseThrow(() -> new PropertyNotFoundException(String.format(ALUMNI_NOT_FOUND,requestOfferDTO.alumniId())));
 
         Offer offer = offerMapper.mapToOffer(requestOfferDTO,alumni);
 
@@ -59,11 +59,9 @@ public class OfferService {
     }
 
 
-    public ResponseOfferDTO updateOffer(RequestOfferDTO requestOfferDTO, UUID id, UserDetailsImpl user){
+    public ResponseOfferDTO updateOffer(RequestOfferDTO requestOfferDTO, UUID id){
 
         Offer offer = offerRepository.findById(id).orElseThrow(() -> new PropertyNotFoundException(String.format(OFFER_NOT_FOUND,id)));
-
-        if(offer.getAlumni().getId() != user.getId()) throw new PropertyNotFoundException("You are not allowed to update this offer !");
 
         offer.Update(requestOfferDTO);
         return offerMapper.mapToResponseOfferDTO(offerRepository.save(offer));

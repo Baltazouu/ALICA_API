@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/alumni-restricted")
+@RequestMapping("/api/alumnis-restricted")
 public class AlumniRestrictedController {
 
     private final AlumniRestrictedService alumniRestrictedService;

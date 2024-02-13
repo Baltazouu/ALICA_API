@@ -86,6 +86,7 @@
 
             return ResponseAuthenticationDTO.builder()
                     .email(signInRequestDTO.email())
+                    .id(alumni.getId())
                     .token(jwtUtils.generateJwtToken(authentication))
                     .type("Bearer")
                     .roles(alumni.getRoles())

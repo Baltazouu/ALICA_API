@@ -62,24 +62,18 @@ public class EventService {
         return eventMapper.mapToResponseEventDTO(event);
     }
 
-    public ResponseEventDTO createEvent(RequestEventDTO requestEventDTO, UserDetailsImpl user){
+    public ResponseEventDTO createEvent(RequestEventDTO requestEventDTO){
 
-        Alumni alumni = alumniRepository.findById(user.getId()).orElseThrow(() -> new PropertyNotFoundException(String.format(ALUMNI_NOT_FOUND,requestEventDTO.alumniId())));
+        Alumni alumni = alumniRepository.findById(requestEventDTO.alumniId()).orElseThrow(() -> new PropertyNotFoundException(String.format(ALUMNI_NOT_FOUND,requestEventDTO.alumniId())));
 
         Event event = eventMapper.mapToEvent(requestEventDTO,alumni);
 
         return eventMapper.mapToResponseEventDTO(eventRepository.save(event));
     }
 
-    public ResponseEventDTO updateEvent(RequestEventDTO requestEventDTO, UUID id,UserDetailsImpl user){
+    public ResponseEventDTO updateEvent(RequestEventDTO requestEventDTO, UUID id){
 
         Event event = eventRepository.findById(id).orElseThrow(() -> new UpdateObjectException(String.format(EVENT_NOT_FOUND,id)));
-
-        if(user.getId() != event.getOrganizer().getId() || user.getAuthorities().stream().noneMatch(authority
-                -> authority.getAuthority().equals("ROLE_USER") ||
-                authority.getAuthority().equals("ROLE_MODERATOR")
-                ))throw new InsufficientPermissions(String.format("You are not able to update this event %s !",id));
-
         event.Update(requestEventDTO);
         return eventMapper.mapToResponseEventDTO(eventRepository.save(event));
     }

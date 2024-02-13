@@ -12,6 +12,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -38,6 +39,7 @@ public class FormationController {
         return new ResponseEntity<>(this.formationService.findFormationById(id), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('USER', 'MODERATOR', 'ADMIN')")
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<ResponseFormationDTO> createFormation(HttpServletRequest request, @Valid @RequestBody RequestFormationDTO formation) {
@@ -45,12 +47,16 @@ public class FormationController {
         return new ResponseEntity<>(this.formationService.createFormation(formation, JWTUtils.getUserAuthenticate(request)), HttpStatus.CREATED);
     }
 
+//    @PreAuthorize("hasAnyRole('USER', 'MODERATOR', 'ADMIN')")
+    @PreAuthorize("#formation.alumniId() == authentication.principal.id")
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<ResponseFormationDTO> updateFormation(HttpServletRequest request,@Valid @RequestBody RequestFormationDTO formation, @PathVariable UUID id) {
-        return new ResponseEntity<>(this.formationService.updateFormation(formation, id,JWTUtils.getUserAuthenticate(request)), HttpStatus.OK);
+        return new ResponseEntity<>(this.formationService.updateFormation(formation, id), HttpStatus.OK);
     }
 
+
+    
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteFormation(HttpServletRequest request,@PathVariable UUID id) {

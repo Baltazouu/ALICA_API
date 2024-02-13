@@ -1,10 +1,8 @@
 package org.alica.api.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.alica.api.dto.request.RequestAlumniDTO;
 import org.alica.api.dto.response.ResponseAlumniDTO;
-import org.alica.api.security.jwt.JWTUtils;
 import org.alica.api.service.AlumniService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,9 +19,7 @@ import java.util.UUID;
 @RequestMapping("/api/alumnis")
 public class AlumniController {
 
-
     private final AlumniService alumniService;
-
 
     AlumniController(AlumniService alumniService){
         this.alumniService = alumniService;
@@ -39,22 +35,14 @@ public class AlumniController {
 
 
     @PreAuthorize("hasAnyRole('USER', 'MODERATOR', 'ADMIN')")
-    @GetMapping(value = "/{email}",produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseAlumniDTO findAlumniByEmail(@PathVariable String email){
-        return this.alumniService.findAlumniByEmail(email);
+    public ResponseAlumniDTO findAlumniById(@PathVariable UUID id){
+        return this.alumniService.findAlumniById(id);
     }
 
 
-    //@RolesAllowed("ADMIN")
-    @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
-    public ResponseAlumniDTO createAlumni(@Valid @RequestBody RequestAlumniDTO alumniDTO){
-        return this.alumniService.createAlumni(alumniDTO);
-    }
-
-    @PreAuthorize("hasAnyRole('USER', 'MODERATOR', 'ADMIN')")
+    @PreAuthorize("#id == authentication.principal.id")
     @PutMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseAlumniDTO updateAlumni(@Valid @RequestBody RequestAlumniDTO alumniDTO, @PathVariable UUID id){
@@ -62,11 +50,11 @@ public class AlumniController {
 
     }
 
-    @PreAuthorize("hasAnyRole('USER', 'MODERATOR', 'ADMIN')")
-    @DeleteMapping
+    @PreAuthorize("#id == authentication.principal.id")
+    @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteAlumni(HttpServletRequest request){
-        this.alumniService.deleteAlumni(JWTUtils.getUserAuthenticate(request).getId());
+    public void deleteAlumni(@PathVariable UUID id){
+        this.alumniService.deleteAlumni(id);
     }
 
 }
