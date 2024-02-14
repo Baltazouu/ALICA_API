@@ -15,7 +15,7 @@ steps:
     commands:
       - mvn $MAVEN_CLI_OPTS clean compile test
 
-  - name: deploy-container-phpmyadmin
+  - name: deploy-container-alica-api
     image: hub.codefirst.iut.uca.fr/thomas.bellembois/codefirst-dockerproxy-clientdrone:latest
     environment:
       IMAGENAME: maven:3.8.3
@@ -27,11 +27,10 @@ steps:
       ADMINS: baptistedudonne
 
     commands:
-      - mvn compile   # Compilation
-      - mvn test      # Exécution des tests unitaires (optionnel)
-      - mvn package   # Création du package JAR exécutable
-      - mvn install   # Installation du JAR dans le dépôt local Maven (optionnel)
-      - mvn spring-boot:run   # Lancement de l'application Spring Boot
+      - mvn $MAVEN_CLI_OPTS compile   # Compilation
+      - mvn $MAVEN_CLI_OPTS package   # Création du package JAR exécutable
+      - mvn $MAVEN_CLI_OPTS install   # Installation du JAR dans le dépôt local Maven (optionnel)
+      - mvn $MAVEN_CLI_OPTS spring-boot:run   # Lancement de l'application Spring Boot
 
     depends_on: [ build-and-test ]
 
