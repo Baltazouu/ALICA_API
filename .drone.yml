@@ -25,12 +25,12 @@ steps:
       CODEFIRST_CLIENTDRONE_ENV_PMA_HOST: SAE_ALICA-API
       CODEFIRST_CLIENTDRONE_ENV_PMA_ABSOLUTE_URI: https://codefirst.iut.uca.fr/containers/sae_alica-api/
       ADMINS: baptistedudonne
-
-    commands:
-      - mvn $MAVEN_CLI_OPTS compile   # Compilation
-      - mvn $MAVEN_CLI_OPTS package   # Création du package JAR exécutable
-      - mvn $MAVEN_CLI_OPTS install   # Installation du JAR dans le dépôt local Maven (optionnel)
-      - mvn $MAVEN_CLI_OPTS spring-boot:run   # Lancement de l'application Spring Boot
+#
+#    commands:
+#      - mvn $MAVEN_CLI_OPTS compile   # Compilation
+#      - mvn $MAVEN_CLI_OPTS package   # Création du package JAR exécutable
+#      - mvn $MAVEN_CLI_OPTS install   # Installation du JAR dans le dépôt local Maven (optionnel)
+#      - mvn $MAVEN_CLI_OPTS spring-boot:run   # Lancement de l'application Spring Boot
 
 #    depends_on: [ build-and-test ]
 
