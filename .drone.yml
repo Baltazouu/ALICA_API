@@ -15,6 +15,26 @@ steps:
     commands:
       - mvn $MAVEN_CLI_OPTS clean compile test
 
+  - name: deploy-container-phpmyadmin
+    image: hub.codefirst.iut.uca.fr/thomas.bellembois/codefirst-dockerproxy-clientdrone:latest
+    environment:
+      IMAGENAME: maven:3.8.3
+      CONTAINERNAME: maven
+      COMMAND: create
+      OVERWRITE: true
+      CODEFIRST_CLIENTDRONE_ENV_PMA_HOST: SAE_ALICA-API
+      CODEFIRST_CLIENTDRONE_ENV_PMA_ABSOLUTE_URI: https://codefirst.iut.uca.fr/containers/sae_alica-api/
+      ADMINS: baptistedudonne
+
+    commands:
+      mvn compile   # Compilation
+      mvn test      # Exécution des tests unitaires (optionnel)
+      mvn package   # Création du package JAR exécutable
+      mvn install   # Installation du JAR dans le dépôt local Maven (optionnel)
+      mvn spring-boot:run   # Lancement de l'application Spring Boot
+
+    depends_on: [ build-and-test ]
+
 #  - name: code-inspection
 #    image: maven:3.8.3
 #    environment:
