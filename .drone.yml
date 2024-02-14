@@ -27,11 +27,11 @@ steps:
       ADMINS: baptistedudonne
 
     commands:
-      mvn compile   # Compilation
-      mvn test      # Exécution des tests unitaires (optionnel)
-      mvn package   # Création du package JAR exécutable
-      mvn install   # Installation du JAR dans le dépôt local Maven (optionnel)
-      mvn spring-boot:run   # Lancement de l'application Spring Boot
+      - mvn compile   # Compilation
+      - mvn test      # Exécution des tests unitaires (optionnel)
+      - mvn package   # Création du package JAR exécutable
+      - mvn install   # Installation du JAR dans le dépôt local Maven (optionnel)
+      - mvn spring-boot:run   # Lancement de l'application Spring Boot
 
     depends_on: [ build-and-test ]
 
