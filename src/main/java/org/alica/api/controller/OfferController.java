@@ -40,20 +40,21 @@ public class OfferController {
     }
 
 
-    @PreAuthorize("#offer.alumniId() == authentication.principal.id")
+    @PreAuthorize("isAuthenticated() && #offer.alumniId() == authentication.principal.id")
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<ResponseOfferDTO> createOffer(HttpServletRequest request, @Valid @RequestBody RequestOfferDTO offer){
         return new ResponseEntity<>(this.offerService.createOffer(offer), HttpStatus.CREATED);
     }
 
-    @PreAuthorize("#offer.alumniId() == authentication.principal.id")
+    @PreAuthorize("isAuthenticated() && #offer.alumniId() == authentication.principal.id")
     @PutMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<ResponseOfferDTO> updateOffer(@Valid @RequestBody RequestOfferDTO offer, @PathVariable UUID id){
         return new ResponseEntity<>(this.offerService.updateOffer(offer,id), HttpStatus.OK);
     }
 
+    // gestion des droits du delete dans le service à voir et modifier certainement
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteOffer(HttpServletRequest request,@PathVariable UUID id){

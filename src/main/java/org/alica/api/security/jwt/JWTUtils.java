@@ -72,4 +72,12 @@ public class JWTUtils {
         }
     }
 
+    public static UserDetailsImpl getUserAuthenticate(){
+        try{
+            return (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        }catch (Exception e){
+            throw new AuthenticateException("Authentication is required to access this resource","");
+        }
+    }
+
 }

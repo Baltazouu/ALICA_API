@@ -56,6 +56,7 @@ public class FormationController {
     }
 
 
+    // gestion du delete dans le service à voir et modifier certainement
     
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

@@ -5,7 +5,7 @@ import java.util.UUID;
 
 public record ResponseEventDTO(
         UUID id,
-        UUID alumniId,
+        UUID organizerId,
         String title,
         String imageURL,
         String description,

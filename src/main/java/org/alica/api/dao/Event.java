@@ -17,7 +17,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "Event")
+@Table(name = "Event",uniqueConstraints = {@UniqueConstraint(name = "title_index", columnNames = {"title"})})
 public class Event {
 
     @Id
@@ -39,7 +39,7 @@ public class Event {
     @Column(name = "date")
     private Date date;
 
-    @Column(name="nbMaxRegistrations")
+    @Column(name="nb_Max_Registrations")
     private int nbMaxRegistrations;
 
     @ManyToMany
@@ -50,7 +50,7 @@ public class Event {
     )
     private Set<Alumni> alumnis = new HashSet<>();
 
-    @Column(name = "nbRegistrations")
+    @Column(name = "nb_Registrations")
     private int nbRegistrations;
 
     @PrePersist
@@ -58,8 +58,7 @@ public class Event {
         this.nbRegistrations = this.alumnis.size();
     }
 
-
-    public void Update(RequestEventDTO requestEventDTO){
+    public void update(RequestEventDTO requestEventDTO){
         this.title = requestEventDTO.title();
         this.imageURL = requestEventDTO.imageURL();
         this.description = requestEventDTO.description();

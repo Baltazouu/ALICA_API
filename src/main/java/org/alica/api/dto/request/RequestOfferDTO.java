@@ -1,6 +1,7 @@
 package org.alica.api.dto.request;
 
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import org.alica.api.Enum.EContract;
 import org.alica.api.Enum.ELevel;
 import org.alica.api.Enum.EStudies;
@@ -8,6 +9,7 @@ import org.springframework.validation.annotation.Validated;
 
 import java.util.UUID;
 
+@Builder
 @Validated
 public record RequestOfferDTO(
 

@@ -53,6 +53,7 @@ public class EventController {
         return new ResponseEntity<>(this.eventService.updateEvent(event,id), HttpStatus.OK);
     }
 
+    // gestion du delete dans le service à voir et modifier certainement
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteEvent(@PathVariable UUID id) {
@@ -67,15 +68,16 @@ public class EventController {
     }
 
 
-    @PreAuthorize("#userId == authentication.principal.id")
+    @PreAuthorize("isAuthenticated() && #userId == authentication.principal.id")
     @GetMapping("/subscribe/{userId}/{eventId}")
     @ResponseStatus(HttpStatus.OK)
     public void subscribe(@PathVariable UUID userId,@PathVariable UUID eventId) {
         this.eventService.subscribe(eventId,userId);
     }
 
-    // user id is passed by user details
-    @PreAuthorize("#userId == authentication.principal.id")
+
+    //@PreAuthorize("#userId == authentication.principal.id")
+    @PreAuthorize("isAuthenticated() && #userId == authentication.principal.id")
     @GetMapping("/unsubscribe/{userId}/{eventId}")
     @ResponseStatus(HttpStatus.OK)
     public void unsubscribe(@PathVariable UUID userId, @PathVariable UUID eventId) {

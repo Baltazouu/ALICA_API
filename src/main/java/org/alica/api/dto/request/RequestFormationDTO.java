@@ -6,8 +6,8 @@ import org.springframework.validation.annotation.Validated;
 
 import java.util.UUID;
 
-@Validated
 @Builder
+@Validated
 public record RequestFormationDTO(
         @NotNull(message = "alumniId is required") UUID alumniId,
         @NotNull(message = "name is required") String name,

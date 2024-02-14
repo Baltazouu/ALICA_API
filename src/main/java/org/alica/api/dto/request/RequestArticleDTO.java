@@ -1,9 +1,13 @@
 package org.alica.api.dto.request;
+
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.UUID;
 
+
+@Builder
 @Validated
 public record RequestArticleDTO(
     @NotNull(message = "alumniId is required") UUID alumniId,

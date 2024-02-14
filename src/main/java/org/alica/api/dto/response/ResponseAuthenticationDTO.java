@@ -11,8 +11,7 @@ import java.util.UUID;
 public record ResponseAuthenticationDTO(
         String token,
         String type,
-       // UUID id,
         String email,
         UUID id,
-        Set<Role> roles
+        Set<Role> role
 ) { }

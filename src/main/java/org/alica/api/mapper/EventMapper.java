@@ -12,7 +12,7 @@ import org.mapstruct.factory.Mappers;
 public interface EventMapper {
     EventMapper INSTANCE = Mappers.getMapper(EventMapper.class);
 
-    @Mapping(target = "alumniId", source = "organizer.id")
+    @Mapping(target = "organizerId", source = "organizer.id")
     ResponseEventDTO mapToResponseEventDTO(Event event);
 
     @Mapping(target = "organizer", source = "alumni")

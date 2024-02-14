@@ -1,9 +1,9 @@
     package org.alica.api.service;
 
 
+    import org.alica.api.Enum.ERole;
     import org.alica.api.dao.Alumni;
     import org.alica.api.dao.Role;
-    import org.alica.api.Enum.ERole;
     import org.alica.api.dto.request.SignInRequestDTO;
     import org.alica.api.dto.request.SignupRequestDTO;
     import org.alica.api.dto.response.ResponseAuthenticationDTO;
@@ -89,7 +89,7 @@
                     .id(alumni.getId())
                     .token(jwtUtils.generateJwtToken(authentication))
                     .type("Bearer")
-                    .roles(alumni.getRoles())
+                    .role(alumni.getRoles())
                     .build();
         }
 

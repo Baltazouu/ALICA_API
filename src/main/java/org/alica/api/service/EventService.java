@@ -74,7 +74,7 @@ public class EventService {
     public ResponseEventDTO updateEvent(RequestEventDTO requestEventDTO, UUID id){
 
         Event event = eventRepository.findById(id).orElseThrow(() -> new UpdateObjectException(String.format(EVENT_NOT_FOUND,id)));
-        event.Update(requestEventDTO);
+        event.update(requestEventDTO);
         return eventMapper.mapToResponseEventDTO(eventRepository.save(event));
     }
 
