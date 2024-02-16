@@ -16,8 +16,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -48,6 +52,8 @@ class AlumniServiceTest {
             .imageURL("imageURL.png")
             .linkedinURL("linkedinURL")
             .entryYear("2015")
+            .password("password")
+            .roles(new HashSet<>())
             .build();
 
 
@@ -169,7 +175,30 @@ class AlumniServiceTest {
     }
 
 
+    @Test
+    void testLoadByUsernameShouldSucceed() {
+        // Given
+        when(alumniRepository.findByEmail(alumni.getEmail())).thenReturn(Optional.of(alumni));
+        // When
+        UserDetails userDetails = alumniService.loadUserByUsername(alumni.getEmail());
+        // Then
+        assertEquals(alumni.getEmail(), userDetails.getUsername());
+    }
 
+    @Test
+    void testLoadByUsernameWithInvalidEmail() {
+        // Given
+        when(alumniRepository.findByEmail(alumni.getEmail())).thenReturn(Optional.empty());
+        // When / Then
+        assertThrows(UsernameNotFoundException.class, () -> alumniService.loadUserByUsername(alumni.getEmail()));
+    }
 
+    @Test
+    void testLoadByUsernameWithNullEmail() {
+        // Given
+        when(alumniRepository.findByEmail(null)).thenReturn(Optional.empty());
+        // When / Then
+        assertThrows(UsernameNotFoundException.class, () -> alumniService.loadUserByUsername(null));
+    }
 
 }
