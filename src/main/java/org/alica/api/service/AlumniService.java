@@ -2,11 +2,8 @@ package org.alica.api.service;
 
 import jakarta.transaction.Transactional;
 import org.alica.api.dao.Alumni;
-import org.alica.api.dao.Role;
-import org.alica.api.Enum.ERole;
 import org.alica.api.dto.request.RequestAlumniDTO;
 import org.alica.api.dto.response.ResponseAlumniDTO;
-import org.alica.api.exception.UpdateObjectException;
 import org.alica.api.mapper.AlumniMapper;
 import org.alica.api.repository.AlumniRepository;
 import org.alica.api.repository.RoleRepository;
@@ -19,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -60,20 +58,9 @@ public class AlumniService implements UserDetailsService {
 
     public ResponseAlumniDTO updateAlumni(RequestAlumniDTO alumniDTO, UUID id){
 
-        Alumni alumni = alumniRepository.findById(id).orElseThrow(() -> new UpdateObjectException(String.format(ALUMNI_NOT_FOUND,alumniDTO.email())));
+        Alumni alumni = alumniRepository.findById(id).orElseThrow(() -> new PropertyNotFoundException(String.format(ALUMNI_NOT_FOUND,alumniDTO.email())));
         alumni.update(alumniDTO);
         return alumniMapper.mapResponseAlumniDTO(alumniRepository.save(alumni));
-    }
-
-
-    public ResponseAlumniDTO createAlumni(RequestAlumniDTO alumniDTO){
-
-        Role role = roleRepository.findByName(ERole.USER)
-                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-        Alumni alumni = alumniMapper.mapToAlumni(alumniDTO,role);
-        alumni = alumniRepository.save(alumni);
-
-        return  alumniMapper.mapResponseAlumniDTO(alumni);
     }
 
 
