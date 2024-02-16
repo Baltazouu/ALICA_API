@@ -41,7 +41,7 @@ steps:
       sonar_host: https://codefirst.iut.uca.fr/sonar/
       sonar_token:
         from_secret: API_SPRINGBOOT_SECRET
-      project_key: ALICA_API_SPRINGBOOT
+      project_key: ALICA_TEST
     commands:
      # - mvn clean verify sonar:sonar -Dsonar.login=${sonar_token}
        - mvn clean verify sonar:sonar -Dsonar.login=${sonar_token}
