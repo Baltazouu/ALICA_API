@@ -41,9 +41,9 @@ steps:
       sonar_token:
         from_secret: API_SPRINGBOOT_SECRET
       project_key : ALICA_API_SPRINGBOOT
-    commands:
-      #- mvn sonar:sonar -Dsonar.login=$${sonar_token}
-      - mvn sonar:sonar -Dsonar.login=squ_354bd43414cc96f0efe4160623f39d5c5eff200f
+#    commands:
+#      #- mvn sonar:sonar -Dsonar.login=$${sonar_token}
+#      - mvn sonar:sonar -Dsonar.login=
 
 #  - name: generate-and-deploy-docs
 #    image: hub.codefirst.iut.uca.fr/thomas.bellembois/codefirst-docdeployer
