@@ -42,10 +42,10 @@ steps:
         from_secret: API_SPRINGBOOT_SECRET
       project_key : ALICA_API_SPRINGBOOT
     commands:
-      mvn clean verify sonar:sonar \
-      -Dsonar.projectKey=etl \
-      -Dsonar.projectName='etl' \
-      -Dsonar.host.url=https://codefirst.iut.uca.fr/sonar/ \
+      mvn clean verify sonar:sonar 
+      -Dsonar.projectKey=etl 
+      -Dsonar.projectName='etl' 
+      -Dsonar.host.url=https://codefirst.iut.uca.fr/sonar/ 
       -Dsonar.token=$${sonar_token}
       #- mvn sonar:sonar -Dsonar.login=$${sonar_token}
 #      - mvn sonar:sonar -Dsonar.login=
