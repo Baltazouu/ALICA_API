@@ -10,22 +10,22 @@ trigger:
     - push
 
 steps:
-#  - name: build-and-test
-#    image: maven:3.8.3
-#    commands:
-#      - mvn $MAVEN_CLI_OPTS clean compile test
+  - name: build-and-test
+    image: maven:3.8.3
+    commands:
+      - mvn $MAVEN_CLI_OPTS clean compile test
 
-  - name: deploy-container-alica-api
-    image: hub.codefirst.iut.uca.fr/thomas.bellembois/codefirst-dockerproxy-clientdrone:latest
-    environment:
-      IMAGENAME: maven:3.8.3
-      CONTAINERNAME: maven
-      COMMAND: create
-      OVERWRITE: true
-      CODEFIRST_CLIENTDRONE_ENV_PMA_HOST: SAE_ALICA-API
-      CODEFIRST_CLIENTDRONE_ENV_PMA_ABSOLUTE_URI: https://codefirst.iut.uca.fr/containers/sae_alica-api/
-      ADMINS: baptistedudonne
-#
+#  - name: deploy-container-alica-api
+#    image: hub.codefirst.iut.uca.fr/thomas.bellembois/codefirst-dockerproxy-clientdrone:latest
+#    environment:
+#      IMAGENAME: maven:3.8.3
+#      CONTAINERNAME: maven
+#      COMMAND: create
+#      OVERWRITE: true
+#      CODEFIRST_CLIENTDRONE_ENV_PMA_HOST: SAE_ALICA-API
+#      CODEFIRST_CLIENTDRONE_ENV_PMA_ABSOLUTE_URI: https://codefirst.iut.uca.fr/containers/sae_alica-api/
+#      ADMINS: baptistedudonne
+
 #    commands:
 #      - mvn $MAVEN_CLI_OPTS compile   # Compilation
 #      - mvn $MAVEN_CLI_OPTS package   # Création du package JAR exécutable
@@ -34,15 +34,15 @@ steps:
 
 #    depends_on: [ build-and-test ]
 
-#  - name: code-inspection
-#    image: maven:3.8.3
-#    environment:
-#      sonar_host: https://codefirst.iut.uca.fr/sonar/
-#      sonar_token:
-#        from_secret: API_SPRINGBOOT_SECRET
-#      project_key : ALICA_API_SPRINGBOOT
-#    commands:
-#      - mvn sonar:sonar -Dsonar.login=$${sonar_token}
+  - name: code-inspection
+    image: maven:3.8.3
+    environment:
+      sonar_host: https://codefirst.iut.uca.fr/sonar/
+      sonar_token:
+        from_secret: API_SPRINGBOOT_SECRET
+      project_key : ALICA_API_SPRINGBOOT
+    commands:
+      - mvn sonar:sonar -Dsonar.login=$${sonar_token}
 
 #  - name: generate-and-deploy-docs
 #    image: hub.codefirst.iut.uca.fr/thomas.bellembois/codefirst-docdeployer
