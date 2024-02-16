@@ -46,8 +46,8 @@ steps:
       - mvn clean verify sonar:sonar
       # -Dsonar.projectKey=ALICA_API_SPRINGBOOT
       # -Dsonar.projectName='API_SPRINGBOOT_ALICA'
-      # -Dsonar.host.url=https://codefirst.iut.uca.fr/sonar/
-       -Dsonar.login=${sonar_token}
+      #  -Dsonar.host.url=https://codefirst.iut.uca.fr/sonar/
+        -Dsonar.login=${sonar_token}
       #- mvn sonar:sonar -Dsonar.login=$${sonar_token}
 #      - mvn sonar:sonar -Dsonar.login=
 
