@@ -2,6 +2,7 @@ package org.alica.api.service;
 
 
 import jakarta.el.PropertyNotFoundException;
+import org.alica.api.dao.Alumni;
 import org.alica.api.dto.response.ResponseAlumniRestricted;
 import org.alica.api.mapper.AlumniMapper;
 import org.alica.api.repository.AlumniRepository;
@@ -29,6 +30,9 @@ public class AlumniRestrictedService {
     }
 
     public ResponseAlumniRestricted findById(UUID id){
-        return this.alumniRepository.findById(id).map(alumniRestrictedMapper::mapResponseAlumniRestricted).orElseThrow(() -> new PropertyNotFoundException("Alumni not found"));
+        Alumni alumni =  this.alumniRepository.findById(id).orElseThrow(() -> new PropertyNotFoundException("Alumni not found"));
+       // return .map(alumniRestrictedMapper::mapResponseAlumniRestricted).orElseThrow(() -> new PropertyNotFoundException("Alumni not found"));
+        System.out.println(alumni);
+        return alumniRestrictedMapper.mapResponseAlumniRestricted(alumni);
     }
 }

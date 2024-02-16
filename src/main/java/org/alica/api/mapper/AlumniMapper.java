@@ -38,4 +38,12 @@ public interface AlumniMapper {
 
 
     ResponseAlumniRestricted mapResponseAlumniRestricted(Alumni alumni);
+
+//    @Mapping(target = "id", ignore = true) // ignore bc generated with db
+//    @Mapping(target = "formations", ignore = true)
+//    @Mapping(target = "events", ignore = true)
+//    @Mapping(target = "articles", ignore = true)
+//    @Mapping(target = "offers", ignore = true)
+//    @Mapping(target = "roles", ignore = true)
+//    Alumni mapToAlumni(ResponseAlumniRestricted alumniRestricted);
 }
