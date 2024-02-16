@@ -36,6 +36,7 @@ steps:
 
   - name: code-inspection
     image: maven
+    secrets: [ API_SPRINGBOOT_SECRET ]
     environment:
       sonar_host: https://codefirst.iut.uca.fr/sonar/
       sonar_token:
@@ -43,9 +44,9 @@ steps:
       project_key : ALICA_API_SPRINGBOOT
     commands:
       - mvn clean verify sonar:sonar
-       -Dsonar.projectKey=ALICA_API_SPRINGBOOT
-       -Dsonar.projectName='API_SPRINGBOOT_ALICA'
-       -Dsonar.host.url=https://codefirst.iut.uca.fr/sonar/
+#       -Dsonar.projectKey=ALICA_API_SPRINGBOOT
+#       -Dsonar.projectName='API_SPRINGBOOT_ALICA'
+#       -Dsonar.host.url=https://codefirst.iut.uca.fr/sonar/
        -Dsonar.login=$${sonar_token}
       #- mvn sonar:sonar -Dsonar.login=$${sonar_token}
 #      - mvn sonar:sonar -Dsonar.login=
