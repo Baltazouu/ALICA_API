@@ -35,14 +35,14 @@ steps:
 #    depends_on: [ build-and-test ]
 
   - name: code-inspection
-    image: maven:3.8.3
+    image: maven
     environment:
       sonar_host: https://codefirst.iut.uca.fr/sonar/
       sonar_token:
         from_secret: API_SPRINGBOOT_SECRET
       project_key : ALICA_API_SPRINGBOOT
-#    commands:
-#      #- mvn sonar:sonar -Dsonar.login=$${sonar_token}
+    commands:
+      - mvn sonar:sonar -Dsonar.login=$${sonar_token}
 #      - mvn sonar:sonar -Dsonar.login=
 
 #  - name: generate-and-deploy-docs
