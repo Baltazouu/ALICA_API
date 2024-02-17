@@ -1,28 +1,17 @@
-## Utiliser une image de base avec Java
-#FROM openjdk:17-jdk-slim
-#
-## Définir le répertoire de travail dans le conteneur
-#WORKDIR /app
-#
-## Copier le fichier pom.xml dans le répertoire de travail
-#COPY pom.xml .
-#
-## Copier tout le contenu du répertoire de construction (à l'exception de Dockerfile) dans le répertoire de travail
-#COPY src ./src
-#
-## Exécuter Maven pour construire le projet
-#RUN apt-get update && apt-get install -y maven && mvn package -DskipTests
-#
-## Commande à exécuter lorsque le conteneur démarre
-#CMD ["java", "-jar", "target/ALICA_API-0.0.1-SNAPSHOT.jar"]
+# Use official OpenJDK 17 image as base
+FROM openjdk:17
 
-
-FROM openjdk:18
+# Set the working directory inside the container
 WORKDIR /app
-COPY .mvn/ .mvn
-COPY mvnw pom.xml ./
-RUN ./mvnw dependency:go-offline
 
-COPY src ./src
+# Copy the packaged JAR file into the container at the working directory
+COPY target/ALICA_API-0.0.1-SNAPSHOT.jar /app/ALICA_API.jar
 
-CMD ["./mvnw", "spring-boot:run"]
+# Copier les fichiers de configuration dans le conteneur
+COPY src/main/resources/application-prod.properties /app/application-prod.properties
+
+# Exposer le port sur lequel votre application Spring Boot s'exécutera
+EXPOSE 8080
+
+# Commande pour exécuter l'application Spring Boot
+CMD ["java", "-jar", "ALICA_API.jar", "--spring.config.location=file:/app/application-prod.properties"]

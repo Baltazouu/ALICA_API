@@ -1,8 +1,15 @@
 package org.alica.api.security;
 
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Contact;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.alica.api.security.jwt.AuthEntryPointJWT;
 import org.alica.api.security.jwt.AuthTokenFilter;
-import org.alica.api.service.AlumniService;
+import org.alica.api.services.AlumniService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,6 +42,12 @@ public class WebSecurityConfig {
         this.alumniService = alumniService;
         this.unauthorizedHandler = unauthorizedHandler;
 
+    }
+
+    private SecurityScheme createAPIKeyScheme() {
+        return new SecurityScheme().type(SecurityScheme.Type.HTTP)
+                .bearerFormat("JWT")
+                .scheme("bearer");
     }
 
     @Bean
@@ -81,9 +94,10 @@ public class WebSecurityConfig {
                                 .requestMatchers("/api/alumni-restricted").permitAll()
                                 .requestMatchers("/api/events/**").permitAll()
                                 .requestMatchers("/api/articles/**").permitAll()
-                                .requestMatchers("/api/formations/**").permitAll()
+                                .requestMatchers("/api/formations/**").authenticated()
                                 .requestMatchers("/api/alumnis/**").authenticated()
-                                .requestMatchers("/api/alumnis/admin/**").hasRole("ADMIN").anyRequest().permitAll()
+                                .requestMatchers("/api/alumnis/admin/**").hasRole("ADMIN")
+                                .anyRequest().permitAll()
                 );
 
         http.authenticationProvider(authenticationProvider());
@@ -92,5 +106,20 @@ public class WebSecurityConfig {
 
         return http.build();
     }
+
+    @Bean
+    public OpenAPI openAPI() {
+        return new OpenAPI()
+                .components(new Components().addSecuritySchemes("Bearer Authentication", createAPIKeyScheme()))
+                .info(new Info().title("ALICA - REST API")
+                        .description("API Rest | ALICA : Réseau des anciens élèves de l'IUT Clermont Auvergne")
+                        .version("1.0").contact(new Contact().name("ALICA")
+                                .email("baptiste.dudonne@etu.uca.fr").url("www.uca.fr"))
+                        .license(new License().name("License of API")
+                                .url("API license URL")))
+                .addSecurityItem(new SecurityRequirement().addList("Bearer Authentication")
+                        .addList("authenticated"));
+    }
+
 }
 

@@ -4,7 +4,7 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
-import org.alica.api.exception.AuthenticateException;
+import org.alica.api.exceptions.AuthenticateException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -69,6 +69,14 @@ public class JWTUtils {
             return (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         }catch (Exception e){
             throw new AuthenticateException("Authentication is required to access this resource",request.getRequestURI());
+        }
+    }
+
+    public static UserDetailsImpl getUserAuthenticate(){
+        try{
+            return (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        }catch (Exception e){
+            throw new AuthenticateException("Authentication is required to access this resource","");
         }
     }
 

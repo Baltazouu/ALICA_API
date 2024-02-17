@@ -56,32 +56,31 @@ public class Alumni{
     private String password;
 
 
-    @Column(name = "firstName")
+    @Column(name = "first_name")
     private String firstName;
 
-    @Column(name = "surName")
+    @Column(name = "sur_name")
     private String lastName;
 
-    @Column(name = "entryYear")
+    @Column(name = "entry_year")
     private String entryYear;
 
-    @Column(name = "linkedinUrl")
+    @Column(name = "linkedin_url")
     private String linkedinURL;
 
-    @Column(name = "githubUrl")
+    @Column(name = "github_url")
     private String githubURL;
 
-    @Column(name = "portfolioUrl")
+    @Column(name = "portfolio_url")
     private String portfolioURL;
 
-    @Column(name  = "imageUrl")
+    @Column(name  = "image_url")
     private String imageURL;
 
 
     public void update(RequestAlumniDTO dto){
         this.email = dto.email();
         this.password = dto.password();
-       // this.role = role
         this.entryYear = dto.entryYear();
         this.firstName = dto.firstName();
         this.lastName = dto.lastName();
@@ -90,6 +89,7 @@ public class Alumni{
         this.portfolioURL = dto.portfolioURL();
         this.imageURL = dto.imageURL();
     }
+
 
     @Override
     public String toString() {
