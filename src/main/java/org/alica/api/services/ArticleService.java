@@ -1,6 +1,8 @@
 package org.alica.api.services;
 
 import jakarta.persistence.EntityNotFoundException;
+import org.alica.api.controllers.AlumniController;
+import org.alica.api.controllers.ArticleController;
 import org.alica.api.dao.Alumni;
 import org.alica.api.dao.Article;
 import org.alica.api.dto.request.RequestArticleDTO;
@@ -11,9 +13,13 @@ import org.alica.api.repository.AlumniRepository;
 import org.alica.api.repository.ArticleRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Service
 public class ArticleService {
@@ -34,23 +40,46 @@ public class ArticleService {
         this.alumniRepository = alumniRepository;
     }
 
+    public void addHateoasLinks(ResponseArticleDTO articleDTO) {
+
+
+        Link selfLink = linkTo(methodOn(ArticleController.class).findArticleById(articleDTO.getId())).withSelfRel();
+        Link alumni = linkTo(methodOn(AlumniController.class).findAlumniById(articleDTO.getAlumniId())).withRel("alumni");
+        Link alumniRestricted = linkTo(methodOn(AlumniController.class).findAlumniById(articleDTO.getAlumniId())).withRel("alumniRestricted");
+
+        articleDTO.add(selfLink);
+        articleDTO.add(alumni);
+        articleDTO.add(alumniRestricted);
+    }
+
     public Page<ResponseArticleDTO> findAll(Pageable page){
 
         Page<Article> articles = this.articleRepository.findAll(page);
 
-        return articles.map(ARTICLE_MAPPER::mapToResponseArticleDTO);
+        Page<ResponseArticleDTO> responseArticleDTOS =  articles.map(ARTICLE_MAPPER::mapToResponseArticleDTO);
+
+        responseArticleDTOS.forEach(this::addHateoasLinks);
+
+        return responseArticleDTOS;
     }
 
     public ResponseArticleDTO findArticleById(UUID id){
         Article article = this.articleRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(String.format(ARTICLE_NOT_FOUND,id)));
-        return ARTICLE_MAPPER.mapToResponseArticleDTO(article);
+        ResponseArticleDTO responseArticleDTO =  ARTICLE_MAPPER.mapToResponseArticleDTO(article);
+
+        addHateoasLinks(responseArticleDTO);
+
+        return responseArticleDTO;
     }
 
     public ResponseArticleDTO createArticle(RequestArticleDTO article){
         Alumni alumni = this.alumniRepository.findById(article.alumniId()).orElseThrow(() -> new EntityNotFoundException(String.format(ALUMNI_NOT_FOUND,article.alumniId())));
         Article newArticle = ARTICLE_MAPPER.mapToArticle(article,alumni);
 
-        return ARTICLE_MAPPER.mapToResponseArticleDTO(this.articleRepository.save(newArticle));
+        ResponseArticleDTO responseArticleDTO = ARTICLE_MAPPER.mapToResponseArticleDTO(this.articleRepository.save(newArticle));
+        addHateoasLinks(responseArticleDTO);
+
+        return responseArticleDTO;
     }
 
     public ResponseArticleDTO updateArticle(RequestArticleDTO article, UUID id){
@@ -59,7 +88,12 @@ public class ArticleService {
         articleToUpdate.setTitle(article.title());
         articleToUpdate.setContent(article.content());
         articleToUpdate.setAlumni(alumni);
-        return ARTICLE_MAPPER.mapToResponseArticleDTO(this.articleRepository.save(articleToUpdate));
+        ResponseArticleDTO  responseArticleDTO =  ARTICLE_MAPPER.mapToResponseArticleDTO(this.articleRepository.save(articleToUpdate));
+
+        addHateoasLinks(responseArticleDTO);
+
+        return responseArticleDTO;
+
     }
 
 
@@ -75,7 +109,11 @@ public class ArticleService {
     public Page<ResponseArticleDTO> findArticleByAlumniId(UUID id, Pageable page){
         Alumni alumni = this.alumniRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(String.format(ALUMNI_NOT_FOUND,id)));
         Page<Article> articles = this.articleRepository.findByAlumni(alumni,page);
-        return articles.map(ARTICLE_MAPPER::mapToResponseArticleDTO);
+        Page<ResponseArticleDTO> responseArticleDTOS =  articles.map(ARTICLE_MAPPER::mapToResponseArticleDTO);
+
+        responseArticleDTOS.forEach(this::addHateoasLinks);
+
+        return responseArticleDTOS;
     }
 
 

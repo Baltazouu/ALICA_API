@@ -30,7 +30,6 @@ public class ResponseAlumniDTO extends RepresentationModel<ResponseAlumniDTO> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
         ResponseAlumniDTO that = (ResponseAlumniDTO) o;
         return Objects.equals(id, that.id) && Objects.equals(email, that.email) && role == that.role && Objects.equals(entryYear, that.entryYear) && Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName) && Objects.equals(linkedinURL, that.linkedinURL) && Objects.equals(githubURL, that.githubURL) && Objects.equals(portfolioURL, that.portfolioURL) && Objects.equals(imageURL, that.imageURL);
     }
@@ -38,6 +37,22 @@ public class ResponseAlumniDTO extends RepresentationModel<ResponseAlumniDTO> {
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), id, email, role, entryYear, firstName, lastName, linkedinURL, githubURL, portfolioURL, imageURL);
+    }
+
+    @Override
+    public String toString() {
+        return "ResponseAlumniDTO{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", role=" + role +
+                ", entryYear='" + entryYear + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", linkedinURL='" + linkedinURL + '\'' +
+                ", githubURL='" + githubURL + '\'' +
+                ", portfolioURL='" + portfolioURL + '\'' +
+                ", imageURL='" + imageURL + '\'' +
+                '}';
     }
 }
 

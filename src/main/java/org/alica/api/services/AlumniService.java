@@ -43,15 +43,13 @@ public class AlumniService implements UserDetailsService {
 
 
 
-    public void addHateoasLinks(ResponseAlumniDTO alumniDTO) {
+    public static void addHateoasLinks(ResponseAlumniDTO alumniDTO) {
 
         Link selfLink = linkTo(methodOn(AlumniController.class).findAlumniById(alumniDTO.getId())).withSelfRel();
-        Link updateLink = linkTo(methodOn(AlumniController.class).updateAlumni(null, alumniDTO.getId())).withRel("update");
         Link offersLink = linkTo(methodOn(OfferController.class).findOfferByAlumniId(alumniDTO.getId(), null)).withRel("offers");
         Link eventsLink = linkTo(methodOn(EventController.class).findEventByAlumniId(alumniDTO.getId(),null)).withRel("events");
         Link formationsLink = linkTo(methodOn(AlumniController.class).findAlumniById(alumniDTO.getId())).withRel("formations");
         alumniDTO.add(selfLink);
-        alumniDTO.add(updateLink);
         alumniDTO.add(offersLink);
         alumniDTO.add(eventsLink);
         alumniDTO.add(formationsLink);
@@ -73,7 +71,9 @@ public class AlumniService implements UserDetailsService {
 
         Alumni alumni = alumniRepository.findByEmail(email).orElseThrow(() -> new PropertyNotFoundException(String.format(ALUMNI_NOT_FOUND,email)));
 
-        return alumniMapper.mapResponseAlumniDTO(alumni);
+        ResponseAlumniDTO responseAlumniDTO = alumniMapper.mapResponseAlumniDTO(alumni);
+        addHateoasLinks(responseAlumniDTO);
+        return responseAlumniDTO;
 
     }
 
@@ -82,7 +82,9 @@ public class AlumniService implements UserDetailsService {
 
         Alumni alumni = alumniRepository.findById(id).orElseThrow(() -> new PropertyNotFoundException(String.format(ALUMNI_NOT_FOUND,alumniDTO.email())));
         alumni.update(alumniDTO);
-        return alumniMapper.mapResponseAlumniDTO(alumniRepository.save(alumni));
+        ResponseAlumniDTO responseAlumniDTO = alumniMapper.mapResponseAlumniDTO(alumniRepository.save(alumni));
+        addHateoasLinks(responseAlumniDTO);
+        return responseAlumniDTO;
     }
 
 
@@ -90,7 +92,9 @@ public class AlumniService implements UserDetailsService {
 
         Alumni alumni = alumniRepository.findById(id).orElseThrow(() -> new PropertyNotFoundException(String.format(ALUMNI_NOT_FOUND,id)));
 
-        return alumniMapper.mapResponseAlumniDTO(alumni);
+        ResponseAlumniDTO responseAlumniDTO =  alumniMapper.mapResponseAlumniDTO(alumni);
+        addHateoasLinks(responseAlumniDTO);
+        return responseAlumniDTO;
 
     }
 

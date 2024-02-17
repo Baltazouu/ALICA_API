@@ -9,3 +9,5 @@ public record ResponseAlumniRestricted(
     String linkedinURL,
     String imageURL
 ) { }
+
+

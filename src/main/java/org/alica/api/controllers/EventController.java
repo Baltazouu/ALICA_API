@@ -1,5 +1,6 @@
 package org.alica.api.controllers;
 
+import io.swagger.annotations.ApiParam;
 import jakarta.validation.Valid;
 import org.alica.api.dto.request.RequestEventDTO;
 import org.alica.api.dto.response.ResponseAlumniDTO;
@@ -17,7 +18,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -32,7 +32,7 @@ public class EventController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Page<ResponseEventDTO>> findAll(@PageableDefault Pageable page,@RequestParam(required = false) Optional<String> title) {
+    public ResponseEntity<Page<ResponseEventDTO>> findAll(@PageableDefault Pageable page,@ApiParam(name = "title",required = false) @RequestParam(required = false) Optional<String> title) {
         return new ResponseEntity<>(this.eventService.findAll(page,title), HttpStatus.OK);
     }
 
@@ -85,8 +85,8 @@ public class EventController {
     // number of event subscribers to justify the use of a list
     @GetMapping("/subscribers/{eventId}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<ResponseAlumniDTO>> findSubscribers(@PathVariable UUID eventId) {
-        return new ResponseEntity<>(this.eventService.findSubscribers(eventId), HttpStatus.OK);
+    public ResponseEntity<Page<ResponseAlumniDTO>> findSubscribers(@PathVariable UUID eventId, @PageableDefault Pageable page) {
+        return new ResponseEntity<>(this.eventService.findSubscribers(eventId,page), HttpStatus.OK);
     }
 
 }

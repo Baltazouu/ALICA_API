@@ -61,7 +61,7 @@ public class OfferService {
 
         Offer offer = offerRepository.findById(id).orElseThrow(() -> new PropertyNotFoundException(String.format(OFFER_NOT_FOUND,id)));
 
-        offer.Update(requestOfferDTO);
+        offer.update(requestOfferDTO);
         return offerMapper.mapToResponseOfferDTO(offerRepository.save(offer));
     }
 

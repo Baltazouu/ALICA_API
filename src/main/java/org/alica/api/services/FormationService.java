@@ -1,4 +1,5 @@
 package org.alica.api.services;
+
 import jakarta.el.PropertyNotFoundException;
 import org.alica.api.dao.Alumni;
 import org.alica.api.dao.Formation;
@@ -11,8 +12,13 @@ import org.alica.api.repository.FormationRepository;
 import org.alica.api.security.jwt.UserDetailsImpl;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Service;
+
 import java.util.UUID;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Service
 public class FormationService {
@@ -29,17 +35,33 @@ public class FormationService {
         this.alumniRepository = alumniRepository;
     }
 
+    public static void addHateoasLinks(ResponseFormationDTO formationDTO) {
+
+        Link self = linkTo(methodOn(FormationService.class).findFormationById(formationDTO.getId())).withSelfRel();
+        Link alumni = linkTo(methodOn(AlumniService.class).findAlumniById(formationDTO.getAlumniId())).withRel("alumni");
+        Link allFromAlumni = linkTo(methodOn(FormationService.class).findFormationByAlumniId(formationDTO.getAlumniId(), null)).withRel("allFromAlumni");
+
+        formationDTO.add(self);
+        formationDTO.add(alumni);
+        formationDTO.add(allFromAlumni);
+    }
+
     public Page<ResponseFormationDTO> findAll(Pageable page) {
 
         Page<Formation> formations = formationRepository.findAll(page);
 
-        return formations.map(FORMATION_MAPPER::mapToResponseResponseFormationDTO);
+        Page<ResponseFormationDTO> responseFormationDTOS  = formations.map(FORMATION_MAPPER::mapToResponseResponseFormationDTO);
+        responseFormationDTOS.forEach(FormationService::addHateoasLinks);
+
+        return responseFormationDTOS;
+
     }
 
     public ResponseFormationDTO findFormationById(UUID id) {
         Formation formation = formationRepository.findById(id).orElseThrow(() -> new PropertyNotFoundException(String.format(FORMATION_NOT_FOUND, id)));
-
-        return FORMATION_MAPPER.mapToResponseResponseFormationDTO(formation);
+        ResponseFormationDTO responseFormationDTO =  FORMATION_MAPPER.mapToResponseResponseFormationDTO(formation);
+        addHateoasLinks(responseFormationDTO);
+        return responseFormationDTO;
     }
 
     public ResponseFormationDTO createFormation(RequestFormationDTO requestFormationDTO, UserDetailsImpl user) {
@@ -47,7 +69,9 @@ public class FormationService {
         Alumni alumni = alumniRepository.findById(user.getId()).orElseThrow(() -> new PropertyNotFoundException(String.format(FORMATION_NOT_FOUND, requestFormationDTO.alumniId())));
         Formation formation = FORMATION_MAPPER.mapToFormation(requestFormationDTO, alumni);
 
-        return FORMATION_MAPPER.mapToResponseResponseFormationDTO(formationRepository.save(formation));
+        ResponseFormationDTO responseFormationDTO =  FORMATION_MAPPER.mapToResponseResponseFormationDTO(formationRepository.save(formation));
+        addHateoasLinks(responseFormationDTO);
+        return responseFormationDTO;
     }
 
     public ResponseFormationDTO updateFormation(RequestFormationDTO requestFormationDTO, UUID id) {
@@ -59,7 +83,9 @@ public class FormationService {
 
         formation.update(requestFormationDTO);
 
-        return FORMATION_MAPPER.mapToResponseResponseFormationDTO(formationRepository.save(formation));
+        ResponseFormationDTO responseFormationDTO =  FORMATION_MAPPER.mapToResponseResponseFormationDTO(formationRepository.save(formation));
+        addHateoasLinks(responseFormationDTO);
+        return responseFormationDTO;
     }
 
     public void deleteFormation(UUID id,UserDetailsImpl user) {
@@ -70,6 +96,8 @@ public class FormationService {
 
     public Page<ResponseFormationDTO> findFormationByAlumniId(UUID id, Pageable page) {
         Alumni alumni = alumniRepository.findById(id).orElseThrow(() -> new PropertyNotFoundException(String.format("Alumni %s Not found !", id)));
-        return formationRepository.findByAlumni(alumni, page).map(FORMATION_MAPPER::mapToResponseResponseFormationDTO);
+        Page<ResponseFormationDTO> responseFormationDTO =  formationRepository.findByAlumni(alumni, page).map(FORMATION_MAPPER::mapToResponseResponseFormationDTO);
+        responseFormationDTO.forEach(FormationService::addHateoasLinks);
+        return responseFormationDTO;
     }
 }

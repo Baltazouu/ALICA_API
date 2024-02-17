@@ -81,7 +81,6 @@ public class Alumni{
     public void update(RequestAlumniDTO dto){
         this.email = dto.email();
         this.password = dto.password();
-       // this.role = role
         this.entryYear = dto.entryYear();
         this.firstName = dto.firstName();
         this.lastName = dto.lastName();
@@ -90,6 +89,7 @@ public class Alumni{
         this.portfolioURL = dto.portfolioURL();
         this.imageURL = dto.imageURL();
     }
+
 
     @Override
     public String toString() {

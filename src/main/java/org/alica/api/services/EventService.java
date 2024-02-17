@@ -2,6 +2,8 @@ package org.alica.api.services;
 
 
 import jakarta.el.PropertyNotFoundException;
+import org.alica.api.controllers.AlumniController;
+import org.alica.api.controllers.EventController;
 import org.alica.api.dao.Alumni;
 import org.alica.api.dao.Event;
 import org.alica.api.dto.request.RequestEventDTO;
@@ -15,14 +17,17 @@ import org.alica.api.repository.AlumniRepository;
 import org.alica.api.repository.EventRepository;
 import org.alica.api.security.jwt.UserDetailsImpl;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Service
 public class EventService {
@@ -44,6 +49,15 @@ public class EventService {
         this.alumniRepository = alumniRepository;
     }
 
+    public static void addHateoasLinks(ResponseEventDTO eventDTO){
+        Link self = linkTo(methodOn(EventController.class).findEventById(eventDTO.getId())).withSelfRel();
+        Link alumni = linkTo(methodOn(AlumniController.class).findAlumniById(eventDTO.getOrganizerId())).withRel("organizer");
+        Link subscribers = linkTo(methodOn(EventController.class).findSubscribers(eventDTO.getId(),null)).withRel("subscribers");
+        eventDTO.add(self);
+        eventDTO.add(alumni);
+        eventDTO.add(subscribers);
+    }
+
     public Page<ResponseEventDTO> findAll(Pageable page, Optional<String> title) {
         Page<Event> events;
 
@@ -52,14 +66,21 @@ public class EventService {
         } else {
             events = this.eventRepository.findByTitleContaining(title.get(), page);
         }
-        return events.map(eventMapper::mapToResponseEventDTO);
+        Page<ResponseEventDTO> responseEventDTOS = events.map(eventMapper::mapToResponseEventDTO);
+        for (ResponseEventDTO eventDTO : responseEventDTOS) {
+            addHateoasLinks(eventDTO);
+        }
+        return responseEventDTOS;
+
     }
 
 
     public ResponseEventDTO findEventById(UUID id){
         Event event = eventRepository.findById(id).orElseThrow(() -> new PropertyNotFoundException(String.format(EVENT_NOT_FOUND,id)));
 
-        return eventMapper.mapToResponseEventDTO(event);
+        ResponseEventDTO responseEventDTO = eventMapper.mapToResponseEventDTO(event);
+        addHateoasLinks(responseEventDTO);
+        return responseEventDTO;
     }
 
     public ResponseEventDTO createEvent(RequestEventDTO requestEventDTO){
@@ -68,14 +89,19 @@ public class EventService {
 
         Event event = eventMapper.mapToEvent(requestEventDTO,alumni);
 
-        return eventMapper.mapToResponseEventDTO(eventRepository.save(event));
+        ResponseEventDTO responseEventDTO = eventMapper.mapToResponseEventDTO(eventRepository.save(event));
+
+        addHateoasLinks(responseEventDTO);
+        return responseEventDTO;
     }
 
     public ResponseEventDTO updateEvent(RequestEventDTO requestEventDTO, UUID id){
 
         Event event = eventRepository.findById(id).orElseThrow(() -> new UpdateObjectException(String.format(EVENT_NOT_FOUND,id)));
         event.update(requestEventDTO);
-        return eventMapper.mapToResponseEventDTO(eventRepository.save(event));
+        ResponseEventDTO responseEventDTO = eventMapper.mapToResponseEventDTO(eventRepository.save(event));
+        addHateoasLinks(responseEventDTO);
+        return responseEventDTO;
     }
 
     public void deleteEvent(UUID id, UserDetailsImpl user){
@@ -97,17 +123,33 @@ public class EventService {
         Alumni alumni = alumniRepository.findById(id).orElseThrow(() -> new PropertyNotFoundException(String.format(ALUMNI_NOT_FOUND,id)));
 
         Page<Event> events = eventRepository.findByOrganizer(alumni,page);
-        return events.map(eventMapper::mapToResponseEventDTO);
+        Page<ResponseEventDTO> responseEventDTOS =  events.map(eventMapper::mapToResponseEventDTO);
+
+        for(ResponseEventDTO eventDTO : responseEventDTOS){
+            addHateoasLinks(eventDTO);
+        }
+        return responseEventDTOS;
     }
 
 
-    public List<ResponseAlumniDTO> findSubscribers(UUID id) {
+    public Page<ResponseAlumniDTO> findSubscribers(UUID id, Pageable pageable) {
         Event event = eventRepository.findById(id)
                 .orElseThrow(() -> new PropertyNotFoundException(String.format(EVENT_NOT_FOUND, id)));
 
-        return event.getAlumnis().stream()
+        List<ResponseAlumniDTO> responseAlumniDTOS = event.getAlumnis().stream()
                 .map(alumniMapper::mapResponseAlumniDTO)
-                .collect(Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList));
+                .toList();
+
+        responseAlumniDTOS.forEach(AlumniService::addHateoasLinks);
+
+        int pageSize = pageable.getPageSize();
+        int pageNumber = pageable.getPageNumber();
+        int fromIndex = pageSize * pageNumber;
+        int toIndex = Math.min(fromIndex + pageSize, responseAlumniDTOS.size());
+
+        List<ResponseAlumniDTO> pageContent = responseAlumniDTOS.subList(fromIndex, toIndex);
+
+        return new PageImpl<>(pageContent, pageable, responseAlumniDTOS.size());
     }
 
 

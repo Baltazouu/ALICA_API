@@ -81,10 +81,10 @@ public class WebSecurityConfig {
                                 .requestMatchers("/api/alumni-restricted").permitAll()
                                 .requestMatchers("/api/events/**").permitAll()
                                 .requestMatchers("/api/articles/**").permitAll()
-                                .requestMatchers("/api/formations/**").permitAll()
+                                .requestMatchers("/api/formations/**").authenticated()
                                 .requestMatchers("/api/alumnis/**").authenticated()
                                 .requestMatchers("/api/alumnis/admin/**").hasRole("ADMIN")
-                                //.anyRequest().permitAll()
+                                .anyRequest().permitAll()
                 );
 
         http.authenticationProvider(authenticationProvider());

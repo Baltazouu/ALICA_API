@@ -2,12 +2,14 @@ package org.alica.api.controllers;
 
 import io.jsonwebtoken.JwtException;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.http.HttpServletRequest;
 import org.alica.api.exceptions.AuthenticateException;
 import org.alica.api.exceptions.UpdateObjectException;
 import org.hibernate.PropertyNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -75,7 +77,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     protected ResponseEntity<Map<String,List<String>>> handleMethodArgumentNotValid(
-            MethodArgumentNotValidException ex, WebRequest request) {
+            MethodArgumentNotValidException ex, HttpServletRequest request) {
 
         Map<String, List<String>> body = new HashMap<>();
 
@@ -87,7 +89,7 @@ public class GlobalExceptionHandler {
         }
 
         body.put(ERRORS, errors);
-        body.put("path", List.of(request.getContextPath()));
+        body.put("path", List.of(request.getRequestURI()));
 
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
@@ -114,13 +116,25 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(AuthenticateException.class)
     protected ResponseEntity<Object> handleAuthenticateException(
-            AuthenticateException ex) {
+            AuthenticateException ex,HttpServletRequest request) {
 
         Map<String, String> body = new HashMap<>();
         body.put("status", String.valueOf(HttpStatus.UNAUTHORIZED.value()));
         body.put("error", "Unauthorized");
         body.put(MESSAGE, ex.getMessage());
-        body.put("path", ex.getPath());
+        body.put("path", request.getRequestURI()    );
+        return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    protected ResponseEntity<Object> handleAccessDeniedException(
+            AccessDeniedException ex,HttpServletRequest request) {
+
+        Map<String, String> body = new HashMap<>();
+        body.put("status", String.valueOf(HttpStatus.UNAUTHORIZED.value()));
+        body.put("error", "Unauthorized");
+        body.put(MESSAGE, ex.getMessage());
+        body.put("path", request.getRequestURI()    );
         return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
     }
 
@@ -142,6 +156,17 @@ public class GlobalExceptionHandler {
         body.put("jwt exception message", ex.getMessage());
         body.put("path",request.getContextPath());
         return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(Exception.class)
+    protected ResponseEntity<Object> handleException(
+            Exception ex, HttpServletRequest request) {
+
+        Map<String, String> body = new HashMap<>();
+        body.put(MESSAGE, ex.getMessage());
+        body.put("path",request.getRequestURI());
+        body.put("status", HttpStatus.BAD_REQUEST.toString());
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 
 
