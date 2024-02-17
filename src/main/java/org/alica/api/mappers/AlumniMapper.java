@@ -5,7 +5,7 @@ import org.alica.api.dao.Role;
 import org.alica.api.dto.request.RequestAlumniDTO;
 import org.alica.api.dto.request.SignupRequestDTO;
 import org.alica.api.dto.response.ResponseAlumniDTO;
-import org.alica.api.dto.response.ResponseAlumniRestricted;
+import org.alica.api.dto.response.ResponseAlumniRestrictedDTO;
 import org.alica.api.security.jwt.UserDetailsImpl;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -37,7 +37,7 @@ public interface AlumniMapper {
     UserDetailsImpl mapToUserDetailsImpl(Alumni alumni);
 
 
-    ResponseAlumniRestricted mapResponseAlumniRestricted(Alumni alumni);
+    ResponseAlumniRestrictedDTO mapResponseAlumniRestricted(Alumni alumni);
 
 //    @Mapping(target = "id", ignore = true) // ignore bc generated with db
 //    @Mapping(target = "formations", ignore = true)
@@ -45,5 +45,5 @@ public interface AlumniMapper {
 //    @Mapping(target = "articles", ignore = true)
 //    @Mapping(target = "offers", ignore = true)
 //    @Mapping(target = "roles", ignore = true)
-//    Alumni mapToAlumni(ResponseAlumniRestricted alumniRestricted);
+//    Alumni mapToAlumni(ResponseAlumniRestrictedDTO alumniRestricted);
 }

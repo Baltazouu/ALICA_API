@@ -1,6 +1,6 @@
 package org.alica.api.controllers;
 
-import org.alica.api.dto.response.ResponseAlumniRestricted;
+import org.alica.api.dto.response.ResponseAlumniRestrictedDTO;
 import org.alica.api.services.AlumniRestrictedService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,13 +22,13 @@ public class AlumniRestrictedController {
     }
 
     @GetMapping
-    public Page<ResponseAlumniRestricted> findALl(@PageableDefault Pageable page){
+    public Page<ResponseAlumniRestrictedDTO> findALl(@PageableDefault Pageable page){
         return this.alumniRestrictedService.findAll(page);
     }
 
 
     @GetMapping("/{id}")
-    public ResponseAlumniRestricted findById(@PathVariable UUID id) {
+    public ResponseAlumniRestrictedDTO findById(@PathVariable UUID id) {
         return this.alumniRestrictedService.findById(id);
     }
 }

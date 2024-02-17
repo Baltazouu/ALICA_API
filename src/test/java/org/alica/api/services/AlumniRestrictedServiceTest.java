@@ -2,7 +2,7 @@ package org.alica.api.services;
 
 import jakarta.el.PropertyNotFoundException;
 import org.alica.api.dao.Alumni;
-import org.alica.api.dto.response.ResponseAlumniRestricted;
+import org.alica.api.dto.response.ResponseAlumniRestrictedDTO;
 import org.alica.api.mappers.AlumniMapper;
 import org.alica.api.repository.AlumniRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,7 +49,7 @@ import static org.mockito.Mockito.*;
        // when(alumniRepository.findAll(any(Pageable.class))).thenReturn(expectedPage);
 
         // When
-        Page<ResponseAlumniRestricted> result = alumniRestrictedService.findAll(mock(Pageable.class));
+        Page<ResponseAlumniRestrictedDTO> result = alumniRestrictedService.findAll(mock(Pageable.class));
 
         // Then
         assertEquals(alumniPage, result);
@@ -59,13 +59,13 @@ import static org.mockito.Mockito.*;
     void testFindById_AlumniFound() {
         // Given
         UUID id = UUID.randomUUID();
-        ResponseAlumniRestricted expectedAlumni = new ResponseAlumniRestricted(id, "John", "Doe", "linkedin.com", "image.jpg");
+        ResponseAlumniRestrictedDTO expectedAlumni = new ResponseAlumniRestrictedDTO(id, "John", "Doe", "linkedin.com", "image.jpg");
         when(alumniRepository.findById(id)).thenReturn(Optional.of(Alumni.builder().id(id).firstName("John").lastName("Doe").linkedinURL("linkedin.com").imageURL("image.jpg").roles(new HashSet<>()).build()));
         // When
-        ResponseAlumniRestricted result = alumniRestrictedService.findById(id);
+        ResponseAlumniRestrictedDTO result = alumniRestrictedService.findById(id);
 
         // Then
-        assertEquals(expectedAlumni.id(), result.id());
+        assertEquals(expectedAlumni.getId(), result.getId());
     }
 
 
