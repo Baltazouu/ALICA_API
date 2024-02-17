@@ -1,9 +1,9 @@
 package org.alica.api.dto.response;
 
 import lombok.Builder;
-import org.alica.api.Enum.EContract;
-import org.alica.api.Enum.ELevel;
-import org.alica.api.Enum.EStudies;
+import org.alica.api.enums.EContract;
+import org.alica.api.enums.ELevel;
+import org.alica.api.enums.EStudies;
 
 import java.util.UUID;
 

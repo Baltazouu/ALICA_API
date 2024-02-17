@@ -2,7 +2,7 @@ package org.alica.api.dao;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.alica.api.Enum.ERole;
+import org.alica.api.enums.ERole;
 
 @Entity
 @Table(name = "Role")
