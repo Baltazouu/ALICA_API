@@ -35,7 +35,7 @@ steps:
 #    depends_on: [ build-and-test ]
 
   - name: code-inspection
-    image: maven
+    image: openjdk
     secrets: [ API_SPRINGBOOT_SECRET ]
     environment:
       sonar_host: https://codefirst.iut.uca.fr/sonar/
