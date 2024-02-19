@@ -5,7 +5,8 @@ FROM openjdk:17
 WORKDIR /app
 
 # Copy the packaged JAR file into the container at the working directory
-COPY target/ALICA_API-0.0.1-SNAPSHOT.jar /app/ALICA_API.jar
+#COPY target/ALICA_API-0.0.1-SNAPSHOT.jar /app/ALICA_API.jar
+
 
 # Copier les fichiers de configuration dans le conteneur
 COPY src/main/resources/application-prod.properties /app/application-prod.properties
