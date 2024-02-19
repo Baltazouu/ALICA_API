@@ -10,21 +10,50 @@ trigger:
     - push
 
 steps:
-#  - name: build-and-test
-#    image: maven:3.8.3
-#    commands:
-#      - mvn $MAVEN_CLI_OPTS clean compile test
+  - name: build-and-test
+    image: maven:3.8.3
+    commands:
+      - mvn $MAVEN_CLI_OPTS clean compile test
 
-#  - name: deploy-container-alica-api
-#    image: hub.codefirst.iut.uca.fr/thomas.bellembois/codefirst-dockerproxy-clientdrone:latest
+#  - name: code-inspection
+#    image: maven
+#    secrets: [ API_SPRINGBOOT_SECRET ]
 #    environment:
-#      IMAGENAME: maven:3.8.3
-#      CONTAINERNAME: maven
-#      COMMAND: create
-#      OVERWRITE: true
-#      CODEFIRST_CLIENTDRONE_ENV_PMA_HOST: SAE_ALICA-API
-#      CODEFIRST_CLIENTDRONE_ENV_PMA_ABSOLUTE_URI: https://codefirst.iut.uca.fr/containers/sae_alica-api/
-#      ADMINS: baptistedudonne
+#      sonar_host: http://codefirst.iut.uca.fr/sonar/
+#      sonar_token:
+#        from_secret: API_SPRINGBOOT_SECRET
+#      project_key: ALICA_TEST
+#    commands:
+#       - mvn clean verify sonar:sonar -Dsonar.login=${sonar_token}
+
+  - name: docker-build-api
+    image: plugins/docker
+    settings:
+      dockerfile: Dockerfile
+      registry: hub.codefirst.iut.uca.fr
+      mirror: https://proxy.iut.uca.fr:8443
+      repo: https://codefirst.iut.uca.fr/git/SAE_ALICA/
+      username:
+        from_secret: SECRET_REGISTRY_USERNAME
+      password:
+        from_secret: SECRET_REGISTRY_PASSWORD
+
+    depends_on:
+      - build-and-test
+
+  - name: deploy-container-alica-api
+    image: hub.codefirst.iut.uca.fr/thomas.bellembois/codefirst-dockerproxy-clientdrone:latest
+    environment:
+      IMAGENAME: hub.codefirst.iut.uca.fr/team.alica/api
+      CONTAINERNAME: alica-api
+      COMMAND: create
+      OVERWRITE: true
+      CODEFIRST_CLIENTDRONE_ENV_PMA_HOST: SAE_ALICA-API
+      CODEFIRST_CLIENTDRONE_ENV_PMA_ABSOLUTE_URI: https://codefirst.iut.uca.fr/containers/sae_alica-api/
+      ADMINS: baptistedudonne
+    depends_on:
+      - docker-build-api
+
 
 #    commands:
 #      - mvn $MAVEN_CLI_OPTS compile   # Compilation
@@ -34,17 +63,6 @@ steps:
 
 #    depends_on: [ build-and-test ]
 
-  - name: code-inspection
-    image: maven
-    secrets: [ API_SPRINGBOOT_SECRET ]
-    environment:
-      sonar_host: http://codefirst.iut.uca.fr/sonar/
-      sonar_token:
-        from_secret: API_SPRINGBOOT_SECRET
-      project_key: ALICA_TEST
-    commands:
-#     # - mvn clean verify sonar:sonar -Dsonar.login=${sonar_token}
-       - mvn clean verify sonar:sonar -Dsonar.login=${sonar_token}
 
 #  - name: generate-and-deploy-docs
 #    image: hub.codefirst.iut.uca.fr/thomas.bellembois/codefirst-docdeployer
@@ -54,6 +72,3 @@ steps:
 #        path: /docs
 #    commands:
 #      - /entrypoint.sh
-
-#  test
-#  mvn clean verify sonar:sonar -Dsonar.projectKey=API_SPRINGBOOT_SECRET -Dsonar.projectName='API_SPRINGBOOT' -Dsonar.host.url=https://codefirst.iut.uca.fr/sonar/ -Dsonar.token=ALICA_API_SPRINGBOOT -Dsonar.login=ALICA_API_SPRINGBOOT
