@@ -20,9 +20,10 @@ steps:
     secrets: [ API_SPRINGBOOT_SECRET ]
     environment:
       sonar_host: http://codefirst.iut.uca.fr/sonar/
-      sonar_token:
-        from_secret: API_SPRINGBOOT_SECRET
-      project_key: ALICA_TEST
+      sonar_token: squ_354bd43414cc96f0efe4160623f39d5c5eff200f
+#      sonar_token:
+#        from_secret: API_SPRINGBOOT_SECRET
+#      project_key: ALICA_TEST
     commands:
          - mvn $MAVEN_CLI_OPTS verify sonar:sonar -Dsonar.login=$${sonar_token}
 
