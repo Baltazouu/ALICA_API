@@ -7,7 +7,7 @@ COPY . /usr/src/app
 RUN mvn package
 
 # For Java 11,
-FROM openjdk:17
+FROM openjdk
 ARG JAR_FILE=ALICA_API-0.0.1-SNAPSHOT.jar
 
 WORKDIR /opt/app
