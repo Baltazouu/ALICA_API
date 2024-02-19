@@ -35,16 +35,16 @@ steps:
 #    depends_on: [ build-and-test ]
 
   - name: code-inspection
-    image: aosapps/drone-sonar-plugin
+    image: aosapps/drone-sonar-plugin, maven
     secrets: [ API_SPRINGBOOT_SECRET ]
     environment:
-      sonar_host: https://codefirst.iut.uca.fr/sonar
+      sonar_host: https://codefirst.iut.uca.fr/sonar/
       sonar_token:
         from_secret: API_SPRINGBOOT_SECRET
       project_key: ALICA_TEST
-#    commands:
+    commands:
 #     # - mvn clean verify sonar:sonar -Dsonar.login=${sonar_token}
-#       - mvn clean verify sonar:sonar -Dsonar.login=${sonar_token}
+       - mvn clean verify sonar:sonar -Dsonar.login=${sonar_token}
 
 #  - name: generate-and-deploy-docs
 #    image: hub.codefirst.iut.uca.fr/thomas.bellembois/codefirst-docdeployer
