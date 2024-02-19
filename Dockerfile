@@ -1,4 +1,4 @@
-FROM maven:3.6.3 AS maven
+FROM maven as maven
 LABEL MAINTAINER="baptiste.dudonne@etu.uca.fr"
 
 WORKDIR /usr/src/app
