@@ -14,6 +14,7 @@ WORKDIR /opt/app
 
 # Copy the spring-boot-api-tutorial.jar from the maven stage to the /opt/app directory of the current stage.
 COPY --from=maven /usr/src/app/target/${JAR_FILE} /opt/app/
+COPY src/main/resources/application-prod.properties /app/application-prod.properties
 
 EXPOSE 80
 EXPOSE 433
