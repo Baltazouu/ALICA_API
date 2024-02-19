@@ -35,7 +35,7 @@ steps:
 #    depends_on: [ build-and-test ]
 
   - name: code-inspection
-    image: aosapps/drone-sonar-plugin, maven
+    image: aosapps/drone-sonar-plugin maven
     secrets: [ API_SPRINGBOOT_SECRET ]
     environment:
       sonar_host: https://codefirst.iut.uca.fr/sonar/
