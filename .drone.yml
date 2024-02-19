@@ -52,6 +52,10 @@ steps:
      # CODEFIRST_CLIENTDRONE_ENV_PMA_HOST: SAE_ALICA-API
      # CODEFIRST_CLIENTDRONE_ENV_PMA_ABSOLUTE_URI: https://codefirst.iut.uca.fr/containers/saealica-alica-api
       ADMINS: baptistedudonne
+      username:
+            from_secret: SECRET_REGISTRY_USERNAME
+            password:
+              from_secret: SECRET_REGISTRY_PASSWORD
 #    depends_on:
 #      - docker-build-api
 
