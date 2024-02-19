@@ -45,7 +45,7 @@ steps:
   - name: deploy-container-alica-api
     image: hub.codefirst.iut.uca.fr/thomas.bellembois/codefirst-dockerproxy-clientdrone:latest
     environment:
-      IMAGENAME: hub.codefirst.iut.uca.fr/sae.alica/api:latest
+      IMAGENAME: hub.codefirst.iut.uca.fr/sae.alica/api
       CONTAINERNAME: alica-api
       COMMAND: create
       OVERWRITE: true
