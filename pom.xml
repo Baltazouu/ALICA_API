@@ -18,26 +18,6 @@
 
         <spring-security.version>6.2.1</spring-security.version>
 
-        <settings>
-            <pluginGroups>
-                <pluginGroup>org.sonarsource.scanner.maven</pluginGroup>
-            </pluginGroups>
-            <profiles>
-                <profile>
-                    <id>sonar</id>
-                    <activation>
-                        <activeByDefault>true</activeByDefault>
-                    </activation>
-                    <properties>
-                        <sonar.host.url>
-                            http://codefirst.iut.uca.fr/sonar/
-                        </sonar.host.url>
-                    </properties>
-                </profile>
-            </profiles>
-        </settings>
-
-
 
     </properties>
 
@@ -245,6 +225,18 @@
         </plugins>
 
     </build>
+
+    <profiles>
+        <profile>
+            <id>sonar</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <sonar.host.url>http://codefirst.iut.uca.fr/sonar/</sonar.host.url>
+            </properties>
+        </profile>
+    </profiles>
 
 
 
