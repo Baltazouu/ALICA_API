@@ -12,7 +12,7 @@ WORKDIR /app
 COPY src/main/resources/application-prod.properties /app/application-prod.properties
 
 # Exposer le port sur lequel votre application Spring Boot s'exécutera
-EXPOSE 8080
+EXPOSE 80,433
 
 # Commande pour exécuter l'application Spring Boot
-CMD ["java", "-jar", "ALICA_API.jar", "--spring.config.location=file:/app/application-prod.properties"]
+CMD ["java", "-jar", "ALICA_API-0.0.1-SNAPSHOT.jar", "--spring.config.location=file:/app/application-prod.properties"]
