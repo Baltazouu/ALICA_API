@@ -11,12 +11,12 @@ trigger:
 
 steps:
   - name: build-and-test
-    image: maven:3.11.0
+    image: maven
     commands:
       - mvn $MAVEN_CLI_OPTS clean compile test
 
   - name: code-inspection
-    image: maven:3.11.0
+    image: maven
     secrets: [ API_SPRINGBOOT_SECRET ]
     environment:
       sonar_host: http://codefirst.iut.uca.fr/sonar/
