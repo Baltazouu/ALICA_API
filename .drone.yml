@@ -54,16 +54,6 @@ steps:
     depends_on:
       - docker-build-api
 
-
-#    commands:
-#      - mvn $MAVEN_CLI_OPTS compile   # Compilation
-#      - mvn $MAVEN_CLI_OPTS package   # Création du package JAR exécutable
-#      - mvn $MAVEN_CLI_OPTS install   # Installation du JAR dans le dépôt local Maven (optionnel)
-#      - mvn $MAVEN_CLI_OPTS spring-boot:run   # Lancement de l'application Spring Boot
-
-#    depends_on: [ build-and-test ]
-
-
 #  - name: generate-and-deploy-docs
 #    image: hub.codefirst.iut.uca.fr/thomas.bellembois/codefirst-docdeployer
 #    failure: ignore
