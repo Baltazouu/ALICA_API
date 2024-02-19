@@ -18,4 +18,4 @@ COPY --from=maven /usr/src/app/target/${JAR_FILE} /opt/app/
 EXPOSE 80
 EXPOSE 433
 
-ENTRYPOINT ["java","-jar","ALICA_API-0.0.1-SNAPSHOT.jar.jar", "--spring.config.location=file:/app/application-prod.properties"]
+ENTRYPOINT ["java","-jar","ALICA_API-0.0.1-SNAPSHOT.jar","--spring.config.location=file:/app/application-prod.properties"]
