@@ -52,8 +52,8 @@ steps:
      # CODEFIRST_CLIENTDRONE_ENV_PMA_HOST: SAE_ALICA-API
      # CODEFIRST_CLIENTDRONE_ENV_PMA_ABSOLUTE_URI: https://codefirst.iut.uca.fr/containers/saealica-alica-api
       ADMINS: baptistedudonne
-    depends_on:
-      - docker-build-api
+#    depends_on:
+#      - docker-build-api
 
 #  - name: generate-and-deploy-docs
 #    image: hub.codefirst.iut.uca.fr/thomas.bellembois/codefirst-docdeployer
