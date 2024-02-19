@@ -24,7 +24,7 @@ steps:
         from_secret: API_SPRINGBOOT_SECRET
       project_key: ALICA_TEST
     commands:
-         - mvn $MAVEN_CLI_OPTS verify sonar:sonar -Dsonar.projectKey=$${sonar_token}
+         - mvn $MAVEN_CLI_OPTS verify sonar:sonar -Dsonar.login=$${sonar_token}
 
   - name: docker-build-api
     image: plugins/docker
