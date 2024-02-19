@@ -26,18 +26,18 @@ steps:
 #    commands:
 #       - mvn clean verify sonar:sonar -Dsonar.login=${sonar_token}
 
-  - name: docker-build-api
-    image: plugins/docker
-    settings:
-      context: .
-      dockerfile: Dockerfile
-      registry: hub.codefirst.iut.uca.fr
-      mirror: https://proxy.iut.uca.fr:8443
-      repo: hub.codefirst.iut.uca.fr/sae.alica/api
-      username:
-        from_secret: SECRET_REGISTRY_USERNAME
-      password:
-        from_secret: SECRET_REGISTRY_PASSWORD
+#  - name: docker-build-api
+#    image: plugins/docker
+#    settings:
+#      context: .
+#      dockerfile: Dockerfile
+#      registry: hub.codefirst.iut.uca.fr
+#      mirror: https://proxy.iut.uca.fr:8443
+#      repo: hub.codefirst.iut.uca.fr/sae.alica/api
+#      username:
+#        from_secret: SECRET_REGISTRY_USERNAME
+#      password:
+#        from_secret: SECRET_REGISTRY_PASSWORD
 
 #    depends_on:
 #      - build-and-test
@@ -45,12 +45,12 @@ steps:
   - name: deploy-container-alica-api
     image: hub.codefirst.iut.uca.fr/thomas.bellembois/codefirst-dockerproxy-clientdrone:latest
     environment:
-      IMAGENAME: hub.codefirst.iut.uca.fr/team.alica/api
+      IMAGENAME: hub.codefirst.iut.uca.fr/sae.alica/api
       CONTAINERNAME: alica-api
       COMMAND: create
       OVERWRITE: true
-      CODEFIRST_CLIENTDRONE_ENV_PMA_HOST: SAE_ALICA-API
-      CODEFIRST_CLIENTDRONE_ENV_PMA_ABSOLUTE_URI: https://codefirst.iut.uca.fr/containers/sae_alica-api/
+     # CODEFIRST_CLIENTDRONE_ENV_PMA_HOST: SAE_ALICA-API
+     # CODEFIRST_CLIENTDRONE_ENV_PMA_ABSOLUTE_URI: https://codefirst.iut.uca.fr/containers/saealica-alica-api
       ADMINS: baptistedudonne
     depends_on:
       - docker-build-api
