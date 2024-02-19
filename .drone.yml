@@ -32,7 +32,7 @@ steps:
       dockerfile: Dockerfile
       registry: hub.codefirst.iut.uca.fr
       mirror: https://proxy.iut.uca.fr:8443
-      repo: https://codefirst.iut.uca.fr/git/sae.alica/api
+      repo: https://hub.codefirst.iut.uca.fr/git/sae.alica/api
       username:
         from_secret: SECRET_REGISTRY_USERNAME
       password:
