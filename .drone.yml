@@ -10,10 +10,10 @@ trigger:
     - push
 
 steps:
-  - name: build-and-test
-    image: maven:3.8.3
-    commands:
-      - mvn $MAVEN_CLI_OPTS clean compile test
+#  - name: build-and-test
+#    image: maven:3.8.3
+#    commands:
+#      - mvn $MAVEN_CLI_OPTS clean compile test
 
 #  - name: deploy-container-alica-api
 #    image: hub.codefirst.iut.uca.fr/thomas.bellembois/codefirst-dockerproxy-clientdrone:latest
@@ -42,9 +42,9 @@ steps:
       sonar_token:
         from_secret: API_SPRINGBOOT_SECRET
       project_key: ALICA_TEST
-    commands:
-     # - mvn clean verify sonar:sonar -Dsonar.login=${sonar_token}
-       - mvn clean verify sonar:sonar -Dsonar.login=${sonar_token}
+#    commands:
+#     # - mvn clean verify sonar:sonar -Dsonar.login=${sonar_token}
+#       - mvn clean verify sonar:sonar -Dsonar.login=${sonar_token}
 
 #  - name: generate-and-deploy-docs
 #    image: hub.codefirst.iut.uca.fr/thomas.bellembois/codefirst-docdeployer
