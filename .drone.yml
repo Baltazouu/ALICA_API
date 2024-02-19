@@ -41,17 +41,28 @@ steps:
 
 #    depends_on:
 #      - build-and-test
-
   - name: deploy-container-alica-api
     image: hub.codefirst.iut.uca.fr/thomas.bellembois/codefirst-dockerproxy-clientdrone:latest
     environment:
       IMAGENAME: hub.codefirst.iut.uca.fr/sae.alica/api:latest
-      CONTAINERNAME: alica-api
+      CONTAINERNAME: saealica-alica-api
       COMMAND: create
       OVERWRITE: true
       ADMINS: baptistedudonne
     depends_on:
       - docker-build-api
+
+#
+#  - name: deploy-container-alica-api
+#    image: hub.codefirst.iut.uca.fr/thomas.bellembois/codefirst-dockerproxy-clientdrone:latest
+#    environment:
+#      IMAGENAME: hub.codefirst.iut.uca.fr/sae.alica/api:latest
+#      CONTAINERNAME: alica-api
+#      COMMAND: create
+#      OVERWRITE: true
+#      ADMINS: baptistedudonne
+#    depends_on:
+#      - docker-build-api
 
 #  - name: generate-and-deploy-docs
 #    image: hub.codefirst.iut.uca.fr/thomas.bellembois/codefirst-docdeployer
