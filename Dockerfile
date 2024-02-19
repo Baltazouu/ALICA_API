@@ -1,19 +1,21 @@
-# Use official OpenJDK 17 image as base
+FROM maven:3.6.3 AS maven
+LABEL MAINTAINER="baptiste.dudonne@etu.uca.fr"
+
+WORKDIR /usr/src/app
+COPY . /usr/src/app
+# Compile and package the application to an executable JAR
+RUN mvn package
+
+# For Java 11,
 FROM openjdk:17
+ARG JAR_FILE=ALICA_API-0.0.1-SNAPSHOT.jar
 
-# Set the working directory inside the container
-WORKDIR /app
+WORKDIR /opt/app
 
-# Copy the packaged JAR file into the container at the working directory
-#COPY target/ALICA_API-0.0.1-SNAPSHOT.jar /app/ALICA_API.jar
+# Copy the spring-boot-api-tutorial.jar from the maven stage to the /opt/app directory of the current stage.
+COPY --from=maven /usr/src/app/target/${JAR_FILE} /opt/app/
 
-
-# Copier les fichiers de configuration dans le conteneur
-COPY src/main/resources/application-prod.properties /app/application-prod.properties
-
-# Exposer le port sur lequel votre application Spring Boot s'exécutera
 EXPOSE 80
 EXPOSE 433
 
-# Commande pour exécuter l'application Spring Boot
-CMD ["java", "-jar", "ALICA_API-0.0.1-SNAPSHOT.jar", "--spring.config.location=file:/app/application-prod.properties"]
+ENTRYPOINT ["java","-jar","ALICA_API-0.0.1-SNAPSHOT.jar.jar", "--spring.config.location=file:/app/application-prod.properties"]
