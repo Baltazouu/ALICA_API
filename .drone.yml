@@ -38,7 +38,7 @@ steps:
     image: aosapps/drone-sonar-plugin
     secrets: [ API_SPRINGBOOT_SECRET ]
     environment:
-      sonar_host: https://codefirst.iut.uca.fr/sonar/
+      sonar_host: https://codefirst.iut.uca.fr/sonar
       sonar_token:
         from_secret: API_SPRINGBOOT_SECRET
       project_key: ALICA_TEST
