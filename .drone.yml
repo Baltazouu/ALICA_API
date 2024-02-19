@@ -35,10 +35,10 @@ steps:
 #    depends_on: [ build-and-test ]
 
   - name: code-inspection
-    image: openjdk
+    image: maven
     secrets: [ API_SPRINGBOOT_SECRET ]
     environment:
-      sonar_host: https://codefirst.iut.uca.fr/sonar/
+      sonar_host: http://codefirst.iut.uca.fr/sonar/
       sonar_token:
         from_secret: API_SPRINGBOOT_SECRET
       project_key: ALICA_TEST
