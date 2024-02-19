@@ -29,6 +29,7 @@ steps:
   - name: docker-build-api
     image: plugins/docker
     settings:
+      context: .
       dockerfile: Dockerfile
       registry: hub.codefirst.iut.uca.fr
       mirror: https://proxy.iut.uca.fr:8443
