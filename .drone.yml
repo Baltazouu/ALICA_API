@@ -10,21 +10,21 @@ trigger:
     - push
 
 steps:
-#  - name: build-and-test
-#    image: maven:3.8.3
-#    commands:
-#      - mvn $MAVEN_CLI_OPTS clean compile test
+  - name: build-and-test
+    image: maven:3.8.3
+    commands:
+      - mvn $MAVEN_CLI_OPTS clean compile test
 
-#  - name: code-inspection
-#    image: maven
-#    secrets: [ API_SPRINGBOOT_SECRET ]
-#    environment:
-#      sonar_host: http://codefirst.iut.uca.fr/sonar/
-#      sonar_token:
-#        from_secret: API_SPRINGBOOT_SECRET
-#      project_key: ALICA_TEST
-#    commands:
-#       - mvn clean verify sonar:sonar -Dsonar.login=${sonar_token}
+  - name: code-inspection
+    image: maven
+    secrets: [ API_SPRINGBOOT_SECRET ]
+    environment:
+      sonar_host: http://codefirst.iut.uca.fr/sonar/
+      sonar_token:
+        from_secret: API_SPRINGBOOT_SECRET
+      project_key: ALICA_TEST
+    commands:
+       - mvn clean verify sonar:sonar -Dsonar.login=${sonar_token}
 
   - name: docker-build-api
     image: plugins/docker
@@ -39,8 +39,8 @@ steps:
       password:
         from_secret: SECRET_REGISTRY_PASSWORD
 
-#    depends_on:
-#      - build-and-test
+    depends_on:
+      - build-and-test
 
   - name: deploy-container-alica-api
     image: hub.codefirst.iut.uca.fr/thomas.bellembois/codefirst-dockerproxy-clientdrone:latest
