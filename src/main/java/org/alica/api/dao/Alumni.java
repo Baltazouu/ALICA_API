@@ -99,7 +99,7 @@ public class Alumni{
                 //", events=" + events +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", Role size =" + roles.size() +
+                //", Role size =" + roles.size() +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", entryYear='" + entryYear + '\'' +

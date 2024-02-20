@@ -3,6 +3,7 @@ package org.alica.api.controllers;
 import jakarta.validation.Valid;
 import org.alica.api.dto.request.RequestAlumniDTO;
 import org.alica.api.dto.response.ResponseAlumniDTO;
+import org.alica.api.security.jwt.JWTUtils;
 import org.alica.api.services.AlumniService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,7 +26,6 @@ public class AlumniController {
         this.alumniService = alumniService;
     }
 
-
     @PreAuthorize("hasAnyRole('USER', 'MODERATOR', 'ADMIN')")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
@@ -42,19 +42,18 @@ public class AlumniController {
     }
 
 
-    @PreAuthorize("#id == authentication.principal.id")
-    @PutMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("isAuthenticated()")
+    @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseAlumniDTO updateAlumni(@Valid @RequestBody RequestAlumniDTO alumniDTO, @PathVariable UUID id){
-        return this.alumniService.updateAlumni(alumniDTO,id);
+    public ResponseAlumniDTO updateAlumni(@Valid @RequestBody RequestAlumniDTO alumniDTO){
+        return this.alumniService.updateAlumni(alumniDTO,JWTUtils.getUserAuthenticate().getId());
 
     }
 
-    @PreAuthorize("#id == authentication.principal.id")
-    @DeleteMapping(value = "/{id}")
+    @PreAuthorize("isAuthenticated()")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteAlumni(@PathVariable UUID id){
-        this.alumniService.deleteAlumni(id);
+    public void deleteAlumni(){
+        this.alumniService.deleteAlumni(JWTUtils.getUserAuthenticate().getId());
     }
 
 }

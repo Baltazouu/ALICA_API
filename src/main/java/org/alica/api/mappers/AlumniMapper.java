@@ -6,7 +6,6 @@ import org.alica.api.dto.request.RequestAlumniDTO;
 import org.alica.api.dto.request.SignupRequestDTO;
 import org.alica.api.dto.response.ResponseAlumniDTO;
 import org.alica.api.dto.response.ResponseAlumniRestrictedDTO;
-import org.alica.api.security.jwt.UserDetailsImpl;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -31,10 +30,9 @@ public interface AlumniMapper {
     @Mapping(target = "events", ignore = true)
     @Mapping(target = "articles", ignore = true)
     @Mapping(target = "offers", ignore = true)
+    @Mapping(target = "firstName", source = "firstName")
+    @Mapping(target = "lastName", source = "lastName")
     Alumni mapToAlumni(SignupRequestDTO signupRequestDTO);
-
-
-    UserDetailsImpl mapToUserDetailsImpl(Alumni alumni);
 
 
     ResponseAlumniRestrictedDTO mapResponseAlumniRestricted(Alumni alumni);

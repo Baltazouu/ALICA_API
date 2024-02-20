@@ -95,9 +95,7 @@ public class WebSecurityConfig {
                                 .requestMatchers("/api/events/**").permitAll()
                                 .requestMatchers("/api/articles/**").permitAll()
                                 .requestMatchers("/api/formations/**").authenticated()
-                                .requestMatchers("/api/alumnis/**").authenticated()
-                                .requestMatchers("/api/alumnis/admin/**").hasRole("ADMIN")
-                                .anyRequest().permitAll()
+                                .requestMatchers("/api/alumnis/**").authenticated().anyRequest().permitAll()
                 );
 
         http.authenticationProvider(authenticationProvider());

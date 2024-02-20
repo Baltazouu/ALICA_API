@@ -57,7 +57,10 @@
             Role role = roleRepository.findByName(ERole.USER)
                     .orElseThrow(() -> new EmailExistsException("Role not found"));
 
+            logger.info(String.format("SignupRequest : %s", signupRequestDTO));
             Alumni alumni = alumniMapper.mapToAlumni(signupRequestDTO);
+
+            logger.info(String.format("Alumni : %s", alumni));
 
 
             logger.info("Password : " + alumni.getPassword());
