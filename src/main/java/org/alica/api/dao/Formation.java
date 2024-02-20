@@ -42,7 +42,7 @@ public class Formation {
         return "Formation{" +
                 "id=" + id +
                 ", alumni=" + alumni +
-                ", name='" + name + '\'' +
+                ", firstName='" + name + '\'' +
                 ", startDate='" + startDate + '\'' +
                 ", endDate='" + endDate + '\'' +
                 ", company='" + company + '\'' +

@@ -10,7 +10,7 @@ import java.util.UUID;
 @Validated
 public record RequestFormationDTO(
         @NotNull(message = "alumniId is required") UUID alumniId,
-        @NotNull(message = "name is required") String name,
+        @NotNull(message = "firstName is required") String name,
         @NotNull(message = "startDate is required") String startDate,
         @NotNull(message = "endDate is required") String endDate,
         @NotNull(message = "company is required") String company,

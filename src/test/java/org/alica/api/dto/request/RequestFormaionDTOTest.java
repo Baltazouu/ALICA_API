@@ -22,7 +22,7 @@ class RequestFormationDTOTest {
     @Test
     void DTOWithInvalidAlumniIdShouldFail() {
         RequestFormationDTO dto = RequestFormationDTO.builder()
-                .name("name")
+                .name("firstName")
                 .startDate("startDate")
                 .endDate("endDate")
                 .company("company")
@@ -48,7 +48,7 @@ class RequestFormationDTOTest {
         Set<ConstraintViolation<RequestFormationDTO>> violations = validator.validate(dto);
 
         Assertions.assertEquals(1, violations.size());
-        Assertions.assertEquals("name is required", violations.iterator().next().getMessage());
+        Assertions.assertEquals("firstName is required", violations.iterator().next().getMessage());
     }
 
     // Ajoutez des tests similaires pour les autres champs (startDate, endDate, company, currentJob)
@@ -66,7 +66,7 @@ class RequestFormationDTOTest {
     void DTOWithAllValidFieldsShouldPass() {
         RequestFormationDTO dto = RequestFormationDTO.builder()
                 .alumniId(UUID.randomUUID())
-                .name("name")
+                .name("firstName")
                 .startDate("startDate")
                 .endDate("endDate")
                 .company("company")

@@ -23,8 +23,8 @@ class SignupRequestDTOTest {
         SignupRequestDTO dto = SignupRequestDTO.builder()
                 .email("test@example.com")
                 .password("password123")
-                .name("John")
-                .surname("Doe")
+                .firstName("John")
+                .lastName("Doe")
                 .build();
 
         Set<ConstraintViolation<SignupRequestDTO>> violations = validator.validate(dto);
@@ -36,8 +36,8 @@ class SignupRequestDTOTest {
     void signUpRequestDTOWithEmailNullShouldFail() {
         SignupRequestDTO dto = SignupRequestDTO.builder()
                 .password("password123")
-                .name("John")
-                .surname("Doe")
+                .firstName("John")
+                .lastName("Doe")
                 .build();
 
         Set<ConstraintViolation<SignupRequestDTO>> violations = validator.validate(dto);
@@ -51,8 +51,8 @@ class SignupRequestDTOTest {
         SignupRequestDTO dto = SignupRequestDTO.builder()
                 .email("invalid_email_format")
                 .password("password123")
-                .name("John")
-                .surname("Doe")
+                .firstName("John")
+                .lastName("Doe")
                 .build();
 
         Set<ConstraintViolation<SignupRequestDTO>> violations = validator.validate(dto);

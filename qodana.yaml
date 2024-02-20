@@ -10,11 +10,11 @@ profile:
 
 #Enable inspections
 #include:
-#  - name: <SomeEnabledInspectionId>
+#  - firstName: <SomeEnabledInspectionId>
 
 #Disable inspections
 #exclude:
-#  - name: <SomeDisabledInspectionId>
+#  - firstName: <SomeDisabledInspectionId>
 #    paths:
 #      - <path/where/not/run/inspection>
 

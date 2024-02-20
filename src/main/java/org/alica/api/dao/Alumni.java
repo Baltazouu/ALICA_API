@@ -39,15 +39,15 @@ public class Alumni{
     private Set<Formation> formations;
 
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REMOVE})
     @JoinTable(name = "USER_ROLES",
             joinColumns = {
                     @JoinColumn(name = "USER_ID")
             },
             inverseJoinColumns = {
-                    @JoinColumn(name = "ROLE_ID") })
+                    @JoinColumn(name = "ROLE_ID")
+            })
     private Set<Role> roles = new HashSet<>();
-
 
     @Column(name = "email")
     private String email;

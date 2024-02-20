@@ -47,11 +47,7 @@
             this.roleRepository = roleRepository;
             this.jwtUtils = jwtUtils;
             this.encoder = encoder;
-
-
-
         }
-
 
         public void signUp(SignupRequestDTO signupRequestDTO) {
             if(alumniRepository.existsByEmail(signupRequestDTO.email())) {
@@ -92,7 +88,6 @@
                     .role(alumni.getRoles())
                     .build();
         }
-
 }
 
 

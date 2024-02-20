@@ -18,15 +18,15 @@ public record SignupRequestDTO(
         String email,
 
         @NotNull(message = "password is required")
-        @Size(min = 6, max = 20, message = "password must be between 6 and 20 characters")
+//        @Size(min = 6, max = 20, message = "password must be between 6 and 20 characters")
         String password,
 
-        @NotNull(message = "name is required")
-        @Size(min = 3, max = 20, message = "name must be between 3 and 20 characters")
-        String name,
+        @NotNull(message = "firstName is required")
+        @Size(min = 3, max = 20, message = "firstName must be between 3 and 20 characters")
+        String firstName,
 
-        @NotNull(message = "surname is required")
-        @Size(min = 3, max = 20, message = "surname must be between 3 and 20 characters")
-        String surname
+        @NotNull(message = "lastName is required")
+        @Size(min = 3, max = 20, message = "lastName must be between 3 and 20 characters")
+        String lastName
 
 ) { }
