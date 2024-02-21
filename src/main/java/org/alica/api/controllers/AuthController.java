@@ -42,11 +42,15 @@ public class AuthController {
         return authService.signIn(signInRequestDTO);
     }
 
+    @PostMapping("/refresh")
+
+
     @PreAuthorize("isAuthenticated()")
     @DeleteMapping("/delete")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@AuthenticationPrincipal UserDetailsImpl user){
-        logger.info("User is authenticated: " + user.getUsername());
         logger.info("Deleting user with id: " + user.getId());
+        authService.delete(user.getId());
     }
 
 }

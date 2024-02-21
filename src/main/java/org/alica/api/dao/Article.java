@@ -42,7 +42,7 @@ public class Article {
                 ", subtitle='" + subtitle + '\'' +
                 ", content='" + content + '\'' +
                 ", imgURL='" + imgURL + '\'' +
-                ", alumni=" + alumni +
+                ", alumni=" + alumni.getId() +
                 '}';
     }
 

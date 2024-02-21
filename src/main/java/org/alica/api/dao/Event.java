@@ -70,7 +70,7 @@ public class Event {
     public String toString() {
         return "Event{" +
                 "id=" + id +
-                ", organizer=" + organizer +
+                ", organizer=" + organizer.getId() +
                 ", imageURL='" + imageURL + '\'' +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +

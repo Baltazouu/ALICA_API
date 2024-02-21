@@ -69,7 +69,7 @@ public class Offer {
     public String toString() {
         return "Offer{" +
                 "id=" + id +
-                ", alumni=" + alumni +
+                ", alumni=" + alumni.getId() +
                 ", title='" + title + '\'' +
                 ", image='" + image + '\'' +
                 ", company='" + company + '\'' +

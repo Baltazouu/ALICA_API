@@ -10,9 +10,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class InitRole implements ApplicationRunner {
-
-    //private static final int ROLE_NUMBER = 3;
-
     private final RoleRepository roleRepository;
 
     public InitRole(RoleRepository roleRepository) {

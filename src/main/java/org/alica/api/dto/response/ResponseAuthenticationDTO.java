@@ -13,5 +13,6 @@ public record ResponseAuthenticationDTO(
         String type,
         String email,
         UUID id,
+        String refreshToken,
         Set<Role> role
 ) { }

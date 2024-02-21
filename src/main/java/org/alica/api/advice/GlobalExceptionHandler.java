@@ -1,4 +1,4 @@
-package org.alica.api.controllers;
+package org.alica.api.advice;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;

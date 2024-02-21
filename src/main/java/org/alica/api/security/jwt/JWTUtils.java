@@ -22,7 +22,7 @@ public class JWTUtils {
 
     @Value("${jwt.expirationMs}")
     private int jwtExpirationMs;
-    
+
     private final Logger logger = Logger.getLogger(JWTUtils.class.getName());
 
 
@@ -43,7 +43,7 @@ public class JWTUtils {
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
     }
 
-    public boolean validateJwtToken(String authToken) throws Exception {
+    public boolean validateJwtToken(String authToken) throws AuthenticateException {
         try {
             Jwts.parserBuilder().setSigningKey(key()).build().parse(authToken);
             return true;
@@ -64,6 +64,7 @@ public class JWTUtils {
         return Jwts.parserBuilder().setSigningKey(key()).build()
                 .parseClaimsJws(token).getBody().getSubject();
     }
+
 
     public static UserDetailsImpl getUserAuthenticate(HttpServletRequest request){
         try{

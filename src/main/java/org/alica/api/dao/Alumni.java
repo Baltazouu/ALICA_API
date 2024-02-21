@@ -23,20 +23,24 @@ public class Alumni{
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @OneToMany(mappedBy = "alumni", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "alumni", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private Set<Offer> offers;
 
-    @ManyToMany(mappedBy = "alumnis", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "alumnis", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private Set<Event> events;
 
-    @OneToMany(mappedBy = "organizer", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "organizer", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
     private Set<Event> event;
 
-    @OneToMany(mappedBy = "alumni", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "alumni", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
     private Set<Article> articles;
 
-    @OneToMany(mappedBy = "alumni", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "alumni", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
     private Set<Formation> formations;
+
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
+    private RefreshToken refreshToken;
 
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REMOVE})
@@ -48,6 +52,7 @@ public class Alumni{
                     @JoinColumn(name = "ROLE_ID")
             })
     private Set<Role> roles = new HashSet<>();
+
 
     @Column(name = "email")
     private String email;

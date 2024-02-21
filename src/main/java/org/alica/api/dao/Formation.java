@@ -41,7 +41,7 @@ public class Formation {
     public String toString() {
         return "Formation{" +
                 "id=" + id +
-                ", alumni=" + alumni +
+                ", alumni=" + alumni.getId() +
                 ", firstName='" + name + '\'' +
                 ", startDate='" + startDate + '\'' +
                 ", endDate='" + endDate + '\'' +

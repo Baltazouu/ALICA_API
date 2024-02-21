@@ -19,6 +19,8 @@ public interface AlumniMapper {
     @Mapping(target = "events", ignore = true)
     @Mapping(target = "articles", ignore = true)
     @Mapping(target = "offers", ignore = true)
+    @Mapping(target = "roles", ignore = true)
+    @Mapping(target = "event", ignore = true)
     Alumni mapToAlumni(RequestAlumniDTO alumniDTO, Role role);
 
     @Mapping(target = "id", source = "id")

@@ -71,7 +71,14 @@ public class AuthTokenFilter extends OncePerRequestFilter {
                 }
             }
         } catch (UsernameNotFoundException e) {
-            throw new AuthenticateException("username not found !", request.getRequestURI());
+            Map<String, String> body = new HashMap<>();
+            body.put("message", e.getMessage());
+            body.put("path", request.getRequestURI());
+            body.put("status", HttpStatus.UNAUTHORIZED.toString());
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType("application/json");
+            response.getWriter().write(new ObjectMapper().writeValueAsString(body));
+            return;
         } catch (AuthenticateException e) {
             // Gérer l'exception spécifique liée à l'expiration du jeton
             Map<String, String> body = new HashMap<>();

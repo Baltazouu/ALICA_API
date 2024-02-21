@@ -83,8 +83,6 @@ public class EventController {
         this.eventService.unsubscribe(eventId, user.getId());
     }
 
-    // I choose list instead of page bc I think that there will not be a large
-    // number of event subscribers to justify the use of a list
     @GetMapping("/subscribers/{eventId}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Page<ResponseAlumniDTO>> findSubscribers(@PathVariable UUID eventId, @PageableDefault Pageable page) {
