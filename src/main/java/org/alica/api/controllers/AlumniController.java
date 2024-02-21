@@ -3,7 +3,7 @@ package org.alica.api.controllers;
 import jakarta.validation.Valid;
 import org.alica.api.dto.request.RequestAlumniDTO;
 import org.alica.api.dto.response.ResponseAlumniDTO;
-import org.alica.api.security.jwt.JWTUtils;
+import org.alica.api.security.jwt.UserDetailsImpl;
 import org.alica.api.services.AlumniService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,6 +11,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -45,15 +46,9 @@ public class AlumniController {
     @PreAuthorize("isAuthenticated()")
     @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseAlumniDTO updateAlumni(@Valid @RequestBody RequestAlumniDTO alumniDTO){
-        return this.alumniService.updateAlumni(alumniDTO,JWTUtils.getUserAuthenticate().getId());
+    public ResponseAlumniDTO updateAlumni(@AuthenticationPrincipal UserDetailsImpl user, @Valid @RequestBody RequestAlumniDTO alumniDTO){
+        return this.alumniService.updateAlumni(alumniDTO,user.getId());
 
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteAlumni(){
-        this.alumniService.deleteAlumni(JWTUtils.getUserAuthenticate().getId());
     }
 
 }

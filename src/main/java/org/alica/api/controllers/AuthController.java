@@ -5,10 +5,15 @@ import jakarta.validation.Valid;
 import org.alica.api.dto.request.SignInRequestDTO;
 import org.alica.api.dto.request.SignupRequestDTO;
 import org.alica.api.dto.response.ResponseAuthenticationDTO;
+import org.alica.api.security.jwt.UserDetailsImpl;
 import org.alica.api.services.AuthService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.logging.Logger;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -19,6 +24,8 @@ public class AuthController {
     private String targetApiUrl;
 
     private final AuthService authService;
+
+    Logger logger = Logger.getLogger(AuthController.class.getName());
 
     public AuthController(AuthService authService) {
         this.authService = authService;
@@ -33,6 +40,13 @@ public class AuthController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseAuthenticationDTO signIn(@Valid @RequestBody SignInRequestDTO signInRequestDTO){
         return authService.signIn(signInRequestDTO);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @DeleteMapping("/delete")
+    public void delete(@AuthenticationPrincipal UserDetailsImpl user){
+        logger.info("User is authenticated: " + user.getUsername());
+        logger.info("Deleting user with id: " + user.getId());
     }
 
 }

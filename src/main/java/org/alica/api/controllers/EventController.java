@@ -5,7 +5,6 @@ import jakarta.validation.Valid;
 import org.alica.api.dto.request.RequestEventDTO;
 import org.alica.api.dto.response.ResponseAlumniDTO;
 import org.alica.api.dto.response.ResponseEventDTO;
-import org.alica.api.security.jwt.JWTUtils;
 import org.alica.api.security.jwt.UserDetailsImpl;
 import org.alica.api.services.EventService;
 import org.springframework.data.domain.Page;
@@ -15,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -68,17 +68,19 @@ public class EventController {
         return new ResponseEntity<>(this.eventService.findEventByAlumniId(id, page), HttpStatus.OK);
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/subscribe/{eventId}")
     @ResponseStatus(HttpStatus.OK)
-    public void subscribe(@PathVariable UUID eventId) {
-        this.eventService.subscribe(eventId, JWTUtils.getUserAuthenticate().getId());
+    public void subscribe(@PathVariable UUID eventId, @AuthenticationPrincipal UserDetailsImpl user) {
+        this.eventService.subscribe(eventId, user.getId());
     }
 
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/unsubscribe/{eventId}")
     @ResponseStatus(HttpStatus.OK)
-    public void unsubscribe( @PathVariable UUID eventId) {
-        this.eventService.unsubscribe(eventId, JWTUtils.getUserAuthenticate().getId());
+    public void unsubscribe( @PathVariable UUID eventId,@AuthenticationPrincipal UserDetailsImpl user) {
+        this.eventService.unsubscribe(eventId, user.getId());
     }
 
     // I choose list instead of page bc I think that there will not be a large
