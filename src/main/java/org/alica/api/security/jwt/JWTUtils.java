@@ -43,7 +43,7 @@ public class JWTUtils {
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
     }
 
-    public boolean validateJwtToken(String authToken) {
+    public boolean validateJwtToken(String authToken) throws Exception {
         try {
             Jwts.parserBuilder().setSigningKey(key()).build().parse(authToken);
             return true;
@@ -51,6 +51,7 @@ public class JWTUtils {
             logger.info("Invalid JWT token: {}" + e.getMessage());
         } catch (ExpiredJwtException e) {
             logger.info("JWT token is expired: " + e.getMessage());
+            throw new AuthenticateException("JWT token is expired: " + e.getMessage(), null);
         } catch (UnsupportedJwtException e) {
             logger.info("JWT token is unsupported: " + e.getMessage());
         } catch (IllegalArgumentException e) {

@@ -1,5 +1,6 @@
 package org.alica.api.controllers;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,7 +16,6 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
@@ -96,21 +96,21 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     protected ResponseEntity<Object> handleMethodArgumentTypeMismatch(
-            MethodArgumentTypeMismatchException ex, WebRequest request) {
+            MethodArgumentTypeMismatchException ex, HttpServletRequest request) {
 
         Map<String, String> body = new HashMap<>();
         body.put(MESSAGE, ex.getName() + " should be of type " + ex.getRequiredType());
-        body.put("path",request.getContextPath());
+        body.put("path",request.getRequestURI());
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(RuntimeException.class)
     protected ResponseEntity<Object> handleRuntimeException(
-            RuntimeException ex, WebRequest request) {
+            RuntimeException ex, HttpServletRequest request) {
 
         Map<String, String> body = new HashMap<>();
         body.put(MESSAGE, ex.getMessage());
-        body.put("path",request.getContextPath());
+        body.put("path",request.getRequestURI());
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 
@@ -140,27 +140,38 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(UpdateObjectException.class)
     protected ResponseEntity<Object> handleUpdateObjectException(
-            UpdateObjectException ex, WebRequest request) {
+            UpdateObjectException ex, HttpServletRequest request) {
 
         Map<String, String> body = new HashMap<>();
         body.put(MESSAGE, ex.getMessage());
-        body.put("path",request.getContextPath());
+        body.put("path",request.getRequestURI());
         return new ResponseEntity<>(body, HttpStatus.NOT_MODIFIED);
     }
 
     @ExceptionHandler(JwtException.class)
     protected ResponseEntity<Object> handleJMException(
-            JwtException ex, WebRequest request) {
+            JwtException ex, HttpServletRequest request) {
 
         Map<String, String> body = new HashMap<>();
         body.put("jwt exception message", ex.getMessage());
-        body.put("path",request.getContextPath());
+        body.put("path",request.getRequestURI());
         return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<Object> handleException(
             Exception ex, HttpServletRequest request) {
+
+        Map<String, String> body = new HashMap<>();
+        body.put(MESSAGE, ex.getMessage());
+        body.put("path",request.getRequestURI());
+        body.put("status", HttpStatus.BAD_REQUEST.toString());
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ExpiredJwtException.class)
+    protected ResponseEntity<Object> handleJwtException(
+            JwtException ex, HttpServletRequest request) {
 
         Map<String, String> body = new HashMap<>();
         body.put(MESSAGE, ex.getMessage());
