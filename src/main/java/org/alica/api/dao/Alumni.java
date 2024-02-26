@@ -3,7 +3,6 @@ package org.alica.api.dao;
 import jakarta.persistence.*;
 import lombok.*;
 import org.alica.api.dto.request.RequestAlumniDTO;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -11,7 +10,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "Alumni",uniqueConstraints = {@UniqueConstraint(name = "email_index", columnNames = {"email"})})
-@EntityListeners(AuditingEntityListener.class)
+//@EntityListeners(AuditingEntityListener.class)
 @Getter
 @Setter
 @Builder
@@ -23,25 +22,23 @@ public class Alumni{
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @OneToMany(mappedBy = "alumni", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "alumni", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<Offer> offers;
 
-    @ManyToMany(mappedBy = "alumnis", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "alumnis", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private Set<Event> events;
 
-    @OneToMany(mappedBy = "organizer", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
-    private Set<Event> event;
+    @OneToMany(mappedBy = "organizer", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
+    private Set<Event> eventOrganized;
 
-    @OneToMany(mappedBy = "alumni", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "alumni", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
     private Set<Article> articles;
 
-    @OneToMany(mappedBy = "alumni", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "alumni", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
     private Set<Formation> formations;
 
-
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
-    private RefreshToken refreshToken;
-
+    @OneToMany(mappedBy = "alumni",cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private Set<RefreshToken> refreshTokens;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REMOVE})
     @JoinTable(name = "USER_ROLES",
@@ -120,5 +117,13 @@ public class Alumni{
         if(this.roles == null)
             this.roles = new HashSet<>();
         this.roles.add(role);
+    }
+
+
+    @PrePersist
+    public void removeExpiredRefreshToken(){
+        if(this.refreshTokens != null){
+            this.refreshTokens.removeIf(RefreshToken::isExpired);
+        }
     }
 }

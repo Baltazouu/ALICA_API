@@ -1,6 +1,7 @@
     package org.alica.api.services;
 
 
+    import jakarta.transaction.Transactional;
     import org.alica.api.dao.Alumni;
     import org.alica.api.dao.RefreshToken;
     import org.alica.api.dao.Role;
@@ -9,6 +10,7 @@
     import org.alica.api.dto.response.ResponseAuthenticationDTO;
     import org.alica.api.enums.ERole;
     import org.alica.api.exceptions.EmailExistsException;
+    import org.alica.api.exceptions.RefreshTokenException;
     import org.alica.api.mappers.AlumniMapper;
     import org.alica.api.repository.AlumniRepository;
     import org.alica.api.repository.RoleRepository;
@@ -78,6 +80,8 @@
             alumniRepository.save(alumni);
         }
 
+
+        @Transactional
         public ResponseAuthenticationDTO signIn(SignInRequestDTO signInRequestDTO) {
 
             Authentication authentication = authenticationManager.authenticate(
@@ -91,6 +95,8 @@
 
             RefreshToken refreshToken = refreshTokenService.createRefreshToken(alumni.getId());
 
+            logger.info("Refresh Token : " + refreshToken.getToken());
+
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             return ResponseAuthenticationDTO.builder()
@@ -99,7 +105,7 @@
                     .token(jwtUtils.generateJwtToken(authentication))
                     .type("Bearer")
                     .role(alumni.getRoles())
-                    .refreshToken(refreshToken.getToken())
+                    .refreshToken(refreshToken.getToken().toString())
                     .build();
         }
 
@@ -107,6 +113,35 @@
 
             SecurityContextHolder.setContext(SecurityContextHolder.createEmptyContext());
             alumniRepository.deleteById(id);
+        }
+
+
+        @Transactional
+        public ResponseAuthenticationDTO refreshToken(UUID refreshToken) {
+            RefreshToken token = refreshTokenService.findByToken(refreshToken)
+                    .orElseThrow(() -> new RuntimeException("Invalid refresh token"));
+
+            if(token.isExpired()){
+                throw new RefreshTokenException(token.getToken().toString(),"Refresh token was expired. Please make a new Signin request");
+            }
+
+            Alumni alumni = token.getAlumni();
+
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(alumni.getEmail(), alumni.getPassword()));
+
+            logger.info("Authentication : " + authentication.getPrincipal());
+
+            RefreshToken newRefreshToken = refreshTokenService.createRefreshToken(alumni.getId());
+
+            return ResponseAuthenticationDTO.builder()
+                    //.email(alumni.getEmail())
+                    //.id(alumni.getId())
+                    .token(jwtUtils.generateJwtToken(authentication))
+                    .type("Bearer")
+                    .role(alumni.getRoles())
+                    .refreshToken(newRefreshToken.getToken().toString())
+                    .build();
         }
 }
 

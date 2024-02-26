@@ -2,6 +2,7 @@ package org.alica.api.controllers;
 
 
 import jakarta.validation.Valid;
+import org.alica.api.dto.request.RequestRefreshDTO;
 import org.alica.api.dto.request.SignInRequestDTO;
 import org.alica.api.dto.request.SignupRequestDTO;
 import org.alica.api.dto.response.ResponseAuthenticationDTO;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.logging.Logger;
@@ -43,6 +45,9 @@ public class AuthController {
     }
 
     @PostMapping("/refresh")
+    public ResponseAuthenticationDTO refresh(@Validated @RequestBody RequestRefreshDTO requestRefreshDTO){
+        return authService.refreshToken(requestRefreshDTO.refreshToken());
+    }
 
 
     @PreAuthorize("isAuthenticated()")

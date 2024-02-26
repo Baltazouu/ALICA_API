@@ -9,6 +9,9 @@ import lombok.Setter;
 import java.time.Instant;
 import java.util.UUID;
 
+
+
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -22,12 +25,16 @@ public class RefreshToken {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Alumni alumni;
 
     @Column(nullable = false)
-    private String token;
+    private UUID token;
 
     @Column(nullable = false)
     private Instant expiration;
+
+    public boolean isExpired() {
+        return Instant.now().isAfter(expiration);
+    }
 }

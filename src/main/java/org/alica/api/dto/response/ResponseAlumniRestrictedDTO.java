@@ -1,14 +1,4 @@
 package org.alica.api.dto.response;
-
-//public record ResponseAlumniRestrictedDTO(
-//    UUID id,
-//    String firstName,
-//    String lastName,
-//    String linkedinURL,
-//    String imageURL
-//) { }
-
-
 import lombok.*;
 import org.springframework.hateoas.RepresentationModel;
 
