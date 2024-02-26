@@ -1,6 +1,7 @@
     package org.alica.api.services;
 
 
+    import jakarta.el.PropertyNotFoundException;
     import jakarta.transaction.Transactional;
     import org.alica.api.dao.Alumni;
     import org.alica.api.dao.RefreshToken;
@@ -15,9 +16,11 @@
     import org.alica.api.repository.AlumniRepository;
     import org.alica.api.repository.RoleRepository;
     import org.alica.api.security.jwt.JWTUtils;
+    import org.alica.api.security.jwt.UserDetailsImpl;
     import org.springframework.security.authentication.AuthenticationManager;
     import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
     import org.springframework.security.core.Authentication;
+    import org.springframework.security.core.authority.AuthorityUtils;
     import org.springframework.security.core.context.SecurityContextHolder;
     import org.springframework.security.crypto.password.PasswordEncoder;
     import org.springframework.stereotype.Service;
@@ -119,7 +122,9 @@
         @Transactional
         public ResponseAuthenticationDTO refreshToken(UUID refreshToken) {
             RefreshToken token = refreshTokenService.findByToken(refreshToken)
-                    .orElseThrow(() -> new RuntimeException("Invalid refresh token"));
+                    .orElseThrow(() -> new PropertyNotFoundException("Invalid refresh token"));
+
+            logger.info("Refresh Token : " + token.getToken());
 
             if(token.isExpired()){
                 throw new RefreshTokenException(token.getToken().toString(),"Refresh token was expired. Please make a new Signin request");
@@ -127,12 +132,17 @@
 
             Alumni alumni = token.getAlumni();
 
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(alumni.getEmail(), alumni.getPassword()));
+            UserDetailsImpl userDetails = UserDetailsImpl.build(alumni);
 
-            logger.info("Authentication : " + authentication.getPrincipal());
+            Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null,
+                    AuthorityUtils.createAuthorityList("ROLE_USER"));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+
 
             RefreshToken newRefreshToken = refreshTokenService.createRefreshToken(alumni.getId());
+
+            refreshTokenService.deleteByToken(refreshToken);
 
             return ResponseAuthenticationDTO.builder()
                     //.email(alumni.getEmail())

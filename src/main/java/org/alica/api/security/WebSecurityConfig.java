@@ -79,7 +79,7 @@ public class WebSecurityConfig {
                         auth.requestMatchers("/api/auth/**").permitAll()
                                 .requestMatchers("/api/auth/delete").authenticated()
                                 .requestMatchers("/swagger-ui/**").permitAll()
-                                .requestMatchers("/api/alumni-restricted").permitAll()
+                                .requestMatchers("/api/alumni-restricted/**").permitAll()
                                 .requestMatchers("/api/events/**").permitAll()
                                 .requestMatchers("/api/articles/**").permitAll()
                                 .requestMatchers("/api/formations/**").authenticated()

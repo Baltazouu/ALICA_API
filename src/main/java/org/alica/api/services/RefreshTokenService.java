@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.logging.Logger;
@@ -33,22 +32,6 @@ public class RefreshTokenService {
     }
 
     public Optional<RefreshToken> findByToken(UUID token) {
-
-
-        logger.info("All tokens : ");
-        List<RefreshToken> tokens = refreshTokenRepository.findAll();
-
-
-        System.out.println("All tokens : ");
-
-        for (RefreshToken t : tokens) {
-            logger.info(t.getToken().toString());
-        }
-
-        logger.info("Finding refresh token by token: " + token);
-        logger.info("Refresh Token : "+refreshTokenRepository.findByToken(token));
-
-        logger.info("Should be writted in console");
 
         return refreshTokenRepository.findByToken(token);
     }
@@ -78,5 +61,9 @@ public class RefreshTokenService {
     @Transactional
     public int deleteByUserId(UUID userId) {
         return refreshTokenRepository.deleteByAlumni(userRepository.findById(userId).orElseThrow(() -> new PropertyNotFoundException("User not found")));
+    }
+
+    void deleteByToken(UUID token) {
+        refreshTokenRepository.deleteByToken(token);
     }
 }
