@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
-
 @RestController
 @RequestMapping("/api/alumnis")
 public class AlumniController {
@@ -40,6 +39,13 @@ public class AlumniController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseAlumniDTO findAlumniById(@PathVariable UUID id){
         return this.alumniService.findAlumniById(id);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping(value = "/{name}")
+    @ResponseStatus(HttpStatus.OK)
+    public Page<ResponseAlumniDTO> findAlumniByName(@PathVariable String name, @PageableDefault Pageable page){
+        return this.alumniService.findByLastName(name,page);
     }
 
 

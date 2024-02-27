@@ -95,7 +95,15 @@ public class AlumniService implements UserDetailsService {
         ResponseAlumniDTO responseAlumniDTO =  alumniMapper.mapResponseAlumniDTO(alumni);
         addHateoasLinks(responseAlumniDTO);
         return responseAlumniDTO;
+    }
 
+    public Page<ResponseAlumniDTO> findByLastName(String lastName,Pageable p){
+        Page<Alumni> alumniPage = alumniRepository.findByLastName(lastName,p);
+        Page<ResponseAlumniDTO> responseAlumniDTOS = alumniPage.map(alumniMapper::mapResponseAlumniDTO);
+        for(ResponseAlumniDTO alumniDTO : responseAlumniDTOS){
+            addHateoasLinks(alumniDTO);
+        }
+        return responseAlumniDTOS;
     }
 
 
