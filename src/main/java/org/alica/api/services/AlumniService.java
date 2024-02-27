@@ -31,17 +31,12 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class AlumniService implements UserDetailsService {
 
     private final AlumniRepository alumniRepository;
-
     private static final String  ALUMNI_NOT_FOUND = "Alumni %s Not found !";
-
-
     private static final AlumniMapper alumniMapper = AlumniMapper.INSTANCE;
     AlumniService(AlumniRepository alumniRepository) {
 
         this.alumniRepository = alumniRepository;
     }
-
-
 
     public static void addHateoasLinks(ResponseAlumniDTO alumniDTO) {
 
@@ -97,16 +92,14 @@ public class AlumniService implements UserDetailsService {
         return responseAlumniDTO;
     }
 
-    public Page<ResponseAlumniDTO> findByLastName(String lastName,Pageable p){
-        Page<Alumni> alumniPage = alumniRepository.findByLastName(lastName,p);
+    public Page<ResponseAlumniDTO> findByLastName(String lastName,Pageable p) {
+        Page<Alumni> alumniPage = alumniRepository.findByLastNameContaining(lastName, p);
         Page<ResponseAlumniDTO> responseAlumniDTOS = alumniPage.map(alumniMapper::mapResponseAlumniDTO);
-        for(ResponseAlumniDTO alumniDTO : responseAlumniDTOS){
+        for (ResponseAlumniDTO alumniDTO : responseAlumniDTOS) {
             addHateoasLinks(alumniDTO);
         }
         return responseAlumniDTOS;
     }
-
-
 
     public void deleteAlumni(UUID id){
         if(!alumniRepository.existsById(id)) throw new PropertyNotFoundException(String.format(ALUMNI_NOT_FOUND,id));

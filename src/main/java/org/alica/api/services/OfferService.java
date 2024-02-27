@@ -5,6 +5,9 @@ import org.alica.api.dao.Alumni;
 import org.alica.api.dao.Offer;
 import org.alica.api.dto.request.RequestOfferDTO;
 import org.alica.api.dto.response.ResponseOfferDTO;
+import org.alica.api.enums.EContract;
+import org.alica.api.enums.ELevel;
+import org.alica.api.enums.EStudies;
 import org.alica.api.mappers.OfferMapper;
 import org.alica.api.repository.AlumniRepository;
 import org.alica.api.repository.OfferRepository;
@@ -13,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -34,7 +38,30 @@ public class OfferService {
         this.alumniRepository = alumniRepository;
     }
 
-    public Page<ResponseOfferDTO> findAll(Pageable p){
+    public Page<ResponseOfferDTO> findAll(Pageable p, Optional<ELevel> level, Optional<EStudies> studies, Optional<EContract> contract){
+
+
+        if(level.isPresent() && studies.isPresent() && contract.isPresent()){
+            return offerRepository.findByLevelAndStudiesAndContract(level.get(),studies.get(),contract.get(),p).map(offerMapper::mapToResponseOfferDTO);
+        }
+        if(level.isPresent() && studies.isPresent()){
+            return offerRepository.findByLevelAndStudies(level.get(),studies.get(),p).map(offerMapper::mapToResponseOfferDTO);
+        }
+        if(level.isPresent() && contract.isPresent()){
+            return offerRepository.findByLevelAndContract(level.get(),contract.get(),p).map(offerMapper::mapToResponseOfferDTO);
+        }
+        if(studies.isPresent() && contract.isPresent()){
+            return offerRepository.findByStudiesAndContract(studies.get(),contract.get(),p).map(offerMapper::mapToResponseOfferDTO);
+        }
+        if(level.isPresent()){
+            return offerRepository.findByLevel(level.get(),p).map(offerMapper::mapToResponseOfferDTO);
+        }
+        if(studies.isPresent()){
+            return offerRepository.findByStudies(studies.get(),p).map(offerMapper::mapToResponseOfferDTO);
+        }
+        if(contract.isPresent()){
+            return offerRepository.findByContract(contract.get(),p).map(offerMapper::mapToResponseOfferDTO);
+        }
 
         Page<Offer> offers =  this.offerRepository.findAll(p);
 

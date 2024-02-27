@@ -1,4 +1,5 @@
 package org.alica.api.controllers;
+
 import jakarta.validation.Valid;
 import org.alica.api.dto.request.RequestArticleDTO;
 import org.alica.api.dto.response.ResponseArticleDTO;
@@ -10,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -24,7 +27,9 @@ public class ArticleController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public Page<ResponseArticleDTO> findAll(@PageableDefault Pageable page){
+    public Page<ResponseArticleDTO> findAll(@PageableDefault Pageable page, @RequestParam(required = false) Optional<String> title){
+        if(title.isPresent())
+            return this.articleService.findByTitleContaining(title.get(),page);
         return this.articleService.findAll(page);
     }
 

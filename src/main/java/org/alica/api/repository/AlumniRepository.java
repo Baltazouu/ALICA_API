@@ -20,7 +20,7 @@ public interface AlumniRepository extends JpaRepository<Alumni, UUID> {
 
     Optional<Alumni> findByEmail(String email);
 
-    Page<Alumni> findByLastName(String lastName, Pageable pageable);
+    Page<Alumni> findByLastNameContaining(String lastName, Pageable pageable);
 
 
 }

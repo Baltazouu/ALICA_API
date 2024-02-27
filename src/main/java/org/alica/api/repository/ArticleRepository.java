@@ -15,4 +15,6 @@ public interface ArticleRepository extends JpaRepository<Article, UUID> {
 
     Page<Article> findByAlumni(Alumni alumni, Pageable pageable);
 
+    Page<Article> findByTitleContaining(String title, Pageable pageable);
+
 }

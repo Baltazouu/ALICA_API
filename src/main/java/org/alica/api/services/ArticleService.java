@@ -96,7 +96,6 @@ public class ArticleService {
 
     }
 
-
     public void deleteArticle(UUID id){
 
         if(!this.articleRepository.existsById(id)){
@@ -109,6 +108,15 @@ public class ArticleService {
     public Page<ResponseArticleDTO> findArticleByAlumniId(UUID id, Pageable page){
         Alumni alumni = this.alumniRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(String.format(ALUMNI_NOT_FOUND,id)));
         Page<Article> articles = this.articleRepository.findByAlumni(alumni,page);
+        Page<ResponseArticleDTO> responseArticleDTOS =  articles.map(ARTICLE_MAPPER::mapToResponseArticleDTO);
+
+        responseArticleDTOS.forEach(this::addHateoasLinks);
+
+        return responseArticleDTOS;
+    }
+
+    public Page<ResponseArticleDTO> findByTitleContaining(String title, Pageable page){
+        Page<Article> articles = this.articleRepository.findByTitleContaining(title,page);
         Page<ResponseArticleDTO> responseArticleDTOS =  articles.map(ARTICLE_MAPPER::mapToResponseArticleDTO);
 
         responseArticleDTOS.forEach(this::addHateoasLinks);
