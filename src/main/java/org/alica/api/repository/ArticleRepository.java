@@ -1,8 +1,8 @@
 package org.alica.api.repository;
 
 
-import org.alica.api.Dao.Alumni;
-import org.alica.api.Dao.Article;
+import org.alica.api.dao.Alumni;
+import org.alica.api.dao.Article;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,5 +14,7 @@ import java.util.UUID;
 public interface ArticleRepository extends JpaRepository<Article, UUID> {
 
     Page<Article> findByAlumni(Alumni alumni, Pageable pageable);
+
+    Page<Article> findByTitleContaining(String title, Pageable pageable);
 
 }

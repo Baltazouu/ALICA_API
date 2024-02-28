@@ -3,12 +3,14 @@
 [![Build Status](https://codefirst.iut.uca.fr/api/badges/SportsSpot/SportsSpot/status.svg)](https://codefirst.iut.uca.fr/SportsSpot/SportsSpot)
 
 ### Documentation : 
-swagger accessible à :
-**http://8080/swagger-ui.html**
 
 Base url : **http://localhost:8080**
 
 Contrat d'interface : 
+
+swagger accessible à :
+**http://localhost:8080/swagger-ui.html**
+
 
 *le développement est en cours est d'autres endpoints arriveront prochainement*
 
@@ -19,6 +21,8 @@ Contrat d'interface :
 
 
 ## ALICA REST API - Contrat d’interface
+
+**Ces endpoints sont susceptibles de ne pas êtres à jour pour consulter la version à jour, consulter le swagger-ui.html**
 
 ### Alumnis :
 
@@ -89,5 +93,5 @@ Endpoint with query of title for events
 some others....
 
 TO DO : manage authorizations 
-[Baeldung documentation](https://www.baeldung.com/role-and-privilege-for-spring-security-registration)
+[Baeldung documentation](https://www.baeldung.com/ERole-and-privilege-for-spring-security-registration)
 
