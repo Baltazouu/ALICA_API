@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/formations")
+@RequestMapping("/api/v1/formations")
 public class FormationController {
 
     private final FormationService formationService;

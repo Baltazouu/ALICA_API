@@ -18,7 +18,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/alumnis")
+@RequestMapping("/api/v1/alumnis")
 public class AlumniController {
 
     private final AlumniService alumniService;
