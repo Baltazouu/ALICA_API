@@ -8,6 +8,9 @@ variables:
 trigger:
   event:
     - push
+  branch:
+    only:
+      - master
 
 steps:
   - name: build-and-test
