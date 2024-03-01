@@ -24,7 +24,7 @@ class RequestEventDTOTest {
     void DTOWithInvalidAlumniIdShouldFail() {
         RequestEventDTO dto = RequestEventDTO.builder()
                 .title("title")
-                .imgURL("imgURL")
+                .imageURL("imgURL")
                 .description("description")
                 .date(new Date())
                 .imageURL("imageURL")
@@ -41,7 +41,7 @@ class RequestEventDTOTest {
     void DTOWithInvalidTitleShouldFail() {
         RequestEventDTO dto = RequestEventDTO.builder()
                 .alumniId(UUID.randomUUID())
-                .imgURL("imgURL")
+                .imageURL("imgURL")
                 .description("description")
                 .date(new Date())
                 .imageURL("imageURL")
@@ -62,7 +62,7 @@ class RequestEventDTOTest {
 
         Set<ConstraintViolation<RequestEventDTO>> violations = validator.validate(dto);
 
-        Assertions.assertEquals(6, violations.size());
+        Assertions.assertEquals(5, violations.size());
     }
 
     @Test
@@ -70,7 +70,7 @@ class RequestEventDTOTest {
         RequestEventDTO dto = RequestEventDTO.builder()
                 .alumniId(UUID.randomUUID())
                 .title("title")
-                .imgURL("imgURL")
+                .imageURL("imgURL")
                 .description("description")
                 .date(new Date())
                 .imageURL("imageURL")
