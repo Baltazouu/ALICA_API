@@ -8,6 +8,7 @@ import org.alica.api.dto.response.ResponseOfferDTO;
 import org.alica.api.enums.EContract;
 import org.alica.api.enums.ELevel;
 import org.alica.api.enums.EStudies;
+import org.alica.api.exceptions.InsufficientPermissions;
 import org.alica.api.mappers.OfferMapper;
 import org.alica.api.repository.AlumniRepository;
 import org.alica.api.repository.OfferRepository;
@@ -74,9 +75,9 @@ public class OfferService {
         return offerMapper.mapToResponseOfferDTO(offer);
     }
 
-    public ResponseOfferDTO createOffer(RequestOfferDTO requestOfferDTO ){
+    public ResponseOfferDTO createOffer(RequestOfferDTO requestOfferDTO,UUID userId){
 
-        Alumni alumni = alumniRepository.findById(requestOfferDTO.alumniId()).orElseThrow(() -> new PropertyNotFoundException(String.format(ALUMNI_NOT_FOUND,requestOfferDTO.alumniId())));
+        Alumni alumni = alumniRepository.findById(userId).orElseThrow(() -> new PropertyNotFoundException(String.format(ALUMNI_NOT_FOUND,userId)));
 
         Offer offer = offerMapper.mapToOffer(requestOfferDTO,alumni);
         offer = offerRepository.save(offer);
@@ -84,9 +85,11 @@ public class OfferService {
     }
 
 
-    public ResponseOfferDTO updateOffer(RequestOfferDTO requestOfferDTO, UUID id){
+    public ResponseOfferDTO updateOffer(RequestOfferDTO requestOfferDTO, UUID id,UUID userId){
 
         Offer offer = offerRepository.findById(id).orElseThrow(() -> new PropertyNotFoundException(String.format(OFFER_NOT_FOUND,id)));
+
+        if(offer.getAlumni().getId() != userId) throw new InsufficientPermissions("You are not allowed to update this offer !");
 
         offer.update(requestOfferDTO);
         return offerMapper.mapToResponseOfferDTO(offerRepository.save(offer));

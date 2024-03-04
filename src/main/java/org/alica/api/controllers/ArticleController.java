@@ -3,6 +3,7 @@ package org.alica.api.controllers;
 import jakarta.validation.Valid;
 import org.alica.api.dto.request.RequestArticleDTO;
 import org.alica.api.dto.response.ResponseArticleDTO;
+import org.alica.api.security.jwt.UserDetailsImpl;
 import org.alica.api.services.ArticleService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,6 +11,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -48,15 +50,15 @@ public class ArticleController {
     @PreAuthorize("hasAnyRole('ADMIN','MODERATOR')")
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseArticleDTO createArticle(@Valid @RequestBody RequestArticleDTO article){
-        return this.articleService.createArticle(article);
+    public ResponseArticleDTO createArticle(@Valid @RequestBody RequestArticleDTO article,@AuthenticationPrincipal UserDetailsImpl user){
+        return this.articleService.createArticle(article,user.getId());
     }
 
     @PreAuthorize("hasAnyRole('ADMIN','MODERATOR')")
     @PutMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseArticleDTO updateArticle(@Valid @RequestBody RequestArticleDTO article, @PathVariable UUID id){
-        return this.articleService.updateArticle(article,id);
+    public ResponseArticleDTO updateArticle(@Valid @RequestBody RequestArticleDTO article, @PathVariable UUID id, @AuthenticationPrincipal UserDetailsImpl user){
+        return this.articleService.updateArticle(article,id,user.getId());
     }
 
     @PreAuthorize("hasAnyRole('ADMIN','MODERATOR')")

@@ -7,13 +7,10 @@ import org.alica.api.enums.ELevel;
 import org.alica.api.enums.EStudies;
 import org.springframework.validation.annotation.Validated;
 
-import java.util.UUID;
-
 @Builder
 @Validated
 public record RequestOfferDTO(
 
-        @NotNull(message = "alumniId is required") UUID alumniId,
         @NotNull(message = "title is required") String title,
         @NotNull(message = "description is required") String description,
         @NotNull(message = " is required") EContract contract,

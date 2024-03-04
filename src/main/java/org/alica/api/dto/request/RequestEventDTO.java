@@ -15,5 +15,4 @@ public record RequestEventDTO(
         @NotNull(message = "date is required") Date date,
         @NotNull(message = "imageURL is required") String imageURL,
         @NotNull(message = "nbMaxRegistrations is required") int nbMaxRegistrations
-) {
-}
+) { }

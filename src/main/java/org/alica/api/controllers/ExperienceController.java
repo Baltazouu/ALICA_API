@@ -52,13 +52,14 @@ public class ExperienceController {
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public void createExperience(@Valid @RequestBody RequestExperienceDTO experienceDTO){
-        this.experienceService.create(experienceDTO);
+    public void createExperience(@Valid @RequestBody RequestExperienceDTO experienceDTO, @AuthenticationPrincipal UserDetailsImpl user){
+        this.experienceService.create(experienceDTO,user.getId());
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public void updateExperience(@Valid @RequestBody RequestExperienceDTO experienceDTO){
-        this.experienceService.update(experienceDTO);
+    public void updateExperience(@Valid @RequestBody RequestExperienceDTO experienceDTO,@AuthenticationPrincipal UserDetailsImpl user){
+        this.experienceService.update(experienceDTO,user.getId());
     }
 }

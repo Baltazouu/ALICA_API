@@ -8,6 +8,7 @@ import org.alica.api.enums.EContract;
 import org.alica.api.enums.ELevel;
 import org.alica.api.enums.EStudies;
 import org.alica.api.security.jwt.JWTUtils;
+import org.alica.api.security.jwt.UserDetailsImpl;
 import org.alica.api.services.OfferService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -47,18 +49,18 @@ public class OfferController {
     }
 
 
-    @PreAuthorize("isAuthenticated() && #offer.alumniId() == authentication.principal.id")
+    @PreAuthorize("isAuthenticated()")
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<ResponseOfferDTO> createOffer(@Valid @RequestBody RequestOfferDTO offer){
-        return new ResponseEntity<>(this.offerService.createOffer(offer), HttpStatus.CREATED);
+    public ResponseEntity<ResponseOfferDTO> createOffer(@Valid @RequestBody RequestOfferDTO offer, @AuthenticationPrincipal UserDetailsImpl user){
+        return new ResponseEntity<>(this.offerService.createOffer(offer,user.getId()), HttpStatus.CREATED);
     }
 
-    @PreAuthorize("isAuthenticated() && #offer.alumniId() == authentication.principal.id")
+    @PreAuthorize("isAuthenticated()")
     @PutMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<ResponseOfferDTO> updateOffer(@Valid @RequestBody RequestOfferDTO offer, @PathVariable UUID id){
-        return new ResponseEntity<>(this.offerService.updateOffer(offer,id), HttpStatus.OK);
+    public ResponseEntity<ResponseOfferDTO> updateOffer(@Valid @RequestBody RequestOfferDTO offer, @PathVariable UUID id,@AuthenticationPrincipal UserDetailsImpl user){
+        return new ResponseEntity<>(this.offerService.updateOffer(offer,id,user.getId()), HttpStatus.OK);
     }
 
     // management of rights du delete dans le service à voir et modifier certainement

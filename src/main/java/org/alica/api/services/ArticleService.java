@@ -72,8 +72,8 @@ public class ArticleService {
         return responseArticleDTO;
     }
 
-    public ResponseArticleDTO createArticle(RequestArticleDTO article){
-        Alumni alumni = this.alumniRepository.findById(article.alumniId()).orElseThrow(() -> new EntityNotFoundException(String.format(ALUMNI_NOT_FOUND,article.alumniId())));
+    public ResponseArticleDTO createArticle(RequestArticleDTO article,UUID userId){
+        Alumni alumni = this.alumniRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException(String.format(ALUMNI_NOT_FOUND,userId)));
         Article newArticle = ARTICLE_MAPPER.mapToArticle(article,alumni);
 
         ResponseArticleDTO responseArticleDTO = ARTICLE_MAPPER.mapToResponseArticleDTO(this.articleRepository.save(newArticle));
@@ -82,9 +82,9 @@ public class ArticleService {
         return responseArticleDTO;
     }
 
-    public ResponseArticleDTO updateArticle(RequestArticleDTO article, UUID id){
+    public ResponseArticleDTO updateArticle(RequestArticleDTO article, UUID id,UUID userId){
         Article articleToUpdate = this.articleRepository.findById(id).orElseThrow(() -> new UpdateObjectException(String.format(ARTICLE_NOT_FOUND,id)));
-        Alumni alumni = this.alumniRepository.findById(article.alumniId()).orElseThrow(() -> new UpdateObjectException(String.format(ALUMNI_NOT_FOUND,id)));
+        Alumni alumni = this.alumniRepository.findById(userId).orElseThrow(() -> new UpdateObjectException(String.format(ALUMNI_NOT_FOUND,id)));
         articleToUpdate.setTitle(article.title());
         articleToUpdate.setContent(article.content());
         articleToUpdate.setAlumni(alumni);

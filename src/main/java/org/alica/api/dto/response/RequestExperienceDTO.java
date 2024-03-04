@@ -12,7 +12,6 @@ import java.util.UUID;
 public record RequestExperienceDTO(
 
         @NotNull(message = "title is required")  @NotBlank String title,
-        @NotNull(message = "alumni Id is required")  @NotBlank UUID alumniId,
         @NotNull(message = "start date is required") @NotBlank Date startDate,
         @NotNull(message = "end date is required") @NotBlank Date endDate,
         @NotNull(message = "company is required") @NotBlank String companyName,

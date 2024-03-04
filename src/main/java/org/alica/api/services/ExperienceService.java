@@ -55,16 +55,16 @@ public class ExperienceService {
     }
 
 
-    public void create(RequestExperienceDTO experienceDTO) {
+    public void create(RequestExperienceDTO experienceDTO,UUID userId) {
 
-        Alumni alumni = alumniRepository.findById(experienceDTO.alumniId()).orElseThrow(() -> new PropertyNotFoundException("Alumni not found"));
+        Alumni alumni = alumniRepository.findById(userId).orElseThrow(() -> new PropertyNotFoundException("Alumni not found"));
 
         experienceRepository.save(experienceMapper.mapToExperience(experienceDTO,alumni));
     }
 
-    public void update(RequestExperienceDTO experienceDTO) {
+    public void update(RequestExperienceDTO experienceDTO,UUID alumniId) {
 
-        Alumni alumni = alumniRepository.findById(experienceDTO.alumniId()).orElseThrow(() -> new PropertyNotFoundException("Alumni not found"));
+        Alumni alumni = alumniRepository.findById(alumniId).orElseThrow(() -> new PropertyNotFoundException("Alumni not found"));
 
         experienceRepository.save(experienceMapper.mapToExperience(experienceDTO,alumni));
     }

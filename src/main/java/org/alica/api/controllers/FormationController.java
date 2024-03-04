@@ -5,6 +5,7 @@ import jakarta.validation.Valid;
 import org.alica.api.dto.request.RequestFormationDTO;
 import org.alica.api.dto.response.ResponseFormationDTO;
 import org.alica.api.security.jwt.JWTUtils;
+import org.alica.api.security.jwt.UserDetailsImpl;
 import org.alica.api.services.FormationService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -42,22 +44,20 @@ public class FormationController {
     @PreAuthorize("hasAnyRole('USER', 'MODERATOR', 'ADMIN')")
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<ResponseFormationDTO> createFormation(HttpServletRequest request, @Valid @RequestBody RequestFormationDTO formation) {
+    public ResponseEntity<ResponseFormationDTO> createFormation(@Valid @RequestBody RequestFormationDTO formation,@AuthenticationPrincipal UserDetailsImpl user) {
 
-        return new ResponseEntity<>(this.formationService.createFormation(formation, JWTUtils.getUserAuthenticate(request)), HttpStatus.CREATED);
+        return new ResponseEntity<>(this.formationService.createFormation(formation, user), HttpStatus.CREATED);
     }
 
-//    @PreAuthorize("hasAnyRole('USER', 'MODERATOR', 'ADMIN')")
-    @PreAuthorize("#formation.alumniId() == authentication.principal.id")
+    @PreAuthorize("isAuthenticated() ")
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<ResponseFormationDTO> updateFormation(@Valid @RequestBody RequestFormationDTO formation, @PathVariable UUID id) {
-        return new ResponseEntity<>(this.formationService.updateFormation(formation, id), HttpStatus.OK);
+    public ResponseEntity<ResponseFormationDTO> updateFormation(@Valid @RequestBody RequestFormationDTO formation, @PathVariable UUID id, @AuthenticationPrincipal UserDetailsImpl user) {
+        return new ResponseEntity<>(this.formationService.updateFormation(formation, id,user.getId()), HttpStatus.OK);
     }
 
 
-    // gestion du delete dans le service à voir et modifier certainement
-    
+
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteFormation(HttpServletRequest request,@PathVariable UUID id) {

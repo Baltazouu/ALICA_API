@@ -66,7 +66,7 @@ public class FormationService {
 
     public ResponseFormationDTO createFormation(RequestFormationDTO requestFormationDTO, UserDetailsImpl user) {
 
-        Alumni alumni = alumniRepository.findById(user.getId()).orElseThrow(() -> new PropertyNotFoundException(String.format(FORMATION_NOT_FOUND, requestFormationDTO.alumniId())));
+        Alumni alumni = alumniRepository.findById(user.getId()).orElseThrow(() -> new PropertyNotFoundException(String.format("Alumni %s not found", user.getId())));
         Formation formation = FORMATION_MAPPER.mapToFormation(requestFormationDTO, alumni);
 
         ResponseFormationDTO responseFormationDTO =  FORMATION_MAPPER.mapToResponseResponseFormationDTO(formationRepository.save(formation));
@@ -74,12 +74,11 @@ public class FormationService {
         return responseFormationDTO;
     }
 
-    public ResponseFormationDTO updateFormation(RequestFormationDTO requestFormationDTO, UUID id) {
+    public ResponseFormationDTO updateFormation(RequestFormationDTO requestFormationDTO, UUID id,UUID userId) {
 
         Formation formation = formationRepository.findById(id).orElseThrow(() -> new UpdateObjectException(String.format(FORMATION_NOT_FOUND, id)));
 
-        if(formation.getAlumni().getId() != requestFormationDTO.alumniId()) throw new UpdateObjectException("You are not allowed to update this formation !");
-        if (!alumniRepository.existsById(requestFormationDTO.alumniId())) throw new UpdateObjectException(String.format("Alumni %s Not found !", requestFormationDTO.alumniId()));
+        if(formation.getAlumni().getId() != userId) throw new UpdateObjectException("You are not allowed to update this formation !");
 
         formation.update(requestFormationDTO);
 
