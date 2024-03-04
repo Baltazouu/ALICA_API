@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 import java.util.Set;
-import java.util.UUID;
 
 class RequestEventDTOTest {
 
@@ -20,27 +19,11 @@ class RequestEventDTOTest {
         validator = Validation.buildDefaultValidatorFactory().getValidator();
     }
 
-    @Test
-    void DTOWithInvalidAlumniIdShouldFail() {
-        RequestEventDTO dto = RequestEventDTO.builder()
-                .title("title")
-                .imageURL("imgURL")
-                .description("description")
-                .date(new Date())
-                .imageURL("imageURL")
-                .nbMaxRegistrations(10)
-                .build();
 
-        Set<ConstraintViolation<RequestEventDTO>> violations = validator.validate(dto);
-
-        Assertions.assertEquals(1, violations.size());
-        Assertions.assertEquals("alumniId is required", violations.iterator().next().getMessage());
-    }
 
     @Test
     void DTOWithInvalidTitleShouldFail() {
         RequestEventDTO dto = RequestEventDTO.builder()
-                .alumniId(UUID.randomUUID())
                 .imageURL("imgURL")
                 .description("description")
                 .date(new Date())
@@ -62,13 +45,12 @@ class RequestEventDTOTest {
 
         Set<ConstraintViolation<RequestEventDTO>> violations = validator.validate(dto);
 
-        Assertions.assertEquals(5, violations.size());
+        Assertions.assertEquals(4, violations.size());
     }
 
     @Test
     void DTOWithAllValidFieldsShouldPass() {
         RequestEventDTO dto = RequestEventDTO.builder()
-                .alumniId(UUID.randomUUID())
                 .title("title")
                 .imageURL("imgURL")
                 .description("description")

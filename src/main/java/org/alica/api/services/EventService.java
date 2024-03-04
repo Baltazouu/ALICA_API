@@ -83,9 +83,9 @@ public class EventService {
         return responseEventDTO;
     }
 
-    public ResponseEventDTO createEvent(RequestEventDTO requestEventDTO){
+    public ResponseEventDTO createEvent(RequestEventDTO requestEventDTO,UUID userId){
 
-        Alumni alumni = alumniRepository.findById(requestEventDTO.alumniId()).orElseThrow(() -> new PropertyNotFoundException(String.format(ALUMNI_NOT_FOUND,requestEventDTO.alumniId())));
+        Alumni alumni = alumniRepository.findById(userId).orElseThrow(() -> new PropertyNotFoundException(String.format(ALUMNI_NOT_FOUND,userId)));
 
         Event event = eventMapper.mapToEvent(requestEventDTO,alumni);
 
@@ -95,9 +95,12 @@ public class EventService {
         return responseEventDTO;
     }
 
-    public ResponseEventDTO updateEvent(RequestEventDTO requestEventDTO, UUID id){
+    public ResponseEventDTO updateEvent(RequestEventDTO requestEventDTO, UUID id,UUID userId){
 
         Event event = eventRepository.findById(id).orElseThrow(() -> new UpdateObjectException(String.format(EVENT_NOT_FOUND,id)));
+
+        if(userId != event.getOrganizer().getId()) throw new InsufficientPermissions(String.format("You are not the organizer of event %s !",id));
+
         event.update(requestEventDTO);
         ResponseEventDTO responseEventDTO = eventMapper.mapToResponseEventDTO(eventRepository.save(event));
         addHateoasLinks(responseEventDTO);

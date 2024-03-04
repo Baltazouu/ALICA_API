@@ -42,16 +42,16 @@ public class EventController {
         return new ResponseEntity<>(this.eventService.findEventById(id), HttpStatus.OK);
     }
 
-    @PreAuthorize("#event.alumniId() == authentication.principal.id")
+    @PreAuthorize("isAuthenticated()")
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ResponseEventDTO> createEvent(@Valid @RequestBody RequestEventDTO event) {
-        return new ResponseEntity<>(this.eventService.createEvent(event), HttpStatus.CREATED);
+    public ResponseEntity<ResponseEventDTO> createEvent(@Valid @RequestBody RequestEventDTO event,@AuthenticationPrincipal UserDetailsImpl user) {
+        return new ResponseEntity<>(this.eventService.createEvent(event,user.getId()), HttpStatus.CREATED);
     }
 
-    @PreAuthorize("#event.alumniId() == authentication.principal.id")
+    @PreAuthorize("isAuthenticated()")
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ResponseEventDTO> updateEvent(@Valid @RequestBody RequestEventDTO event, @PathVariable UUID id) {
-        return new ResponseEntity<>(this.eventService.updateEvent(event,id), HttpStatus.OK);
+    public ResponseEntity<ResponseEventDTO> updateEvent(@Valid @RequestBody RequestEventDTO event,@AuthenticationPrincipal UserDetailsImpl user, @PathVariable UUID id) {
+        return new ResponseEntity<>(this.eventService.updateEvent(event,id,user.getId()), HttpStatus.OK);
     }
 
     // gestion du delete dans le service à voir et modifier certainement
