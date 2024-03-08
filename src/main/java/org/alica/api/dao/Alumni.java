@@ -40,8 +40,8 @@ public class Alumni{
     @OneToMany(mappedBy = "alumni",cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<RefreshToken> refreshTokens;
 
-    @OneToOne(mappedBy = "alumni",cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private Image image; // pp image
+//    @OneToOne(mappedBy = "alumni",cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+//    private Image image; // pp image
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REMOVE})
     @JoinTable(name = "USER_ROLES",

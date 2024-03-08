@@ -3,6 +3,8 @@ package org.alica.api.dao;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.UUID;
+
 @Entity
 @Builder
 @NoArgsConstructor
@@ -14,7 +16,7 @@ public class Image {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+    private UUID id;
 
     private String name;
 
