@@ -2,6 +2,7 @@ package org.alica.api.services;
 
 
 import jakarta.el.PropertyNotFoundException;
+import jakarta.transaction.Transactional;
 import org.alica.api.controllers.AlumniController;
 import org.alica.api.controllers.EventController;
 import org.alica.api.dao.Alumni;
@@ -156,6 +157,8 @@ public class EventService {
     }
 
 
+
+    @Transactional
     public void subscribe(UUID eventId, UUID alumniId) {
 
         Event event = eventRepository.findById(eventId).orElseThrow(() -> new PropertyNotFoundException(String.format(EVENT_NOT_FOUND,eventId)));
@@ -171,6 +174,7 @@ public class EventService {
         eventRepository.save(event);
     }
 
+    @Transactional
     public void unsubscribe(UUID eventId, UUID alumniId){
         if(!checkExistEvent(eventId)) throw new PropertyNotFoundException(String.format(EVENT_NOT_FOUND,eventId));
         if(!checkExistAlumni(alumniId)) throw new PropertyNotFoundException(String.format(ALUMNI_NOT_FOUND,alumniId));
