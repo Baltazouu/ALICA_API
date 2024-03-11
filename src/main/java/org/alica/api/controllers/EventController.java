@@ -69,7 +69,7 @@ public class EventController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/subscribe/{eventId}")
+    @PutMapping("/subscribe/{eventId}")
     @ResponseStatus(HttpStatus.OK)
     public void subscribe(@PathVariable UUID eventId, @AuthenticationPrincipal UserDetailsImpl user) {
         this.eventService.subscribe(eventId, user.getId());
@@ -77,7 +77,7 @@ public class EventController {
 
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/unsubscribe/{eventId}")
+    @PutMapping("/unsubscribe/{eventId}")
     @ResponseStatus(HttpStatus.OK)
     public void unsubscribe( @PathVariable UUID eventId,@AuthenticationPrincipal UserDetailsImpl user) {
         this.eventService.unsubscribe(eventId, user.getId());
