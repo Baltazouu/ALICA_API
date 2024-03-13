@@ -42,6 +42,10 @@ public class ResponseOfferDTO extends RepresentationModel<ResponseOfferDTO> {
 
     private String companyURL;
 
+    private UUID imageId;
+
+    private UUID logoId;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

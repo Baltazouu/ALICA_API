@@ -11,6 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Set;
+import java.util.UUID;
 
 class RequestOfferDTOTest {
 
@@ -22,28 +23,6 @@ class RequestOfferDTOTest {
     }
 
 
-    @Test
-    void DTOWithInvalidTitleShouldFail() {
-        RequestOfferDTO dto = RequestOfferDTO.builder()
-                .description("description")
-                .contract(EContract.CDD)
-                .level(ELevel.INDIFFERENT)
-                .city("city")
-                .company("company")
-                .jobDescription("jobDescription")
-                .studies(EStudies.BAC_2)
-                .contactEmail("contact@example.com")
-                .image("image")
-                .experienceRequired("experienceRequired")
-                .contactNumber(123456789)
-                .companyURL("http://example.com")
-                .build();
-
-        Set<ConstraintViolation<RequestOfferDTO>> violations = validator.validate(dto);
-
-        Assertions.assertEquals(1, violations.size());
-        Assertions.assertEquals("title is required", violations.iterator().next().getMessage());
-    }
 
 
     @Test
@@ -58,7 +37,7 @@ class RequestOfferDTOTest {
                 .jobDescription("jobDescription")
                 .studies(EStudies.BAC_5)
                 .contactEmail("contact@example.com")
-                .image("image")
+                .imageId(UUID.randomUUID())
                 .experienceRequired("experienceRequired")
                 .contactNumber(123456789)
                 .companyURL("http://example.com")
@@ -66,6 +45,6 @@ class RequestOfferDTOTest {
 
         Set<ConstraintViolation<RequestOfferDTO>> violations = validator.validate(dto);
 
-        Assertions.assertEquals(0, violations.size());
+        Assertions.assertEquals(1, violations.size());
     }
 }

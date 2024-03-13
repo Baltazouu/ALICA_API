@@ -59,8 +59,8 @@ import static org.mockito.Mockito.*;
     void testFindById_AlumniFound() {
         // Given
         UUID id = UUID.randomUUID();
-        ResponseAlumniRestrictedDTO expectedAlumni = new ResponseAlumniRestrictedDTO(id, "John", "Doe", "linkedin.com", "image.jpg");
-        when(alumniRepository.findById(id)).thenReturn(Optional.of(Alumni.builder().id(id).firstName("John").lastName("Doe").linkedinURL("linkedin.com").imageURL("image.jpg").roles(new HashSet<>()).build()));
+        ResponseAlumniRestrictedDTO expectedAlumni = new ResponseAlumniRestrictedDTO(id, "John", "Doe", "linkedin.com", UUID.randomUUID());
+        when(alumniRepository.findById(id)).thenReturn(Optional.of(Alumni.builder().id(id).firstName("John").lastName("Doe").linkedinURL("linkedin.com").imageId(UUID.randomUUID()).roles(new HashSet<>()).build()));
         // When
         ResponseAlumniRestrictedDTO result = alumniRestrictedService.findById(id);
 

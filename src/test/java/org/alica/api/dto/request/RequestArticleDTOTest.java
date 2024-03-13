@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Set;
+import java.util.UUID;
 
 class RequestArticleDTOTest {
 
@@ -21,7 +22,7 @@ class RequestArticleDTOTest {
 
     @Test
     void DTOWithInvalidTitleShouldFail() {
-        RequestArticleDTO dto = new RequestArticleDTO( null, "subtitle", "content", "imgURL");
+        RequestArticleDTO dto = new RequestArticleDTO( null, "subtitle", "content", UUID.randomUUID());
 
         Set<ConstraintViolation<RequestArticleDTO>> violations = validator.validate(dto);
 
@@ -31,7 +32,7 @@ class RequestArticleDTOTest {
 
     @Test
     void DTOWithInvalidSubtitleShouldFail() {
-        RequestArticleDTO dto = new RequestArticleDTO( "title", null, "content", "imgURL");
+        RequestArticleDTO dto = new RequestArticleDTO( "title", null, "content", UUID.randomUUID());
 
         Set<ConstraintViolation<RequestArticleDTO>> violations = validator.validate(dto);
 
@@ -41,7 +42,7 @@ class RequestArticleDTOTest {
 
     @Test
     void DTOWithInvalidContentShouldFail() {
-        RequestArticleDTO dto = new RequestArticleDTO( "title", "subtitle", null, "imgURL");
+        RequestArticleDTO dto = new RequestArticleDTO( "title", "subtitle", null, UUID.randomUUID());
 
         Set<ConstraintViolation<RequestArticleDTO>> violations = validator.validate(dto);
 
@@ -49,15 +50,6 @@ class RequestArticleDTOTest {
         Assertions.assertEquals("content is required", violations.iterator().next().getMessage());
     }
 
-    @Test
-    void DTOWithInvalidImgURLShouldFail() {
-        RequestArticleDTO dto = new RequestArticleDTO( "title", "subtitle", "content", null);
-
-        Set<ConstraintViolation<RequestArticleDTO>> violations = validator.validate(dto);
-
-        Assertions.assertEquals(1, violations.size());
-        Assertions.assertEquals("imgURL is required", violations.iterator().next().getMessage());
-    }
 
     @Test
     void DTOWithAllInvalidFieldsShouldFail() {
@@ -70,7 +62,7 @@ class RequestArticleDTOTest {
 
     @Test
     void DTOWithAllValidFieldsShouldPass() {
-        RequestArticleDTO dto = new RequestArticleDTO( "title", "subtitle", "content", "imgURL");
+        RequestArticleDTO dto = new RequestArticleDTO( "title", "subtitle", "content", UUID.randomUUID());
 
         Set<ConstraintViolation<RequestArticleDTO>> violations = validator.validate(dto);
 
@@ -79,7 +71,7 @@ class RequestArticleDTOTest {
 
     @Test
     void DTOWithInvalidAlumniIdAndInvalidTitleShouldFail() {
-        RequestArticleDTO dto = new RequestArticleDTO( null, "subtitle", "content", "imgURL");
+        RequestArticleDTO dto = new RequestArticleDTO( null, "subtitle", "content", UUID.randomUUID());
 
         Set<ConstraintViolation<RequestArticleDTO>> violations = validator.validate(dto);
 
@@ -95,7 +87,7 @@ class RequestArticleDTOTest {
 
     @Test
     void DTOWithInvalidAlumniIdAndInvalidSubtitleShouldFail() {
-        RequestArticleDTO dto = new RequestArticleDTO( "title", null, "content", "imgURL");
+        RequestArticleDTO dto = new RequestArticleDTO( "title", null, "content", UUID.randomUUID());
 
         Set<ConstraintViolation<RequestArticleDTO>> violations = validator.validate(dto);
 
@@ -111,7 +103,7 @@ class RequestArticleDTOTest {
 
     @Test
     void DTOWithInvalidAlumniIdAndInvalidContentShouldFail() {
-        RequestArticleDTO dto = new RequestArticleDTO( "title", "subtitle", null, "imgURL");
+        RequestArticleDTO dto = new RequestArticleDTO( "title", "subtitle", null, UUID.randomUUID());
 
         Set<ConstraintViolation<RequestArticleDTO>> violations = validator.validate(dto);
 

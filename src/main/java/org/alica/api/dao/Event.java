@@ -27,8 +27,8 @@ public class Event {
     @ManyToOne
     private Alumni organizer;
 
-    @Column(name = "imageURL")
-    private String imageURL;
+    @Column(name = "imageId")
+    private UUID imageId;
 
     @Column(name = "title")
     private String title;
@@ -60,7 +60,7 @@ public class Event {
 
     public void update(RequestEventDTO requestEventDTO){
         this.title = requestEventDTO.title();
-        this.imageURL = requestEventDTO.imageURL();
+        this.imageId = requestEventDTO.imageId();
         this.description = requestEventDTO.description();
         this.date = requestEventDTO.date();
         this.nbMaxRegistrations = requestEventDTO.nbMaxRegistrations();
@@ -71,7 +71,7 @@ public class Event {
         return "Event{" +
                 "id=" + id +
                 ", organizer=" + organizer.getId() +
-                ", imageURL='" + imageURL + '\'' +
+                ", imageId='" + imageId + '\'' +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", date='" + date + '\'' +

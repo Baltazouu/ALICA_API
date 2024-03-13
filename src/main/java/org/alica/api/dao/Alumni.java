@@ -79,8 +79,8 @@ public class Alumni{
     @Column(name = "portfolio_url")
     private String portfolioURL;
 
-    @Column(name  = "image_url")
-    private String imageURL;
+    @Column(name  = "image_id")
+    private UUID imageId;
 
 
     public void update(RequestAlumniDTO dto){
@@ -92,7 +92,7 @@ public class Alumni{
         this.linkedinURL = dto.linkedinURL();
         this.githubURL = dto.githubURL();
         this.portfolioURL = dto.portfolioURL();
-        this.imageURL = dto.imageURL();
+        this.imageId = dto.imageId();
     }
 
 
@@ -111,7 +111,7 @@ public class Alumni{
                 ", linkedinURL='" + linkedinURL + '\'' +
                 ", githubURL='" + githubURL + '\'' +
                 ", portfolioURL='" + portfolioURL + '\'' +
-                ", imageId='" + imageURL + '\'' +
+                ", imageId='" + imageId + '\'' +
                 '}';
     }
 

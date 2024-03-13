@@ -20,7 +20,7 @@ public class ResponseEventDTO extends RepresentationModel<ResponseAlumniDTO> {
         private UUID id;
         private UUID organizerId;
         private String title;
-        private String imageURL;
+        private String imageId;
         private String description;
         private Date date;
         private int nbMaxRegistrations;
@@ -31,11 +31,11 @@ public class ResponseEventDTO extends RepresentationModel<ResponseAlumniDTO> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ResponseEventDTO that = (ResponseEventDTO) o;
-        return nbMaxRegistrations == that.nbMaxRegistrations && nbRegistrations == that.nbRegistrations && Objects.equals(id, that.id) && Objects.equals(organizerId, that.organizerId) && Objects.equals(title, that.title) && Objects.equals(imageURL, that.imageURL) && Objects.equals(description, that.description) && Objects.equals(date, that.date);
+        return nbMaxRegistrations == that.nbMaxRegistrations && nbRegistrations == that.nbRegistrations && Objects.equals(id, that.id) && Objects.equals(organizerId, that.organizerId) && Objects.equals(title, that.title) && Objects.equals(imageId, that.imageId) && Objects.equals(description, that.description) && Objects.equals(date, that.date);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), id, organizerId, title, imageURL, description, date, nbMaxRegistrations, nbRegistrations);
+        return Objects.hash(super.hashCode(), id, organizerId, title, imageId, description, date, nbMaxRegistrations, nbRegistrations);
     }
 }

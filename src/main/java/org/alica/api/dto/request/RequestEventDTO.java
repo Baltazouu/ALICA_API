@@ -5,6 +5,7 @@ import lombok.Builder;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Builder
 @Validated
@@ -13,6 +14,6 @@ public record RequestEventDTO(
         @NotNull(message = "title is required") String title,
         @NotNull(message = "description is required") String description,
         @NotNull(message = "date is required") Date date,
-        @NotNull(message = "imageURL is required") String imageURL,
+        @NotNull(message = "imageURL is required") UUID imageId,
         @NotNull(message = "nbMaxRegistrations is required") int nbMaxRegistrations
 ) { }

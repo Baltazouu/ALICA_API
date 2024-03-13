@@ -13,6 +13,7 @@ public interface OfferMapper {
     OfferMapper INSTANCE = org.mapstruct.factory.Mappers.getMapper(OfferMapper.class);
 
     @Mapping(target = "alumni",source = "alumni")
+    @Mapping(target = "imageId", source = "offerDTO.imageId")
     Offer mapToOffer(RequestOfferDTO offerDTO, Alumni alumni);
 
     @Mapping(target = "alumniId", source = "alumni.id")

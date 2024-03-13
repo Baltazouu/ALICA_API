@@ -27,8 +27,8 @@ public class Article {
     @Column(name = "content")
     private String content;
 
-    @Column(name = "imgURL")
-    private String imgURL;
+    @Column(name = "image_id")
+    private UUID imgId;
 
     @ManyToOne
     @JoinColumn(name = "alumni_id")
@@ -41,7 +41,7 @@ public class Article {
                 ", title='" + title + '\'' +
                 ", subtitle='" + subtitle + '\'' +
                 ", content='" + content + '\'' +
-                ", imgURL='" + imgURL + '\'' +
+                ", imgId='" + imgId + '\'' +
                 ", alumni=" + alumni.getId() +
                 '}';
     }
@@ -50,7 +50,7 @@ public class Article {
         this.title = articleDTO.title();
         this.subtitle = articleDTO.subtitle();
         this.content = articleDTO.content();
-        this.imgURL = articleDTO.imgURL();
+        this.imgId = articleDTO.imgId();
     }
 
 }

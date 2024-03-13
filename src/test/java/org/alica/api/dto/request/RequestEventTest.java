@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 import java.util.Set;
+import java.util.UUID;
 
 class RequestEventDTOTest {
 
@@ -24,10 +25,9 @@ class RequestEventDTOTest {
     @Test
     void DTOWithInvalidTitleShouldFail() {
         RequestEventDTO dto = RequestEventDTO.builder()
-                .imageURL("imgURL")
+                .imageId(UUID.randomUUID())
                 .description("description")
                 .date(new Date())
-                .imageURL("imageURL")
                 .nbMaxRegistrations(10)
                 .build();
 
@@ -52,10 +52,9 @@ class RequestEventDTOTest {
     void DTOWithAllValidFieldsShouldPass() {
         RequestEventDTO dto = RequestEventDTO.builder()
                 .title("title")
-                .imageURL("imgURL")
+                .imageId(UUID.randomUUID())
                 .description("description")
                 .date(new Date())
-                .imageURL("imageURL")
                 .nbMaxRegistrations(10)
                 .build();
 

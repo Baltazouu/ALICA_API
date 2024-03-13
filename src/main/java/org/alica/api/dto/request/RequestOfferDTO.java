@@ -7,6 +7,8 @@ import org.alica.api.enums.ELevel;
 import org.alica.api.enums.EStudies;
 import org.springframework.validation.annotation.Validated;
 
+import java.util.UUID;
+
 @Builder
 @Validated
 public record RequestOfferDTO(
@@ -20,7 +22,8 @@ public record RequestOfferDTO(
         @NotNull(message = "jobDescription is required") String jobDescription,
         @NotNull(message = "EStudies is required") EStudies studies,
         @NotNull(message = "contactEmail is required") String contactEmail,
-        @NotNull(message = "image is required") String image,
+        @NotNull(message = "image is required") UUID imageId,
+        @NotNull(message = "logo is required") UUID logoId,
         @NotNull(message = "experience is required") String experienceRequired,
         @NotNull(message = "contactNumber is required") int contactNumber,
         @NotNull(message = "companyURL is required") String companyURL

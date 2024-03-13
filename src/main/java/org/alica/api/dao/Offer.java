@@ -30,7 +30,11 @@ public class Offer {
     private String title;
 
     @Column(name = "image")
-    private String image;
+    private UUID imageId;
+
+    @Column(name="image_logo")
+    private String logoId;
+
 
     @Column(name = "company")
     private String company;
@@ -71,7 +75,7 @@ public class Offer {
                 "id=" + id +
                 ", alumni=" + alumni.getId() +
                 ", title='" + title + '\'' +
-                ", image='" + image + '\'' +
+                ", image='" + imageId + '\'' +
                 ", company='" + company + '\'' +
                 ", description='" + description + '\'' +
                 ", jobDescription='" + jobDescription + '\'' +
@@ -88,7 +92,7 @@ public class Offer {
 
     public void update(RequestOfferDTO requestOfferDTO){
         this.title = requestOfferDTO.title() != null ? requestOfferDTO.title() : this.title;
-        this.image = requestOfferDTO.image() != null ? requestOfferDTO.image() : this.image;
+        this.imageId = requestOfferDTO.imageId() != null ? requestOfferDTO.imageId() : this.imageId;
         this.company = requestOfferDTO.company() != null ? requestOfferDTO.company() : this.company;
         this.description = requestOfferDTO.description() != null ? requestOfferDTO.description() : this.description;
         this.jobDescription = requestOfferDTO.jobDescription() != null ? requestOfferDTO.jobDescription() : this.jobDescription;

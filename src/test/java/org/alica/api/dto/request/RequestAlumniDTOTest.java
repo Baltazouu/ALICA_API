@@ -8,6 +8,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Set;
+import java.util.UUID;
+
 class RequestAlumniDTOTest {
 
     private Validator validator;
@@ -28,7 +30,7 @@ class RequestAlumniDTOTest {
                 .linkedinURL("linkedinURL")
                 .githubURL("githubURL")
                 .portfolioURL("portfolioURL")
-                .imageURL("imageURL")
+                .imageId(UUID.randomUUID())
                 .build();
 
 
@@ -48,7 +50,7 @@ class RequestAlumniDTOTest {
                 .linkedinURL("linkedinURL")
                 .githubURL("githubURL")
                 .portfolioURL("portfolioURL")
-                .imageURL("imageURL")
+                .imageId(UUID.randomUUID())
                 .build();
 
         Set<ConstraintViolation<RequestAlumniDTO>> violations = validator.validate(dto);
@@ -67,7 +69,7 @@ class RequestAlumniDTOTest {
                 .linkedinURL("linkedinURL")
                 .githubURL("githubURL")
                 .portfolioURL("portfolioURL")
-                .imageURL("imageURL")
+                .imageId(UUID.randomUUID())
                 .build();
 
         Set<ConstraintViolation<RequestAlumniDTO>> violations = validator.validate(dto);
@@ -86,7 +88,7 @@ class RequestAlumniDTOTest {
                 .linkedinURL("linkedinURL")
                 .githubURL("githubURL")
                 .portfolioURL("portfolioURL")
-                .imageURL("imageURL")
+                .imageId(UUID.randomUUID())
                 .build();
 
         Set<ConstraintViolation<RequestAlumniDTO>> violations = validator.validate(dto);
@@ -105,7 +107,7 @@ class RequestAlumniDTOTest {
                 .linkedinURL("linkedinURL")
                 .githubURL("githubURL")
                 .portfolioURL("portfolioURL")
-                .imageURL("imageURL")
+                .imageId(UUID.randomUUID())
                 .build();
 
         Set<ConstraintViolation<RequestAlumniDTO>> violations = validator.validate(dto);
@@ -124,7 +126,7 @@ class RequestAlumniDTOTest {
                 .linkedinURL("linkedinURL")
                 .githubURL("githubURL")
                 .portfolioURL("portfolioURL")
-                .imageURL("imageURL")
+                .imageId(UUID.randomUUID())
                 .build();
 
         Set<ConstraintViolation<RequestAlumniDTO>> violations = validator.validate(dto);

@@ -16,6 +16,6 @@ public interface EventMapper {
     ResponseEventDTO mapToResponseEventDTO(Event event);
 
     @Mapping(target = "organizer", source = "alumni")
-    @Mapping(target = "imageURL", source = "requestEventDTO.imageURL")
+    @Mapping(target = "imageId", source = "requestEventDTO.imageId")
     Event mapToEvent(RequestEventDTO requestEventDTO, Alumni alumni);
 }

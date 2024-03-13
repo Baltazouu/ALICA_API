@@ -15,14 +15,10 @@ import java.util.UUID;
 public class ResponseExperienceDTO extends RepresentationModel<ResponseExperienceDTO> {
 
     private UUID id;
-
     private UUID alumniId;
     private String title;
-
     private Date startDate;
-
     private Date endDate;
-
     private String companyName;
     private boolean isCurrent;
     @Override

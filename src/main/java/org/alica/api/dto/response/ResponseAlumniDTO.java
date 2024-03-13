@@ -23,7 +23,7 @@ public class ResponseAlumniDTO extends RepresentationModel<ResponseAlumniDTO> {
     private String linkedinURL;
     private String githubURL;
     private String portfolioURL;
-    private String imageURL;
+    private UUID imageId;
 
 
     @Override
@@ -31,12 +31,12 @@ public class ResponseAlumniDTO extends RepresentationModel<ResponseAlumniDTO> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ResponseAlumniDTO that = (ResponseAlumniDTO) o;
-        return Objects.equals(id, that.id) && Objects.equals(email, that.email) && role == that.role && Objects.equals(entryYear, that.entryYear) && Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName) && Objects.equals(linkedinURL, that.linkedinURL) && Objects.equals(githubURL, that.githubURL) && Objects.equals(portfolioURL, that.portfolioURL) && Objects.equals(imageURL, that.imageURL);
+        return Objects.equals(id, that.id) && Objects.equals(email, that.email) && role == that.role && Objects.equals(entryYear, that.entryYear) && Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName) && Objects.equals(linkedinURL, that.linkedinURL) && Objects.equals(githubURL, that.githubURL) && Objects.equals(portfolioURL, that.portfolioURL) && Objects.equals(imageId, that.imageId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), id, email, role, entryYear, firstName, lastName, linkedinURL, githubURL, portfolioURL, imageURL);
+        return Objects.hash(super.hashCode(), id, email, role, entryYear, firstName, lastName, linkedinURL, githubURL, portfolioURL, imageId);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class ResponseAlumniDTO extends RepresentationModel<ResponseAlumniDTO> {
                 ", linkedinURL='" + linkedinURL + '\'' +
                 ", githubURL='" + githubURL + '\'' +
                 ", portfolioURL='" + portfolioURL + '\'' +
-                ", imageURL='" + imageURL + '\'' +
+                ", imageId='" + imageId + '\'' +
                 '}';
     }
 }

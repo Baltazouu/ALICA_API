@@ -18,7 +18,7 @@ public class ResponseArticleDTO extends RepresentationModel<ResponseArticleDTO> 
     private String title;
     private String subtitle;
     private String content;
-    private String imgURL;
+    private String imgId;
 
     @Override
     public boolean equals(Object o) {
@@ -26,11 +26,11 @@ public class ResponseArticleDTO extends RepresentationModel<ResponseArticleDTO> 
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         ResponseArticleDTO that = (ResponseArticleDTO) o;
-        return Objects.equals(id, that.id) && Objects.equals(alumniId, that.alumniId) && Objects.equals(title, that.title) && Objects.equals(subtitle, that.subtitle) && Objects.equals(content, that.content) && Objects.equals(imgURL, that.imgURL);
+        return Objects.equals(id, that.id) && Objects.equals(alumniId, that.alumniId) && Objects.equals(title, that.title) && Objects.equals(subtitle, that.subtitle) && Objects.equals(content, that.content) && Objects.equals(imgId, that.imgId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), id, alumniId, title, subtitle, content, imgURL);
+        return Objects.hash(super.hashCode(), id, alumniId, title, subtitle, content, imgId);
     }
 }

@@ -6,6 +6,8 @@ import jakarta.validation.constraints.Pattern;
 import lombok.Builder;
 import org.springframework.validation.annotation.Validated;
 
+import java.util.UUID;
+
 @Builder
 @Validated
 public record RequestAlumniDTO(
@@ -20,6 +22,6 @@ public record RequestAlumniDTO(
         String linkedinURL,
         String githubURL,
         String portfolioURL,
-        String imageURL
+        UUID imageId
 
 ) { }

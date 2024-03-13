@@ -17,19 +17,19 @@ public class ResponseAlumniRestrictedDTO extends RepresentationModel<ResponseAlu
     private String firstName;
     private String lastName;
     private String linkedinURL;
-    private String imageURL;
+    private UUID imageId;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ResponseAlumniRestrictedDTO that = (ResponseAlumniRestrictedDTO) o;
-        return Objects.equals(id, that.id) && Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName) && Objects.equals(linkedinURL, that.linkedinURL) && Objects.equals(imageURL, that.imageURL);
+        return Objects.equals(id, that.id) && Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName) && Objects.equals(linkedinURL, that.linkedinURL) && Objects.equals(imageId, that.imageId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), id, firstName, lastName, linkedinURL, imageURL);
+        return Objects.hash(super.hashCode(), id, firstName, lastName, linkedinURL, imageId);
     }
 }
 
