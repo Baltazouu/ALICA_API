@@ -136,6 +136,8 @@ public class EventService {
     }
 
 
+
+    @Transactional
     public Page<ResponseAlumniDTO> findSubscribers(UUID id, Pageable pageable) {
         Event event = eventRepository.findById(id)
                 .orElseThrow(() -> new PropertyNotFoundException(String.format(EVENT_NOT_FOUND, id)));
