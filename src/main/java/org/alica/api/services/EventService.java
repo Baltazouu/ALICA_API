@@ -191,16 +191,12 @@ public class EventService {
     }
 
     @Transactional
-    public Page<ResponseEventDTO> findSubscribedEventsByAlumniId(UUID alumniId, Pageable page) {
+    public List<UUID> findSubscribedEventsByAlumniId(UUID alumniId) {
         Alumni alumni = alumniRepository.findById(alumniId).orElseThrow(() -> new PropertyNotFoundException(String.format(ALUMNI_NOT_FOUND, alumniId)));
 
-        Page<Event> events = eventRepository.findByAlumnisContaining(alumni, page);
-        Page<ResponseEventDTO> responseEventDTOS = events.map(eventMapper::mapToResponseEventDTO);
+        List<Event> events = eventRepository.findByAlumnisContaining(alumni);
 
-        for (ResponseEventDTO eventDTO : responseEventDTOS) {
-            addHateoasLinks(eventDTO);
-        }
-        return responseEventDTOS;
+        return events.stream().map(Event::getId).toList();
 
     }
 

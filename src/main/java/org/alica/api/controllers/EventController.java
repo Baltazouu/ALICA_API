@@ -18,6 +18,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -89,11 +90,10 @@ public class EventController {
         return new ResponseEntity<>(this.eventService.findSubscribers(eventId,page), HttpStatus.OK);
     }
 
-
     @GetMapping("/subscribed-by-alumni/{alumniId}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Page<ResponseEventDTO>> findSubscribedEventsByAlumniId(@PathVariable UUID alumniId, @PageableDefault Pageable page) {
-        return new ResponseEntity<>(this.eventService.findSubscribedEventsByAlumniId(alumniId,page), HttpStatus.OK);
+    public ResponseEntity<List<UUID>> findSubscribedEventsByAlumniId(@PathVariable UUID alumniId) {
+        return new ResponseEntity<>(this.eventService.findSubscribedEventsByAlumniId(alumniId), HttpStatus.OK);
     }
 
 }
