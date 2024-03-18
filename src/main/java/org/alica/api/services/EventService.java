@@ -190,6 +190,20 @@ public class EventService {
         eventRepository.save(event);
     }
 
+    @Transactional
+    public Page<ResponseEventDTO> findSubscribedEventsByAlumniId(UUID alumniId, Pageable page) {
+        Alumni alumni = alumniRepository.findById(alumniId).orElseThrow(() -> new PropertyNotFoundException(String.format(ALUMNI_NOT_FOUND, alumniId)));
+
+        Page<Event> events = eventRepository.findByAlumnisContaining(alumni, page);
+        Page<ResponseEventDTO> responseEventDTOS = events.map(eventMapper::mapToResponseEventDTO);
+
+        for (ResponseEventDTO eventDTO : responseEventDTOS) {
+            addHateoasLinks(eventDTO);
+        }
+        return responseEventDTOS;
+
+    }
+
 
     public boolean checkExistEvent(UUID id){
         return eventRepository.existsById(id);

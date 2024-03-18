@@ -89,4 +89,11 @@ public class EventController {
         return new ResponseEntity<>(this.eventService.findSubscribers(eventId,page), HttpStatus.OK);
     }
 
+
+    @GetMapping("/subscribed-by-alumni/{alumniId}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Page<ResponseEventDTO>> findSubscribedEventsByAlumniId(@PathVariable UUID alumniId, @PageableDefault Pageable page) {
+        return new ResponseEntity<>(this.eventService.findSubscribedEventsByAlumniId(alumniId,page), HttpStatus.OK);
+    }
+
 }

@@ -15,5 +15,7 @@ public interface EventRepository extends JpaRepository<Event, UUID> {
 
     Page<Event> findByTitleContaining(String title, Pageable page);
 
+    Page<Event> findByAlumnisContaining(Alumni alumni, Pageable page);
+
 
 }
