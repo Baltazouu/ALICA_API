@@ -29,7 +29,11 @@ public class ImageService {
                 .type(imageFile.getContentType())
                 .imageData(base64Image)  // Enregistrer l'image encodée en base64
                 .build();
+
+
         Image img = imageRepository.save(imageToSave);
+
+
         return ResponseImageDTO.builder()
                 .id(img.getId())
                 .name(img.getName())
