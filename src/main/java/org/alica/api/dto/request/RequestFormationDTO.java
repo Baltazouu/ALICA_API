@@ -7,7 +7,7 @@ import org.springframework.validation.annotation.Validated;
 @Builder
 @Validated
 public record RequestFormationDTO(
-        @NotNull(message = "firstName is required") String name,
+        @NotNull(message = "Name is required") String name,
         @NotNull(message = "startDate is required") String startDate,
         @NotNull(message = "endDate is required") String endDate,
         @NotNull(message = "company is required") String company,

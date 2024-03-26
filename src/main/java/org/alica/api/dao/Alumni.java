@@ -85,7 +85,7 @@ public class Alumni{
 
     public void update(RequestAlumniDTO dto){
         this.email = dto.email();
-        this.password = dto.password();
+        //this.password = dto.password();
         this.entryYear = dto.entryYear();
         this.firstName = dto.firstName();
         this.lastName = dto.lastName();
