@@ -14,6 +14,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -43,6 +44,15 @@ public class ExperienceController {
         return this.experienceService.findById(id);
     }
 
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/alumni")
+    @Produces("application/json")
+    @ResponseStatus(HttpStatus.OK)
+    public List<ResponseExperienceDTO> findExperienceByAlumniId(@AuthenticationPrincipal UserDetailsImpl user){
+        return this.experienceService.findByAlumniId(user.getId());
+    }
+
     @PreAuthorize("isAuthenticated()")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -50,10 +60,11 @@ public class ExperienceController {
         this.experienceService.deleteById(id,user.getId());
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public void createExperience(@Valid @RequestBody RequestExperienceDTO experienceDTO, @AuthenticationPrincipal UserDetailsImpl user){
-        this.experienceService.create(experienceDTO,user.getId());
+    public ResponseExperienceDTO createExperience(@Valid @RequestBody RequestExperienceDTO experienceDTO, @AuthenticationPrincipal UserDetailsImpl user){
+        return experienceService.createExperience(experienceDTO,user.getId());
     }
 
     @PreAuthorize("isAuthenticated()")

@@ -13,17 +13,21 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 @Service
 public class ExperienceService {
 
-    private final ExperienceMapper experienceMapper = ExperienceMapper.INSTANCE;
+    private static final ExperienceMapper experienceMapper = ExperienceMapper.INSTANCE;
 
     private final ExperienceRepository experienceRepository;
 
     private final AlumniRepository alumniRepository;
+
+    private final Logger logger = Logger.getLogger(ExperienceService.class.getName());
 
 
     public ExperienceService(ExperienceRepository experienceRepository,
@@ -55,11 +59,14 @@ public class ExperienceService {
     }
 
 
-    public void create(RequestExperienceDTO experienceDTO,UUID userId) {
+    public ResponseExperienceDTO createExperience(RequestExperienceDTO experienceDTO, UUID userId) {
+
+        logger.info(String.format("Experience current %s",experienceDTO.isCurrent()));
 
         Alumni alumni = alumniRepository.findById(userId).orElseThrow(() -> new PropertyNotFoundException("Alumni not found"));
 
-        experienceRepository.save(experienceMapper.mapToExperience(experienceDTO,alumni));
+
+        return experienceMapper.mapToResponseExperienceDTO(experienceRepository.save(experienceMapper.mapToExperience(experienceDTO,alumni)));
     }
 
     public void update(RequestExperienceDTO experienceDTO,UUID alumniId) {
@@ -67,6 +74,15 @@ public class ExperienceService {
         Alumni alumni = alumniRepository.findById(alumniId).orElseThrow(() -> new PropertyNotFoundException("Alumni not found"));
 
         experienceRepository.save(experienceMapper.mapToExperience(experienceDTO,alumni));
+    }
+
+    public List<ResponseExperienceDTO> findByAlumniId(UUID id) {
+
+        List<Experience> experiences = experienceRepository.findByAlumniId(id);
+
+        logger.info(String.format("Experiences %s",experiences));
+
+        return experienceRepository.findByAlumniId(id).stream().map(experienceMapper::mapToResponseExperienceDTO).toList();
     }
 
 

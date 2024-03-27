@@ -15,7 +15,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -28,6 +30,8 @@ public class FormationService {
 
     private static final String FORMATION_NOT_FOUND = "Formation %s Not found !";
 
+    Logger logger = Logger.getLogger(FormationService.class.getName());
+
     private static final FormationMapper FORMATION_MAPPER = FormationMapper.INSTANCE;
     public FormationService(FormationRepository formationRepository,
                             AlumniRepository alumniRepository) {
@@ -39,7 +43,7 @@ public class FormationService {
 
         Link self = linkTo(methodOn(FormationService.class).findFormationById(formationDTO.getId())).withSelfRel();
         Link alumni = linkTo(methodOn(AlumniService.class).findAlumniById(formationDTO.getAlumniId())).withRel("alumni");
-        Link allFromAlumni = linkTo(methodOn(FormationService.class).findFormationByAlumniId(formationDTO.getAlumniId(), null)).withRel("allFromAlumni");
+        Link allFromAlumni = linkTo(methodOn(FormationService.class).findFormationByAlumniId(formationDTO.getAlumniId())).withRel("allFromAlumni");
 
         formationDTO.add(self);
         formationDTO.add(alumni);
@@ -67,11 +71,16 @@ public class FormationService {
     public ResponseFormationDTO createFormation(RequestFormationDTO requestFormationDTO, UserDetailsImpl user) {
 
         Alumni alumni = alumniRepository.findById(user.getId()).orElseThrow(() -> new PropertyNotFoundException(String.format("Alumni %s not found", user.getId())));
+
+        logger.info("Beofire mapping");
+
         Formation formation = FORMATION_MAPPER.mapToFormation(requestFormationDTO, alumni);
 
-        ResponseFormationDTO responseFormationDTO =  FORMATION_MAPPER.mapToResponseResponseFormationDTO(formationRepository.save(formation));
-        addHateoasLinks(responseFormationDTO);
-        return responseFormationDTO;
+        logger.info(String.format("Formation %s",formation.toString()));
+
+        return   FORMATION_MAPPER.mapToResponseResponseFormationDTO(formationRepository.save(formation));
+       // addHateoasLinks(responseFormationDTO);
+       // return responseFormationDTO;
     }
 
     public ResponseFormationDTO updateFormation(RequestFormationDTO requestFormationDTO, UUID id,UUID userId) {
@@ -82,9 +91,9 @@ public class FormationService {
 
         formation.update(requestFormationDTO);
 
-        ResponseFormationDTO responseFormationDTO =  FORMATION_MAPPER.mapToResponseResponseFormationDTO(formationRepository.save(formation));
-        addHateoasLinks(responseFormationDTO);
-        return responseFormationDTO;
+        //addHateoasLinks(responseFormationDTO);
+
+        return FORMATION_MAPPER.mapToResponseResponseFormationDTO(formationRepository.save(formation));
     }
 
     public void deleteFormation(UUID id,UserDetailsImpl user) {
@@ -93,9 +102,12 @@ public class FormationService {
         formationRepository.deleteById(id);
     }
 
-    public Page<ResponseFormationDTO> findFormationByAlumniId(UUID id, Pageable page) {
-        Alumni alumni = alumniRepository.findById(id).orElseThrow(() -> new PropertyNotFoundException(String.format("Alumni %s Not found !", id)));
-        Page<ResponseFormationDTO> responseFormationDTO =  formationRepository.findByAlumni(alumni, page).map(FORMATION_MAPPER::mapToResponseResponseFormationDTO);
+    public List<ResponseFormationDTO> findFormationByAlumniId(UUID id) {
+
+        logger.info(String.format("Alumni id %s",id));
+
+
+        List<ResponseFormationDTO> responseFormationDTO =  formationRepository.findByAlumniId(id).stream().map(FORMATION_MAPPER::mapToResponseResponseFormationDTO).toList();
         responseFormationDTO.forEach(FormationService::addHateoasLinks);
         return responseFormationDTO;
     }

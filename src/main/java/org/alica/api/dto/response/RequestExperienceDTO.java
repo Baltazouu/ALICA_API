@@ -11,9 +11,9 @@ import java.util.UUID;
 @Validated
 public record RequestExperienceDTO(
 
-        @NotNull(message = "title is required")  @NotBlank String title,
-        @NotNull(message = "start date is required") @NotBlank Date startDate,
-        @NotNull(message = "end date is required") @NotBlank Date endDate,
-        @NotNull(message = "company is required") @NotBlank String companyName,
+        @NotNull(message = "title is required")  String title,
+        @NotNull(message = "start date is required") Date startDate,
+        @NotNull(message = "end date is required") Date endDate,
+        @NotNull(message = "company is required") String companyName,
         @NotNull(message = "boolean current is required") boolean isCurrent
 ) { }

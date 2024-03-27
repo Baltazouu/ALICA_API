@@ -14,10 +14,13 @@ public interface ExperienceMapper {
     ExperienceMapper INSTANCE = Mappers.getMapper(ExperienceMapper.class);
 
 
-    @Mapping(target = "id", source = "alumni.id")
+
+    @Mapping(target = "alumniId", source = "alumni.id")
+    @Mapping(target = "isCurrent", source = "experience.current")
     ResponseExperienceDTO mapToResponseExperienceDTO(Experience experience);
 
 
     @Mapping(target = "alumni", source = "alumni")
+    @Mapping(target = "current", source = "requestExperienceDTO.isCurrent")
     Experience mapToExperience(RequestExperienceDTO requestExperienceDTO, Alumni alumni);
 }
