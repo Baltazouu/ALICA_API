@@ -7,5 +7,5 @@ import java.util.UUID;
 
 @Validated
 public record RequestRefreshDTO(
-        @NotNull UUID refreshToken
+        @NotNull(message = "refreshToken is required") UUID refreshToken
         ) { }

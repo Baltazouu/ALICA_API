@@ -1,5 +1,6 @@
 package org.alica.api.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.springframework.hateoas.RepresentationModel;
 
@@ -20,14 +21,15 @@ public class ResponseExperienceDTO extends RepresentationModel<ResponseExperienc
     private Date startDate;
     private Date endDate;
     private String companyName;
-    private boolean isCurrent;
+
+    private boolean current;
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         ResponseExperienceDTO that = (ResponseExperienceDTO) o;
-        return isCurrent == that.isCurrent && Objects.equals(id, that.id) && Objects.equals(alumniId, that.alumniId) && Objects.equals(title, that.title) && Objects.equals(startDate, that.startDate) && Objects.equals(endDate, that.endDate) && Objects.equals(companyName, that.companyName);
+        return current == that.current && Objects.equals(id, that.id) && Objects.equals(alumniId, that.alumniId) && Objects.equals(title, that.title) && Objects.equals(startDate, that.startDate) && Objects.equals(endDate, that.endDate) && Objects.equals(companyName, that.companyName);
     }
 
     @Override
@@ -35,4 +37,16 @@ public class ResponseExperienceDTO extends RepresentationModel<ResponseExperienc
         return Objects.hash(super.hashCode(), id, alumniId, title, startDate, endDate);
     }
 
+    @Override
+    public String toString() {
+        return "ResponseExperienceDTO{" +
+                "id=" + id +
+                ", alumniId=" + alumniId +
+                ", title='" + title + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", companyName='" + companyName + '\'' +
+                ", isCurrent=" + current +
+                '}';
+    }
 }

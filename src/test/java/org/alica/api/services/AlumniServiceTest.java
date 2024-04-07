@@ -110,17 +110,9 @@ class AlumniServiceTest {
     void testUpdateAlumniShouldSucceed(){
 
             UUID id = UUID.randomUUID();
-
-
-            //ResponseAlumniDTO expected = ALUMNI_MAPPER.mapResponseAlumniDTO(ALUMNI_MAPPER.mapToAlumni(requestAlumniDTO));
-
-
             when(alumniRepository.findById(id)).thenReturn(java.util.Optional.of(alumni));
             when(alumniRepository.save(alumni)).thenReturn(alumni);
-
             ResponseAlumniDTO result = alumniService.updateAlumni(requestAlumniDTO, id);
-
-            //assertEquals(result, response);
             assertEquals("2010", result.getEntryYear());
     }
 
@@ -153,23 +145,9 @@ class AlumniServiceTest {
     void testFindAlumniByIdWithInvalidId(){
 
         UUID id = UUID.randomUUID();
-
         when(alumniRepository.findById(id)).thenReturn(java.util.Optional.empty());
-
         assertThrows(PropertyNotFoundException.class, () -> alumniService.findAlumniById(id));
-
     }
-
-//    @Test
-//    void testDeleteAlumniShouldSucceed(){
-//
-//        UUID id = UUID.randomUUID();
-//
-//        when(alumniRepository.existsById(id)).thenReturn(true);
-//
-//        alumniService.deleteAlumni(id);
-//
-//    }
 
     @Test
     void testDeleteAlumniWithInvalidId(){

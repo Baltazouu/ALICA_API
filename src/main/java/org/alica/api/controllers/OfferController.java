@@ -63,11 +63,11 @@ public class OfferController {
         return new ResponseEntity<>(this.offerService.updateOffer(offer,id,user.getId()), HttpStatus.OK);
     }
 
-    // management of rights du delete dans le service à voir et modifier certainement
     @DeleteMapping(value = "/{id}")
+    @PreAuthorize("isAuthenticated()")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteOffer(HttpServletRequest request,@PathVariable UUID id){
-        this.offerService.deleteOffer(id,JWTUtils.getUserAuthenticate(request));
+    public void deleteOffer(HttpServletRequest request,@PathVariable UUID id,@AuthenticationPrincipal UserDetailsImpl user){
+        this.offerService.deleteOffer(id,user);
     }
 
     @GetMapping(value= "/alumni/{id}",produces = MediaType.APPLICATION_JSON_VALUE)

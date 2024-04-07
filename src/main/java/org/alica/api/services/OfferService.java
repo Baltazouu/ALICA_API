@@ -99,7 +99,7 @@ public class OfferService {
 
         Offer offer = offerRepository.findById(id).orElseThrow(() -> new PropertyNotFoundException(String.format(OFFER_NOT_FOUND,id)));
 
-        if(offer.getAlumni().getId() != user.getId()) throw new PropertyNotFoundException("You are not allowed to delete this offer !");
+        if(offer.getAlumni().getId() != user.getId()) throw new InsufficientPermissions("You are not allowed to delete this offer !");
         offerRepository.deleteById(id);
     }
 

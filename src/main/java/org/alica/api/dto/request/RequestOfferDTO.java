@@ -15,7 +15,7 @@ public record RequestOfferDTO(
 
         @NotNull(message = "title is required") String title,
         @NotNull(message = "description is required") String description,
-        @NotNull(message = " is required") EContract contract,
+        @NotNull(message = "contract is required") EContract contract,
         @NotNull(message = "ELevel is required") ELevel level,
         @NotNull(message = "city is required") String city,
         @NotNull(message = "company is required") String company,

@@ -2,7 +2,7 @@ package org.alica.api.mappers;
 
 import org.alica.api.dao.Alumni;
 import org.alica.api.dao.Experience;
-import org.alica.api.dto.response.RequestExperienceDTO;
+import org.alica.api.dto.request.RequestExperienceDTO;
 import org.alica.api.dto.response.ResponseExperienceDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -16,11 +16,11 @@ public interface ExperienceMapper {
 
 
     @Mapping(target = "alumniId", source = "alumni.id")
-    @Mapping(target = "isCurrent", source = "experience.current")
+    @Mapping(target = "current", source = "experience.current")
     ResponseExperienceDTO mapToResponseExperienceDTO(Experience experience);
 
 
     @Mapping(target = "alumni", source = "alumni")
-    @Mapping(target = "current", source = "requestExperienceDTO.isCurrent")
+    @Mapping(target = "current", source = "requestExperienceDTO.current")
     Experience mapToExperience(RequestExperienceDTO requestExperienceDTO, Alumni alumni);
 }

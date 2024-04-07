@@ -3,7 +3,7 @@ package org.alica.api.services;
 import jakarta.el.PropertyNotFoundException;
 import org.alica.api.dao.Alumni;
 import org.alica.api.dao.Experience;
-import org.alica.api.dto.response.RequestExperienceDTO;
+import org.alica.api.dto.request.RequestExperienceDTO;
 import org.alica.api.dto.response.ResponseExperienceDTO;
 import org.alica.api.mappers.ExperienceMapper;
 import org.alica.api.repository.AlumniRepository;
@@ -52,7 +52,10 @@ public class ExperienceService {
 
         Experience experience = experienceRepository.findById(id).orElseThrow(() -> new PropertyNotFoundException("Experience not found"));
 
-        if(experience.getAlumni().getId() != alumniId){
+        logger.info("Experience alumni id: "+experience.getAlumni().getId());
+        logger.info("Alumni id: "+alumniId);
+
+        if(!alumniId.equals(experience.getAlumni().getId())){
             throw new AccessDeniedException("Access denied for this resource");
         }
         experienceRepository.deleteById(id);
@@ -61,7 +64,7 @@ public class ExperienceService {
 
     public ResponseExperienceDTO createExperience(RequestExperienceDTO experienceDTO, UUID userId) {
 
-        logger.info(String.format("Experience current %s",experienceDTO.isCurrent()));
+        logger.info(String.format("Experience current %s",experienceDTO.current()));
 
         Alumni alumni = alumniRepository.findById(userId).orElseThrow(() -> new PropertyNotFoundException("Alumni not found"));
 

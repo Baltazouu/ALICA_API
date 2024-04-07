@@ -2,7 +2,7 @@ package org.alica.api.controllers;
 
 import jakarta.validation.Valid;
 import jakarta.ws.rs.Produces;
-import org.alica.api.dto.response.RequestExperienceDTO;
+import org.alica.api.dto.request.RequestExperienceDTO;
 import org.alica.api.dto.response.ResponseExperienceDTO;
 import org.alica.api.security.jwt.UserDetailsImpl;
 import org.alica.api.services.ExperienceService;
@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/api/v1/experiences")
@@ -28,6 +29,8 @@ public class ExperienceController {
     public ExperienceController(ExperienceService experienceService){
         this.experienceService = experienceService;
     }
+
+    Logger logger = Logger.getLogger(ExperienceController.class.getName());
 
     @GetMapping
     @Produces("application/json")
@@ -64,6 +67,9 @@ public class ExperienceController {
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseExperienceDTO createExperience(@Valid @RequestBody RequestExperienceDTO experienceDTO, @AuthenticationPrincipal UserDetailsImpl user){
+
+        logger.info("Experience : "+experienceDTO.toString());
+
         return experienceService.createExperience(experienceDTO,user.getId());
     }
 

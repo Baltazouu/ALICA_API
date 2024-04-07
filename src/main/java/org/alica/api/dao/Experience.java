@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.alica.api.dto.response.RequestExperienceDTO;
+import org.alica.api.dto.request.RequestExperienceDTO;
 
 import java.util.Date;
 import java.util.UUID;
@@ -42,6 +42,6 @@ public class Experience {
         this.startDate = requestExperienceDTO.startDate();
         this.endDate = requestExperienceDTO.endDate();
         this.companyName = requestExperienceDTO.companyName();
-        this.isCurrent = requestExperienceDTO.isCurrent();
+        this.isCurrent = requestExperienceDTO.current();
     }
 }
